@@ -1,2 +1,4 @@
+before_script:
+    - touch test/db/test.sqlite3
 rvm:
     - jruby-19mode
