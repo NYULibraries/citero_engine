@@ -1,9 +1,5 @@
 before_script:
-    - ls
-    - cd test
-    - ls
-    - cd dummy
-    - ls
-    - cd db
+    - mkdir test/dummy/db
+    - touch test/dummy/db/test.sqlite3
 rvm:
     - jruby-19mode
