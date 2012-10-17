@@ -1,4 +1,6 @@
 before_script:
-    - cd test/dummy/db
+    - ls
+    - cd test
+    - ls
 rvm:
     - jruby-19mode
