@@ -24,6 +24,7 @@ module Citation
         return @item::to(Formats::valueOf(format.upcase))
       rescue Exception => e
         $stderr.print e
+        $stderr.print format
         raise TypeError, 'Invalid Format'
       end
     end

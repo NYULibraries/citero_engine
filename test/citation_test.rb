@@ -14,11 +14,6 @@ $PNX_REGEX = /<[\w\W]*><[\w\s"]+>[\w\W]*<\/[\w\s]+>/
 $BIBTEX_REGEX = /@[^{]+{(?:[^{}]|{[^{}]*}|{{[^{}]*}})*}/
 $OPENURL_REGEX = /[:\/%$\-_\.\+!\*'\(\),a-zA-Z0-9]*\?[&?[:\/%$\-_\.\+!\*'\(\),a-zA-Z0-9]+=[:\/%$\-_\.\+!\*'\(\),a-zA-Z0-9]+]+/
 
-class CitationTest < ActiveSupport::TestCase
-  test "truth" do
-    assert_kind_of Module, Citation
-  end
-end
 
 class CSFTest < ActiveSupport::TestCase
   def test_test_CSFinCSFOut
