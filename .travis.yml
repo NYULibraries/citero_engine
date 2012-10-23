@@ -1,5 +1,5 @@
 before_script:
-    - mkdir test/dummy/db
+    - mkdir -p test/dummy/db
     - touch test/dummy/db/test.sqlite3
 rvm:
     - jruby-19mode
