@@ -1,5 +1,6 @@
 before_script:
     - mkdir -p test/dummy/db
     - touch test/dummy/db/test.sqlite3
+    - rvm install jruby
 rvm:
     - jruby-1.7.0.RC2
