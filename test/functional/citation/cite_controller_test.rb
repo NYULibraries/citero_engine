@@ -18,14 +18,9 @@ module Citation
       post :create, "data" => bibtex, "from" => "bibtex", "ttl" => "bibtex", :use_route => :cite
       post :create, "data" => openurl, "from" => "openurl", "ttl" => "openurl", :use_route => :cite
     end
-      
-    end
     test "should get citation" do
       get :index, "id" => "csf", "format" => "pnx",  :use_route => :cite
       assert_response :success
     end
   end
 end
-
-
-
