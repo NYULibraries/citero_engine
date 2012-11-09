@@ -13,5 +13,9 @@ module Citation
       r.save
       redirect_to "/cite", "id"=>params[:ttl], "format"=>params[:from], :status => 303
     end
+    
+    def translate
+      send_data( Citation.map(params[:data]).from(params[:from]).to(params[:to]) , :type => "text/plain")
+    end
   end
 end
