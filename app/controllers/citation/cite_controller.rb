@@ -11,7 +11,7 @@ module Citation
     def create
       r = Record.create(:raw => params[:data], :formatting => params[:from], :title => params[:ttl])
       r.save
-      redirect_to "index", "id"=>params[:ttl], "format"=>params[:from], :status => 303
+      redirect_to "/cite", "id"=>params[:ttl], "format"=>params[:from], :status => 303
     end
   end
 end
