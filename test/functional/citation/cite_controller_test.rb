@@ -22,7 +22,6 @@ module Citation
       assert_difference('Record.count') do
         post :create, "data" => "itemType: book", "from" => "csf", "ttl" => "dummy", :use_route => :cite
       end
-      
       assert_redirected_to '/cite'
     end
     test "should convert format to format" do
