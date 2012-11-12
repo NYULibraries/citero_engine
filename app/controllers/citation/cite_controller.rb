@@ -22,6 +22,9 @@ module Citation
     end
     
     def translate
+      if( params[:data].nil? or params[:from].nil? or params[:to].nil? )
+        raise ArgumentError, 'Missing Parameters'
+      end
       send_data( Citation.map(params[:data]).from(params[:from]).to(params[:to]) , :type => "text/plain")
     end
   end
