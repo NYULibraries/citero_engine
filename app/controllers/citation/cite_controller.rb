@@ -10,8 +10,12 @@ module Citation
     
     def create
       r = Record.create(:raw => params[:data], :formatting => params[:from], :title => params[:ttl])
-      r.save
-      redirect_to "/cite", "id"=>params[:ttl], "format"=>params[:from], :status => 303
+      if r.valid?
+        r.save
+        redirect_to "/cite", "id"=>params[:ttl], "format"=>params[:from], :status => 303
+      else
+        raise ArgumentError, 'Missing Parameters'
+      end
     end
     
     def translate

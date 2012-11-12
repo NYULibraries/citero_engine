@@ -18,12 +18,14 @@ module Citation
       post :create, "data" => bibtex, "from" => "bibtex", "ttl" => "bibtex", :use_route => :cite
       post :create, "data" => openurl, "from" => "openurl", "ttl" => "openurl", :use_route => :cite
     end
+    
     test "should create a record" do
       assert_difference('Record.count') do
         post :create, "data" => "itemType: book", "from" => "csf", "ttl" => "dummy", :use_route => :cite
       end
       assert_redirected_to '/cite'
     end
+    
     test "should convert format to format" do
       formats = [:csf,:ris,:pnx,:bibtex,:openurl]
       formats.each do |from| 
@@ -32,6 +34,10 @@ module Citation
           assert_response :success
         end
       end
+    end
+    
+    test "should throw an error when a field is missing" do
+      assert_raise(ArgumentError) {post :create, "data" => "itemType: book", "from" => "csf", :use_route => :cite}
     end
   end
 end
