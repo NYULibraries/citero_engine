@@ -36,8 +36,18 @@ module Citation
       end
     end
     
-    test "should throw an error when a field is missing" do
+    test "should raise an error when a field is missing in creating" do
       assert_raise(ArgumentError) {post :create, "data" => "itemType: book", "from" => "csf", :use_route => :cite}
+      assert_raise(ArgumentError) {post :create, "data" => "itemType: book", "ttl" => "dummy",  :use_route => :cite}
+      assert_raise(ArgumentError) {post :create, "data" => "itemType: book",  :use_route => :cite}
+      assert_raise(ArgumentError) {post :create, "from" => "csf", "ttl" => "dummy",  :use_route => :cite}
+      assert_raise(ArgumentError) {post :create, "from" => "csf",  :use_route => :cite}
+      assert_raise(ArgumentError) {post :create, "ttl" => "dummy",  :use_route => :cite}
+    end
+    
+    test "should raise na error when a field is missing in GET" do
+       assert_raise(ArgumentError) { get :index, "id" => "error", :use_route => :cite }
+       assert_raise(ArgumentError) { get :index, "format" => "error", :use_route => :cite }
     end
   end
 end

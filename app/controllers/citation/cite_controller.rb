@@ -4,6 +4,9 @@ require "citation/engine"
 module Citation
   class CiteController < ApplicationController
     def index
+      if( params[:id].nil? or params[:format].nil? )
+        raise ArgumentError, 'Missing Parameters'
+      end
       @record = Record.find_by_title(params[:id])
       send_data( Citation.map(@record[:raw]).from(@record[:formatting]).to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
     end
