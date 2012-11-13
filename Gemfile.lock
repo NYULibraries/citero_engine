@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    citation (0.0.1)
+    citation (0.1.0)
       rails (~> 3.2.8)
       rake
       test-unit
