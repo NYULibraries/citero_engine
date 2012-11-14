@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.2.8"
   s.add_dependency "rake"
   s.add_dependency "test-unit"
-  s.add_dependency "jbundler"
 
   s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
 end
