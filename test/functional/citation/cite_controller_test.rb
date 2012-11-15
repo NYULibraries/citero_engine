@@ -17,7 +17,7 @@ module Citation
       formats = [:csf,:ris,:pnx,:bibtex,:openurl]
       formats.each do |from| 
         formats.each do |to|
-          get :index, "id" => from, "format" => to,  :use_route => :cite
+          get :redir, "id" => from, "format" => to,  :use_route => :cite
           assert_response :success
         end
       end
@@ -33,8 +33,7 @@ module Citation
     end
     
     test "should raise an error when a field is missing in index" do
-       assert_raise(ArgumentError) { get :index, "id" => "error", :use_route => :cite }
-       assert_raise(ArgumentError) { get :index, "format" => "error", :use_route => :cite }
+       assert_raise(ArgumentError) { get :redir, "id" => "error", :use_route => :cite }
     end
     
     test "should test translate POST and GET" do
