@@ -3,12 +3,29 @@ require "citation/engine"
 
 module Citation
   class CiteController < ApplicationController
-    def index
-      if( params[:id].nil? or params[:format].nil? )
-        raise ArgumentError, 'Missing Parameters'
+    def redir
+      puts "{request.env['PATH_INFO']}"
+      if( params[:format].nil? )
+        raise ArgumentError, 'Missing Output Format'
       end
+      if( request.env['PATH_INFO'].eql? "/cite" )
+        openurl
+      else
+        recordID
+      end
+    end
+    
+    def index
+      render :text => "Citation Mounted"
+    end
+    
+    def recordID
       record = Record.find_by_title(params[:id])
       send_data( Citation.map(record[:raw]).from(record[:formatting]).to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
+    end
+    
+    def openurl
+      send_data( Citation.map(request.fullpath).from("openurl").to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
     end
     
     def create
