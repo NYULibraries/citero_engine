@@ -1,6 +1,7 @@
 require_dependency "citation/application_controller"
 require "citation/engine"
 
+require 'open-uri'
 module Citation
   class CiteController < ApplicationController
     def redir
@@ -20,12 +21,27 @@ module Citation
     end
     
     def recordID
-      record = Record.find_by_title(params[:id])
-      send_data( Citation.map(record[:raw]).from(record[:formatting]).to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
+      if( params[:format].eql?("refworks") || params[:format].eql?("endnote") )
+        export
+      else
+        record = Record.find_by_title(params[:id])
+        send_data( Citation.map(record[:raw]).from(record[:formatting]).to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
+      end
     end
     
     def openurl
-      send_data( Citation.map(request.fullpath).from("openurl").to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
+      if( params[:format].eql?("refworks") || params[:format].eql?("endnote") )
+        export
+      else
+        send_data( Citation.map(request.fullpath).from("openurl").to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
+      end
+    end
+    
+    def export
+      callback = params[:format].eql?("refworks") ? "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url="
+                                                  : "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=" 
+      callback += ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.sub(/refworks/, 'ris' )}" )
+      redirect_to callback, :status => 303
     end
     
     def create
