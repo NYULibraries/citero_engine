@@ -56,7 +56,7 @@ module Citation
     
     test "should redirect to endnote" do
       get :redir, "format" => "endnote", :use_route => :cite
-      assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dredir%26format%3Dendnote"
+      assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dredir%26format%3Dris"
     end
     
     test "should redirect to refworks" do
