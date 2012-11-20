@@ -5,7 +5,6 @@ require 'open-uri'
 module Citation
   class CiteController < ApplicationController
     def redir
-      puts "{request.env['PATH_INFO']}"
       if( params[:format].nil? )
         raise ArgumentError, 'Missing Output Format'
       end
