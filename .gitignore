@@ -6,4 +6,6 @@ test/dummy/log/*.log
 test/dummy/tmp/
 test/dummy/.sass-cache
 rvm.env
+
+
 Gemfile.lock
