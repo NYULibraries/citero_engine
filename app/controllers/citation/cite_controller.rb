@@ -32,7 +32,7 @@ module Citation
       if( params[:format].eql?("refworks") || params[:format].eql?("endnote") )
         export
       else
-        send_data( Citation.map(request.fullpath).from("openurl").to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
+        send_data( Citation.map(CGI::unescape(request.fullpath)).from("openurl").to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
       end
     end
     
