@@ -39,7 +39,7 @@ module Citation
     def export
       callback = params[:format].eql?("refworks") ? "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url="
                                                   : "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=" 
-      callback += ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.sub(/refworks/, 'ris' ).sub(/endnote/, 'ris')}" )
+      callback += ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}"+)+"#{request.fullpath.sub(/refworks/, 'ris' ).sub(/endnote/, 'ris')}"
       redirect_to callback, :status => 303
     end
     
