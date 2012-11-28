@@ -24,7 +24,7 @@ module Citation
         export
       else
         record = Record.find_by_title(params[:id])
-        send_data( Citation.map(record[:raw]).from(record[:formatting]).to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
+        send_data( Citation.map(record[:raw]).from(record[:formatting]).to(params[:format]) , :filename => filename , :type => "text/plain")
       end
     end
     
@@ -32,7 +32,7 @@ module Citation
       if( params[:format].eql?("refworks") || params[:format].eql?("endnote") )
         export
       else
-        send_data( Citation.map(CGI::unescape(request.fullpath)).from("openurl").to(params[:format]) , :filename => "export."+params[:format], :type => "text/plain")
+        send_data( Citation.map(CGI::unescape(request.fullpath)).from("openurl").to(params[:format]) , :filename => filename , :type => "text/plain")
       end
     end
     
@@ -58,6 +58,18 @@ module Citation
         raise ArgumentError, 'Missing Parameters'
       end
       send_data( Citation.map(params[:data]).from(params[:from]).to(params[:to]) , :type => "text/plain")
+    end
+    
+    def filename
+      name = "export"
+      if( params[:format].eql?("bibtex") )
+        name += ".bib"
+      elsif( params[:format].eql?("easybib") )
+        name += ".json"
+      else
+        name += params[:format]
+      end
+      return name
     end
   end
 end
