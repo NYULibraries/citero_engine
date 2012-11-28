@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121024174852) do
+ActiveRecord::Schema.define(:version => 20121109165022) do
 
   create_table "citation_records", :force => true do |t|
     t.string   "formatting"
