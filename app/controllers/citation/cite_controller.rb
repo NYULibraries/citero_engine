@@ -67,7 +67,7 @@ module Citation
       elsif( params[:format].eql?("easybib") )
         name += ".json"
       else
-        name += params[:format]
+        name += "." + params[:format]
       end
       return name
     end
