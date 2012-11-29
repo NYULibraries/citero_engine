@@ -16,6 +16,7 @@ module Citation
         return self
       rescue Exception => e
         $stderr.print e
+        $stderr.print format
         raise TypeError, 'Invalid Format'
       end
     end
