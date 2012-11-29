@@ -8,10 +8,10 @@ module Citation
       if( params[:format].nil? )
         raise ArgumentError, 'Missing Output Format'
       end
-      if( request.env['PATH_INFO'].eql? "/cite" )
-        openurl
+      if( params[:format].eql?("refworks") || params[:format].eql?("endnote") || params[:format].eql?("pusheasybib") )
+        export
       else
-        recordID
+        cite
       end
     end
     
@@ -19,24 +19,25 @@ module Citation
       render :text => "Citation Mounted"
     end
     
-    def recordID
-      if( params[:format].eql?("refworks") || params[:format].eql?("endnote") )
-        export
-      else
-        record = Record.find_by_title(params[:id])
-        send_data( Citation.map(record[:raw]).from(record[:formatting]).to(params[:format]) , :filename => filename , :type => "text/plain")
-      end
+    def cite
+      data = get_data
+      data.nil? ? raise( ArgumentError, "Unrecognized request" ) : send_data( data, :filename => filename , :type => "text/plain")
     end
     
-    def openurl
-      if( params[:format].eql?("refworks") || params[:format].eql?("endnote") )
-        export
+    def get_data
+      if( params[:id] )
+        record = Record.find_by_title(params[:id])
+        data = Citation.map(record[:raw]).from(record[:formatting]).to(params[:format])  unless record.nil?
       else
-        send_data( Citation.map(CGI::unescape(request.fullpath)).from("openurl").to(params[:format]) , :filename => filename , :type => "text/plain")
+        data = Citation.map(CGI::unescape(request.fullpath)).from("openurl").to(params[:format]) 
       end
     end
     
     def export
+      if( params[:format].eql?("pusheasybib"))
+        push_to_easybib
+        return
+      end
       callback = params[:format].eql?("refworks") ? "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url="
                                                   : "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=" 
       callback += ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.sub(/refworks/, 'ris' ).sub(/endnote/, 'ris')}" )
@@ -70,6 +71,16 @@ module Citation
         name += "." + params[:format]
       end
       return name
+    end
+    
+    def push_to_easybib
+      params[:format] = "easybib"
+      @elements = [{:name => "data", :value => get_data, :type => "textarea"}]
+      @name = "Push to EasyBib"
+      @action = "http://www.easybib.com/cite/bulk"
+      @method = "POST"
+      @enctype = "application/x-www-form-urlencoded"
+      render :template => "citation/cite/external_form"
     end
   end
 end
