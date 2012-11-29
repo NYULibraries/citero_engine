@@ -29,7 +29,7 @@ module Citation
         record = Record.find_by_title(params[:id])
         data = Citation.map(record[:raw]).from(record[:formatting]).to(params[:format])  unless record.nil?
       else
-        data = Citation.map(CGI::unescape(request.fullpath)).from("openurl").to(params[:format]) 
+        data = Citation.map(CGI::unescape(request.protocol+request.host_with_port+request.fullpath)).from("openurl").to(params[:format]) 
       end
     end
     
@@ -75,7 +75,7 @@ module Citation
     
     def push_to_easybib
       params[:format] = "easybib"
-      @elements = [{:name => "data", :value => get_data, :type => "textarea"}]
+      @elements = [{:name => "data", :value => "[" + get_data + "]", :type => "textarea"}]
       @name = "Push to EasyBib"
       @action = "http://www.easybib.com/cite/bulk"
       @method = "POST"
