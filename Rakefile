@@ -12,11 +12,14 @@ rescue LoadError
   RDoc::Task = Rake::RDocTask
 end
 
+
 RDoc::Task.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
+  rdoc.rdoc_dir = 'doc'
   rdoc.title    = 'CiteroEngine'
   rdoc.options << '--line-numbers'
-  rdoc.rdoc_files.include('README.rdoc')
+  rdoc.options << '--markup markdown'
+  rdoc.rdoc_files.include('README.md')
+  rdoc.rdoc_files.include('app/**/*.rb')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
