@@ -28,23 +28,7 @@ module CiteroEngine
     def get_data
       if( params[:id] )
         record = Record.find_by_title(params[:id])
-        if( record.nil? )
-           raise( ArgumentError, "Unknown record" )
-           return
-        end
-        data = Citero.map(record[:raw])
-        from = record[:formatting]
-        to = params[:format]
-        if( data.from_formats.include? from )
-          data = data.send("from_#{from}")
-        else
-            raise( ArgumentError, "Unrecognized request" )
-        end
-        if( data.to_formats.include? to )
-          data = data.send("to_#{to}")
-        else
-            raise( ArgumentError, "Unrecognized request" )
-        end
+        data = Citero.map(record[:raw]).send("from_#{record[:formatting]}").send("to_#{params[:format]}")  unless record.nil?
       else
         data = Citero.map(CGI::unescape(request.protocol+request.host_with_port+request.fullpath)).from_openurl.to(params[:format]) 
       end
