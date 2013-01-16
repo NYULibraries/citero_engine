@@ -4,6 +4,7 @@ require 'test_helper'
 require 'rack/utils'
 require 'citero'
 
+
 module CiteroEngine
   class CiteControllerTest < ActionController::TestCase
     fixtures :"citero_engine/records"
