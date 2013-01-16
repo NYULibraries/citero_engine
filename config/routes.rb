@@ -1,4 +1,4 @@
-Citation::Engine.routes.draw do
+CiteroEngine::Engine.routes.draw do
   root :to => 'cite#index'
   match "cite/:id" => 'cite#redir'
   match "cite" => 'cite#redir'
