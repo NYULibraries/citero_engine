@@ -74,7 +74,7 @@ module CiteroEngine
     
     test "should redirect to easybib" do
       Citero.map("").from_formats.each do |from| 
-        get :redir, "format" => "pusheasybib", "id" => from, :use_route => :cite
+        get :redir, "format" => "easybib", "id" => from, :use_route => :cite
         assert_response :success
       end
     end
