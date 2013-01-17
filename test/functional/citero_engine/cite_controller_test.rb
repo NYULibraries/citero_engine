@@ -71,5 +71,12 @@ module CiteroEngine
       get :redir, "format" => "refworks", :use_route => :cite
       assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dredir%26format%3Dris"
     end
+    
+    test "should redirect to easybib" do
+      Citero.map("").from_formats.each do |from| 
+        get :redir, "format" => "pusheasybib", "id" => from, :use_route => :cite
+        assert_response :success
+      end
+    end
   end
 end

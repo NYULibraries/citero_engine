@@ -90,12 +90,12 @@ module CiteroEngine
     
     def whitelist_method direction, format
       if( direction.eql? "to" )
-        if Citero.map("").to_formats.include? format
-          return "to_#{format}"
+        if Citero.map("").to_formats.include? format.downcase
+          return "to_#{format.downcase}"
         end
       elsif( direction.eql? "from" )
-        if Citero.map("").from_formats.include? format
-          return "from_#{format}"
+        if Citero.map("").from_formats.include? format.downcase
+          return "from_#{format.downcase}"
         end
       end
     end
