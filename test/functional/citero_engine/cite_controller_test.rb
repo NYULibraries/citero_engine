@@ -55,6 +55,13 @@ module CiteroEngine
       assert_raise(ArgumentError) { post :translate, "from" => "csf", "to" => "csf", :use_route => :cite }
     end
     
+    test "should convert openurl to format" do
+      Citero.map("").to_formats.each do |to|
+        get :redir, "rft_val_fmt" => "info:ofi/fmt:kev:mtx:book", "format" => to,  :use_route => :cite
+        assert_response :success
+      end
+    end
+    
     test "should redirect to endnote" do
       get :redir, "format" => "endnote", :use_route => :cite
       assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dredir%26format%3Dris"

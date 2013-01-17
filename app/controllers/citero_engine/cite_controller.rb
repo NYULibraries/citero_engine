@@ -26,11 +26,13 @@ module CiteroEngine
     end
     
     def get_data
+      out_format = whitelist_method('to',params[:format])
       if( params[:id] )
         record = Record.find_by_title(params[:id])
-        data = Citero.map(record[:raw]).send("from_#{record[:formatting]}").send("to_#{params[:format]}")  unless record.nil?
+        in_format = whitelist_method('from',record[:formatting])
+        data = Citero.map(record[:raw]).send(in_format).send(out_format)  unless record.nil?
       else
-        data = Citero.map(CGI::unescape(request.protocol+request.host_with_port+request.fullpath)).from_openurl.to(params[:format]) 
+        data = Citero.map(CGI::unescape(request.protocol+request.host_with_port+request.fullpath)).from_openurl.send(out_format)
       end
     end
     
@@ -82,6 +84,18 @@ module CiteroEngine
       @method = "POST"
       @enctype = "application/x-www-form-urlencoded"
       render :template => "citero_engine/cite/external_form"
+    end
+    
+    def whitelist_method direction, format
+      if( direction.eql? "to" )
+        if Citero.map("").to_formats.include? format
+          return "to_#{format}"
+        end
+      elsif( direction.eql? "from" )
+        if Citero.map("").from_formats.include? format
+          return "from_#{format}"
+        end
+      end
     end
   end
 end
