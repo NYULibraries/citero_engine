@@ -78,5 +78,10 @@ module CiteroEngine
         assert_response :success
       end
     end
+    
+    test "should mount the engine" do
+      get :index, :use_route => :cite
+      assert_response :success
+    end
   end
 end

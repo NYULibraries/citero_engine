@@ -5,7 +5,7 @@ module CiteroEngine
     validates :raw, :presence => true
     validates :title, :presence => true
   end
-  def to_param  # overridden
-      "#{title}"
-  end
+  # def to_param  # overridden
+  #     "#{title}"
+  # end
 end
