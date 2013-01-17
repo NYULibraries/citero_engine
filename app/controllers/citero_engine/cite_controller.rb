@@ -61,7 +61,9 @@ module CiteroEngine
       if( params[:data].nil? or params[:from].nil? or params[:to].nil? )
         raise ArgumentError, 'Missing Parameters'
       end
-      send_data( Citero.map(params[:data]).send("from_#{params[:from]}").send("to_#{params[:to]}") , :type => "text/plain")
+      in_format = whitelist_method('from',params[:from])
+      out_format = whitelist_method('from',params[:to])
+      send_data( Citero.map(params[:data]).send(in_format).send(out_format) , :type => "text/plain")
     end
     
     def filename
