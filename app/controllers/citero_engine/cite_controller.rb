@@ -28,7 +28,7 @@ module CiteroEngine
       end
       in_format = whitelist_method('from',params[:from])
       out_format = whitelist_method('from',params[:to])
-      send_data( Citero.map(params[:data]).send(in_format).send(out_format) , :type => "text/plain")
+      send_data( Citero.map(params[:data]).send(in_format).send(out_format) ,:filename => filename, :type => "text/plain")
     end
         
     # Redirection based on format, figures out which method to call based on the output format
@@ -36,7 +36,7 @@ module CiteroEngine
       if( params[:format].nil? )
         raise ArgumentError, 'Missing Output Format'
       end
-      if( params[:format].eql?("refworks") || params[:format].eql?("endnote") || params[:format].eql?("easybib") )
+      if( params[:format].eql?("refworks") || params[:format].eql?("endnote") || params[:format].eql?("easybibpush") )
         push
       else
         cite
@@ -64,7 +64,8 @@ module CiteroEngine
     # Export method that pushes to easybib, refworks, or endnote
     def push
       case params[:format]
-      when "easybib"
+      when "easybibpush"
+        params[:format] = "easybib"
         push_to_easybib
         return
       when "refworks"
