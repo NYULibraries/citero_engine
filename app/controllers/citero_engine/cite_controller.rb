@@ -57,7 +57,8 @@ module CiteroEngine
         in_format = whitelist_method('from',record[:formatting])
         data = Citero.map(record[:raw]).send(in_format).send(out_format)  unless record.nil?
       else
-        data = Citero.map(CGI::unescape(request.protocol+request.host_with_port+request.fullpath)).from_openurl.send(out_format)
+        raw_data = CGI::unescape(request.protocol+request.host_with_port+request.fullpath)
+        data = Citero.map(raw_data).from_openurl.send(out_format)
       end
     end
     
