@@ -12,10 +12,10 @@ module CiteroEngine
     
     # Creates a new record with data, format, and title, redirects to that resource
     def create
-      r = Record.create(:raw => params[:data], :formatting => params[:from], :title => params[:ttl])
+      r = Record.create(:raw => params[:data], :formatting => params[:from_format], :title => params[:ttl])
       if r.valid?
         r.save
-        redirect_to "/cite", "id"=>params[:ttl], "format"=>params[:from], :status => 303
+        redirect_to "/cite", "id"=>params[:ttl], "format"=>params[:from_format], :status => 303
       else
         raise ArgumentError, 'Missing Parameters'
       end
@@ -23,20 +23,20 @@ module CiteroEngine
 
     # Direct access to translation process, used by existing resources
     def translate
-      if( params[:data].nil? or params[:from].nil? or params[:to].nil? )
+      if( params[:data].nil? or params[:from_format].nil? or params[:to_format].nil? )
         raise ArgumentError, 'Missing Parameters'
       end
-      in_format = whitelist_method('from',params[:from])
-      out_format = whitelist_method('from',params[:to])
+      in_format = whitelist_method('from',params[:from_format])
+      out_format = whitelist_method('from',params[:to_format])
       send_data( Citero.map(params[:data]).send(in_format).send(out_format) ,:filename => filename, :type => "text/plain")
     end
         
     # Redirection based on format, figures out which method to call based on the output format
     def redir
-      if( params[:format].nil? )
+      if( params[:to_format].nil? )
         raise ArgumentError, 'Missing Output Format'
       end
-      if( params[:format].eql?("refworks") || params[:format].eql?("endnote") || params[:format].eql?("easybibpush") )
+      if( params[:to_format].eql?("refworks") || params[:to_format].eql?("endnote") || params[:to_format].eql?("easybibpush") )
         push
       else
         cite
@@ -51,7 +51,7 @@ module CiteroEngine
     
     # The method that actually converts input data to a desired output format, does both openurl and records
     def get_data
-      out_format = whitelist_method('to',params[:format])
+      out_format = whitelist_method('to',params[:to_format])
       if( params[:id] )
         record = Record.find_by_title(params[:id])
         in_format = whitelist_method('from',record[:formatting])
@@ -64,9 +64,9 @@ module CiteroEngine
     
     # Export method that pushes to easybib, refworks, or endnote
     def push
-      case params[:format]
+      case params[:to_format]
       when "easybibpush"
-        params[:format] = "easybib"
+        params[:to_format] = "easybib"
         push_to_easybib
         return
       when "refworks"
@@ -93,13 +93,13 @@ module CiteroEngine
     def filename
       name = "export"
       
-      case params[:format]
+      case params[:to_format]
       when "bibtex"
         name += ".bib"
       when "easybib"
         name += ".json"
       else
-        name += "." + params[:format]
+        name += "." + params[:to_format]
       end
       
       return name
