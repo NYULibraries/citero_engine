@@ -64,12 +64,12 @@ module CiteroEngine
     
     test "should redirect to endnote" do
       get :redir, "to_format" => "endnote", :use_route => :cite
-      assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dredir%26format%3Dris"
+      assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dredir%26to_format%3Dris"
     end
     
     test "should redirect to refworks" do
       get :redir, "to_format" => "refworks", :use_route => :cite
-      assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dredir%26format%3Dris"
+      assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dredir%26to_format%3Dris"
     end
     
     test "should redirect to easybib" do
