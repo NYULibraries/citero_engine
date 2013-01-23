@@ -23,20 +23,20 @@ module CiteroEngine
 
     # Direct access to translation process, used by existing resources
     def translate
-      if( params[:data].nil? or params[:from_format].nil? or params[:to_format].nil? )
+      if( params[:data].nil? or params[:from_format].nil? or params[:format].nil? )
         raise ArgumentError, 'Missing Parameters'
       end
       in_format = whitelist_method('from',params[:from_format])
-      out_format = whitelist_method('from',params[:to_format])
+      out_format = whitelist_method('from',params[:format])
       send_data( Citero.map(params[:data]).send(in_format).send(out_format) ,:filename => filename, :type => "text/plain")
     end
         
     # Redirection based on format, figures out which method to call based on the output format
     def redir
-      if( params[:to_format].nil? )
+      if( params[:format].nil? )
         raise ArgumentError, 'Missing Output Format'
       end
-      if( params[:to_format].eql?("refworks") || params[:to_format].eql?("endnote") || params[:to_format].eql?("easybibpush") )
+      if( params[:format].eql?("refworks") || params[:format].eql?("endnote") || params[:format].eql?("easybibpush") )
         push
       else
         cite
@@ -51,7 +51,7 @@ module CiteroEngine
     
     # The method that actually converts input data to a desired output format, does both openurl and records
     def get_data
-      out_format = whitelist_method('to',params[:to_format])
+      out_format = whitelist_method('to',params[:format])
       if( params[:id] )
         record = Record.find_by_title(params[:id])
         in_format = whitelist_method('from',record[:formatting])
@@ -64,9 +64,9 @@ module CiteroEngine
     
     # Export method that pushes to easybib, refworks, or endnote
     def push
-      case params[:to_format]
+      case params[:format]
       when "easybibpush"
-        params[:to_format] = "easybib"
+        params[:format] = "easybib"
         push_to_easybib
         return
       when "refworks"
@@ -93,13 +93,13 @@ module CiteroEngine
     def filename
       name = "export"
       
-      case params[:to_format]
+      case params[:format]
       when "bibtex"
         name += ".bib"
       when "easybib"
         name += ".json"
       else
-        name += "." + params[:to_format]
+        name += "." + params[:format]
       end
       
       return name
