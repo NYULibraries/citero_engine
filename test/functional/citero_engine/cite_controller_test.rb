@@ -78,7 +78,7 @@ module CiteroEngine
         assert_response :success
         assert_template :partial => '_external_form'
       end
-    end
+    end 
     
     test "should mount the engine" do
       get :index, :use_route => :cite
