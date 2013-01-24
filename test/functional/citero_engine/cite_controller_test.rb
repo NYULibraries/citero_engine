@@ -19,7 +19,7 @@ module CiteroEngine
     test "should convert format to format" do
       Citero.map("").from_formats.each do |from| 
         Citero.map("").to_formats.each do |to|
-          get :redir, :id => from, :format => to,  :use_route => :cite
+          get :redir, :id => Record.find_by_title(from)[:id], :format => to,  :use_route => :cite
           assert_response :success
         end
       end
@@ -74,7 +74,7 @@ module CiteroEngine
     
     test "should redirect to easybib" do
       Citero.map("").from_formats.each do |from| 
-        get :redir, :format => "easybibpush", :id => from, :use_route => :cite
+        get :redir, :format => "easybibpush", :id => Record.find_by_title(from)[:id], :use_route => :cite
         assert_response :success
         assert_template :partial => '_external_form'
       end
