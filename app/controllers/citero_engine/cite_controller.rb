@@ -53,7 +53,7 @@ module CiteroEngine
     def get_data
       out_format = whitelist_method('to',params[:format])
       if( params[:id] )
-        record = Record.find_by_title(params[:id])
+        record = Record.find_by_id(params[:id])
         in_format = whitelist_method('from',record[:formatting])
         data = Citero.map(record[:raw]).send(in_format).send(out_format)  unless record.nil?
       else
