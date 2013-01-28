@@ -10,6 +10,30 @@ module CiteroEngine
       render :text => "CiteroEngine Mounted"
     end
     
+    def gather   
+      if !params[:id].nil? 
+        record = Record.find_by_id params[:id]
+        @data = record[:raw] unless record.nil?
+        @from_format = whitelist_formats :from, record[:formatting] unless record.nil?
+      else
+        @data = params[:data] unless params[:data].nil?
+        @from_format = whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
+      end
+      
+      @data = CGI::unescape(request.protocol+request.host_with_port+request.fullpath) unless !params[:data].nil?
+      @from_format = 'from_openurl' unless !params[:from_format].nil?
+      @to_format = whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
+      
+      if @data.nil? or @from_format.nil? or @to_format.nil?
+        raise ArgumentError, "Some parameters may be missing [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
+      end
+      
+      p "Parameters set [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
+      
+    end
+    
+    
+    
     # Creates a new record with data, format, and title, redirects to that resource
     def create
       r = Record.create(:raw => params[:data], :formatting => params[:from_format], :title => params[:ttl])
@@ -23,20 +47,21 @@ module CiteroEngine
 
     # Direct access to translation process, used by existing resources
     def translate
-      if( params[:data].nil? or params[:from_format].nil? or params[:format].nil? )
+      if( params[:data].nil? or params[:from_format].nil? or params[:to_format].nil? )
         raise ArgumentError, 'Missing Parameters'
       end
-      in_format = whitelist_method('from',params[:from_format])
-      out_format = whitelist_method('from',params[:format])
+      in_format = whitelist_formats :from, params[:from_format]
+      out_format = whitelist_formats :from, params[:to_format]
       send_data( Citero.map(params[:data]).send(in_format).send(out_format) ,:filename => filename, :type => "text/plain")
     end
         
     # Redirection based on format, figures out which method to call based on the output format
     def redir
-      if( params[:format].nil? )
+      gather
+      if( params[:to_format].nil? )
         raise ArgumentError, 'Missing Output Format'
       end
-      if( params[:format].eql?("refworks") || params[:format].eql?("endnote") || params[:format].eql?("easybibpush") )
+      if( params[:to_format].eql?("refworks") || params[:to_format].eql?("endnote") || params[:to_format].eql?("easybibpush") )
         push
       else
         cite
@@ -51,10 +76,10 @@ module CiteroEngine
     
     # The method that actually converts input data to a desired output format, does both openurl and records
     def get_data
-      out_format = whitelist_method('to',params[:format])
+      out_format = whitelist_formats :to,params[:to_format]
       if( params[:id] )
         record = Record.find_by_id(params[:id])
-        in_format = whitelist_method('from',record[:formatting])
+        in_format = whitelist_formats :from, record[:formatting]
         data = Citero.map(record[:raw]).send(in_format).send(out_format)  unless record.nil?
       else
         raw_data = CGI::unescape(request.protocol+request.host_with_port+request.fullpath)
@@ -64,9 +89,9 @@ module CiteroEngine
     
     # Export method that pushes to easybib, refworks, or endnote
     def push
-      case params[:format]
+      case params[:to_format]
       when "easybibpush"
-        params[:format] = "easybib"
+        params[:to_format] = "easybib"
         push_to_easybib
         return
       when "refworks"
@@ -93,28 +118,32 @@ module CiteroEngine
     def filename
       name = "export"
       
-      case params[:format]
+      case params[:to_format]
       when "bibtex"
         name += ".bib"
       when "easybib"
         name += ".json"
       else
-        name += "." + params[:format]
+        name += "." + params[:to_format]
       end
       
       return name
     end
     
+    def push_formats
+      @push_formats ||= Hash['easybibpush' => Hash[ 'format' => 'easybib', 'action' => 'method', 'method' => 'push_to_easybib'], 
+                             'endnote' => Hash[ 'format' => 'ris', 'action' => 'redirect', 'url' => ''], 
+                             'refworks' => Hash[ 'format' => 'ris', 'action' => 'redirect', 'url' => ''], ]
+    end
     # Cleans the user input and finds the associated method for that format
-    def whitelist_method direction, format
-      if( direction.eql? "to" )
-        if Citero.map("").to_formats.include? format.downcase
-          return "to_#{format.downcase}"
+    def whitelist_formats direction, format
+      if direction.to_s.eql? "to" or direction.to_s.eql? "from"
+        if Citero.to_formats.include? format.downcase or Citero.from_formats.include? format.downcase
+          return "#{direction.to_s}_#{format.downcase}"
         end
-      elsif( direction.eql? "from" )
-        if Citero.map("").from_formats.include? format.downcase
-          return "from_#{format.downcase}"
-        end
+      end
+      if push_formats.include? format
+        return "#{direction.to_s}_#{push_formats[format]['format'].downcase}"
       end
     end
   end
