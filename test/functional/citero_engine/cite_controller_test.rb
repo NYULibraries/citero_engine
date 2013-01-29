@@ -8,7 +8,16 @@ require 'citero'
 module CiteroEngine
   class CiteControllerTest < ActionController::TestCase
     fixtures :"citero_engine/records"
+    setup :initialize_cite
+    teardown :clear
     
+    def initialize_cite
+      @cite = CiteController.new
+    end
+    
+    def clear
+      @cite = nil
+    end
     test "should create a record" do
       assert_difference('Record.count') do
         post :create, :data => "itemType: book", :from_format => "csf", :ttl => "dummy", :use_route => :cite
@@ -19,64 +28,91 @@ module CiteroEngine
     test "should convert format to format" do
       Citero.map("").from_formats.each do |from| 
         Citero.map("").to_formats.each do |to|
-          get :redir, :id => Record.find_by_title(from)[:id], :to_format => to,  :use_route => :cite
+          get :gather, :id => Record.find_by_title(from)[:id], :to_format => to,  :use_route => :cite
           assert_response :success
+          clear
+          initialize_cite
         end
       end
     end
     
-    test "should raise an error when a field is missing in creating" do
+    test "should raise an error when ttl is missing in creating" do
       assert_raise(ArgumentError) {post :create, :data => "itemType: book", :from_format => "csf", :use_route => :cite}
+    end
+    test "should raise an error when from_format is missing in creating" do
       assert_raise(ArgumentError) {post :create, :data => "itemType: book", :ttl => "dummy",  :use_route => :cite}
+    end
+    test "should raise an error when from_format and ttl are missing in creating" do
       assert_raise(ArgumentError) {post :create, :data => "itemType: book",  :use_route => :cite}
+    end
+    test "should raise an error when data is missing in creating" do
       assert_raise(ArgumentError) {post :create, :from_format => "csf", :ttl => "dummy",  :use_route => :cite}
+    end
+    test "should raise an error when data and ttl are missing in creating" do
       assert_raise(ArgumentError) {post :create, :from_format => "csf",  :use_route => :cite}
+    end
+    test "should raise an error when data and from_format are missing in creating" do
       assert_raise(ArgumentError) {post :create, :ttl => "dummy",  :use_route => :cite}
     end
     
     test "should raise an error when a field is missing in index" do
-       assert_raise(ArgumentError) { get :redir, :id => "error", :use_route => :cite }
+       assert_raise(ArgumentError) { get :gather, :id => "error", :use_route => :cite }
     end
     
     test "should test translate POST and GET" do
-      get :translate, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :use_route => :cite 
+      get :gather, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :use_route => :cite 
       assert_response :success
-      post :translate, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :use_route => :cite 
+      clear
+      initialize_cite
+      post :gather, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :use_route => :cite 
       assert_response :success
     end
     
-    test "should raise an error when a field is missing in translate" do
+    test "should raise an error when to_format is missing in translate get" do
       assert_raise(ArgumentError) { get :translate, :data => "itemType: book", :from_format => "csf", :use_route => :cite }
+    end
+    test "should raise an error when from_format is missing in translate get" do
       assert_raise(ArgumentError) { get :translate, :data => "itemType: book", :to_format => "csf", :use_route => :cite }
+    end
+    test "should raise an error when data is missing in translate get" do
       assert_raise(ArgumentError) { get :translate, :from_format => "csf", :to_format => "csf", :use_route => :cite }
-      
+    end
+    test "should raise an error when to_format is missing in translate post" do  
       assert_raise(ArgumentError) { post :translate, :data => "itemType: book", :from_format => "csf", :use_route => :cite }
+    end
+    test "should raise an error when from_format is missing in translate post" do
       assert_raise(ArgumentError) { post :translate, :data => "itemType: book", :to_format => "csf", :use_route => :cite }
+    end
+    test "should raise an error when data is missing in translate post" do
       assert_raise(ArgumentError) { post :translate, :from_format => "csf", :to_format => "csf", :use_route => :cite }
     end
     
     test "should convert openurl to format" do
       Citero.map("").to_formats.each do |to|
-        get :redir, "rft_val_fmt" => "info:ofi/fmt:kev:mtx:book", :to_format => to,  :use_route => :cite
+        get :gather, "rft_val_fmt" => "info:ofi/fmt:kev:mtx:book", :to_format => to,  :use_route => :cite
         assert_response :success
+        clear
+        initialize_cite
       end
     end
     
     test "should redirect to endnote" do
-      get :redir, :to_format => "endnote", :use_route => :cite
-      assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dredir%26to_format%3Dris"
+      get :gather, :to_format => "endnote", :use_route => :cite
+      assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dgather%26to_format%3Dris"
     end
     
     test "should redirect to refworks" do
-      get :redir, :to_format => "refworks", :use_route => :cite
-      assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dredir%26to_format%3Dris"
+      get :gather, :to_format => "refworks", :use_route => :cite
+      assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=http%3A%2F%2Ftest.host%2Fassets%3Faction%3Dgather%26to_format%3Dris"
     end
     
     test "should redirect to easybib" do
       Citero.map("").from_formats.each do |from| 
-        get :redir, :to_format => "easybibpush", :id => Record.find_by_title(from)[:id], :use_route => :cite
+        get :gather, :to_format => "easybibpush", :id => Record.find_by_title(from)[:id], :use_route => :cite
         assert_response :success
         assert_template :partial => '_external_form'
+        clear
+        initialize_cite
       end
     end 
     
