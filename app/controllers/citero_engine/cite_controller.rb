@@ -12,8 +12,8 @@ module CiteroEngine
     
     def gather
       get_from_record if params[:id] else get_from_params
-      assume_openurl if @data.nil?
-      @to_format = whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
+      assume_openurl if @data.nil? unless flash_in
+      @to_format ||= whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
       if @data.nil? or @from_format.nil? or @to_format.nil?
         raise ArgumentError, "Some parameters may be missing [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
       end
@@ -55,6 +55,7 @@ module CiteroEngine
     
     def push
       if @push_to[:action].eql? :redirect
+        flash_out
         redirect_to @push_to[:url]+callback, :status => 303
       elsif @push_to[:action].eql? :method
         send @push_to[:method]
@@ -62,7 +63,22 @@ module CiteroEngine
     end
     
     def callback
-      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.sub(/refworks/, 'ris' ).sub(/endnote/, 'ris')}" )
+      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}" )
+      #"n"
+    end
+    
+    def flash_out
+      flash[:data] = @data
+      flash[:from_format] = @from_format
+      flash[:to_format] = @to_format
+    end
+    
+    def flash_in
+      @data = flash[:data]
+      @from_format = flash[:from_format]
+      @to_format = flash[:to_format]
+      flash.each {|fla| p fla}
+      return @data || @from_format || @to_format
     end
     
     # Creates a new record with data, format, and title, redirects to that resource
