@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency "simplecov", "0.7.1"
   s.add_dependency "simplecov-rcov", "0.2.3"
   s.add_dependency "rails_config"
+  s.add_dependency "dalli"
 
   s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
 end

@@ -1,6 +1,8 @@
 require_dependency "citero_engine/application_controller"
 require "citero_engine/engine"
 require "citero"
+require 'digest/sha1'
+require 'dalli'
 
 require 'open-uri'
 module CiteroEngine
@@ -10,14 +12,19 @@ module CiteroEngine
       render :text => "CiteroEngine Mounted"
     end
     
+    def flow
+      gather
+      map
+      handle
+    end
+    
     def gather
       get_from_record if params[:id] else get_from_params
-      assume_openurl if @data.nil? unless flash_in
+      assume_openurl if @data.nil?
       @to_format ||= whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
       if @data.nil? or @from_format.nil? or @to_format.nil?
         raise ArgumentError, "Some parameters may be missing [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
       end
-      map
     end
     
     def get_from_record
@@ -27,7 +34,7 @@ module CiteroEngine
     end
     
     def get_from_params
-      @data = params[:data] unless params[:data].nil?
+      @data = params[:data] if params[:data] else get_from_cache
       @from_format = whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
     end
     
@@ -38,7 +45,6 @@ module CiteroEngine
     
     def map
       @output = Citero.map(@data).send(@from_format).send(@to_format)
-      handle
     end
     
     def handle
@@ -55,7 +61,7 @@ module CiteroEngine
     
     def push
       if @push_to[:action].eql? :redirect
-        flash_out
+        cache_resource
         redirect_to @push_to[:url]+callback, :status => 303
       elsif @push_to[:action].eql? :method
         send @push_to[:method]
@@ -63,22 +69,18 @@ module CiteroEngine
     end
     
     def callback
-      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}" )
-      #"n"
+      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&to_format=#{@to_format}&from_format=#{@from_format}" )
     end
     
-    def flash_out
-      flash[:data] = @data
-      flash[:from_format] = @from_format
-      flash[:to_format] = @to_format
+    def cache_resource
+      dc = Dalli::Client.new('localhost:11211')
+      @resource_key = Digest::SHA1.hexdigest(@data)
+      dc.set(@resource_key, @data)
     end
     
-    def flash_in
-      @data = flash[:data]
-      @from_format = flash[:from_format]
-      @to_format = flash[:to_format]
-      flash.each {|fla| p fla}
-      return @data || @from_format || @to_format
+    def get_from_cache 
+      dc = Dalli::Client.new('localhost:11211')
+      dc.get(params[:resource_key]) if params[:resource_key] else nil
     end
     
     # Creates a new record with data, format, and title, redirects to that resource

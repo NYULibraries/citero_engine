@@ -28,7 +28,7 @@ module CiteroEngine
     test "should convert format to format" do
       Citero.map("").from_formats.each do |from| 
         Citero.map("").to_formats.each do |to|
-          get :gather, :id => Record.find_by_title(from)[:id], :to_format => to,  :use_route => :cite
+          get :flow, :id => Record.find_by_title(from)[:id], :to_format => to,  :use_route => :cite
           assert_response :success
           clear
           initialize_cite
@@ -56,15 +56,15 @@ module CiteroEngine
     end
     
     test "should raise an error when a field is missing in index" do
-       assert_raise(ArgumentError) { get :gather, :id => "error", :use_route => :cite }
+       assert_raise(ArgumentError) { get :flow, :id => "error", :use_route => :cite }
     end
     
     test "should test translate POST and GET" do
-      get :gather, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :use_route => :cite 
+      get :flow, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :use_route => :cite 
       assert_response :success
       clear
       initialize_cite
-      post :gather, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :use_route => :cite 
+      post :flow, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :use_route => :cite 
       assert_response :success
     end
     
@@ -89,7 +89,7 @@ module CiteroEngine
     
     test "should convert openurl to format" do
       Citero.map("").to_formats.each do |to|
-        get :gather, "rft_val_fmt" => "info:ofi/fmt:kev:mtx:book", :to_format => to,  :use_route => :cite
+        get :flow, "rft_val_fmt" => "info:ofi/fmt:kev:mtx:book", :to_format => to,  :use_route => :cite
         assert_response :success
         clear
         initialize_cite
@@ -97,18 +97,18 @@ module CiteroEngine
     end
     
     test "should redirect to endnote" do
-      get :gather, :to_format => "endnote", :use_route => :cite
-      assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets"
+      get :flow, :to_format => "endnote", :use_route => :cite
+      assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets%3Fresource_key%3Da3c7de8b5bea55c79fa672007be3e3d89fe5ee91%26to_format%3Dto_ris%26from_format%3Dfrom_openurl"
     end
     
     test "should redirect to refworks" do
-      get :gather, :to_format => "refworks", :use_route => :cite
-      assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=http%3A%2F%2Ftest.host%2Fassets"
+      get :flow, :to_format => "refworks", :use_route => :cite
+      assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=http%3A%2F%2Ftest.host%2Fassets%3Fresource_key%3D68b76a07f1e1e6ff4668ad8a1345fbff00ef87bf%26to_format%3Dto_ris%26from_format%3Dfrom_openurl"
     end
     
     test "should redirect to easybib" do
       Citero.map("").from_formats.each do |from| 
-        get :gather, :to_format => "easybibpush", :id => Record.find_by_title(from)[:id], :use_route => :cite
+        get :flow, :to_format => "easybibpush", :id => Record.find_by_title(from)[:id], :use_route => :cite
         assert_response :success
         assert_template :partial => '_external_form'
         clear
