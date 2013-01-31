@@ -27,15 +27,15 @@
             <td class="left_align"><a href="app-controllers-citero_engine-cite_controller_rb.html">app/controllers/citero_engine/cite_controller.rb</a></td>
             <td class='right_align'><tt>148</tt></td>
             <td class='right_align'><tt>87</tt></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>96.62%</tt></div>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>97.97%</tt></div>
+      <div class="percent_graph">
+        <div class="covered" style="width:98px"></div>
+        <div class="uncovered" style="width:2px"></div>
+      </div></td>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>96.55%</tt></div>
       <div class="percent_graph">
         <div class="covered" style="width:97px"></div>
         <div class="uncovered" style="width:3px"></div>
-      </div></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>94.25%</tt></div>
-      <div class="percent_graph">
-        <div class="covered" style="width:94px"></div>
-        <div class="uncovered" style="width:6px"></div>
       </div></td>
           </tr>
         </tbody>
@@ -242,7 +242,7 @@
         <tr class="marked">
           <td><pre><a name="line65">65</a>         cache_resource</pre></td>
         </tr>
-        <tr class="uncovered">
+        <tr class="marked">
           <td><pre><a name="line66">66</a>         redirect_to @push_to[:url]+callback, :status =&gt; 303</pre></td>
         </tr>
         <tr class="inferred">
@@ -263,8 +263,8 @@
         <tr class="marked">
           <td><pre><a name="line72">72</a>     def callback</pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line73">73</a>       ERB::Util.url_encode(&quot;#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&amp;to_format=#{@to_format}&amp;from_format=#{@from_format}&quot; )</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line73">73</a>       ERB::Util.url_encode(&quot;#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&amp;to_format=#{@push_to[:format]}&amp;from_format=#{@from_format.split('_').last}&quot; )</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line74">74</a>     end</pre></td>
@@ -497,7 +497,7 @@
       </tbody>
     </table>
 
-    <p>Generated on 2013-01-30 16:16:31 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
+    <p>Generated on 2013-01-31 13:12:36 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
 
   </body>
 </html>
