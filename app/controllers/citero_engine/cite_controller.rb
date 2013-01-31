@@ -13,9 +13,13 @@ module CiteroEngine
     end
     
     def flow
-      gather
-      map
-      handle
+      begin
+        gather
+        map
+        handle
+      rescue ArgumentError => exc
+        handle_invalid_arguments
+      end
     end
     
     def gather
@@ -27,6 +31,10 @@ module CiteroEngine
       end
     end
     
+    def handle_invalid_arguments
+      head :bad_request
+    end
+    
     def get_from_record
       record = Record.find_by_id params[:id]
       @data = record[:raw] unless record.nil?
@@ -34,8 +42,8 @@ module CiteroEngine
     end
     
     def get_from_params
-      @data = params[:data] if params[:data] else get_from_cache
-      @from_format = whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
+      @data ||= params[:data] if params[:data] else get_from_cache
+      @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
     end
     
     def assume_openurl
@@ -90,16 +98,13 @@ module CiteroEngine
         r.save
         redirect_to "/cite", "id"=>params[:ttl], "format"=>params[:from_format], :status => 303
       else
-        raise ArgumentError, 'Missing Parameters'
+        handle_invalid_arguments
       end
     end
-
+    
     # Direct access to translation process, used by existing resources
     def translate
-      if( params[:data].nil? or params[:from_format].nil? or params[:to_format].nil? )
-        raise ArgumentError, 'Missing Parameters'
-      end
-      gather
+      handle_invalid_arguments and return if params[:data].nil? else flow
     end
     
     # Defines a form for the push to easybib
@@ -127,7 +132,7 @@ module CiteroEngine
     end
     
     def push_formats
-      @push_formats ||= Hash[:easybibpush => Hash[ :format => :easybib, :action => :method, :method => :push_to_easybib], 
+      @push_formats ||= Hash[:pusheasybib => Hash[ :format => :easybib, :action => :method, :method => :push_to_easybib], 
                              :endnote => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl='], 
                              :refworks => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url='] ]
     end

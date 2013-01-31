@@ -37,26 +37,33 @@ module CiteroEngine
     end
     
     test "should raise an error when ttl is missing in creating" do
-      assert_raise(ArgumentError) {post :create, :data => "itemType: book", :from_format => "csf", :use_route => :cite}
+      post :create, :data => "itemType: book", :from_format => "csf", :use_route => :cite
+      assert_response :bad_request
     end
     test "should raise an error when from_format is missing in creating" do
-      assert_raise(ArgumentError) {post :create, :data => "itemType: book", :ttl => "dummy",  :use_route => :cite}
+      post :create, :data => "itemType: book", :ttl => "dummy",  :use_route => :cite
+      assert_response :bad_request
     end
     test "should raise an error when from_format and ttl are missing in creating" do
-      assert_raise(ArgumentError) {post :create, :data => "itemType: book",  :use_route => :cite}
+      post :create, :data => "itemType: book",  :use_route => :cite
+      assert_response :bad_request
     end
     test "should raise an error when data is missing in creating" do
-      assert_raise(ArgumentError) {post :create, :from_format => "csf", :ttl => "dummy",  :use_route => :cite}
+      post :create, :from_format => "csf", :ttl => "dummy",  :use_route => :cite
+      assert_response :bad_request
     end
     test "should raise an error when data and ttl are missing in creating" do
-      assert_raise(ArgumentError) {post :create, :from_format => "csf",  :use_route => :cite}
+      post :create, :from_format => "csf",  :use_route => :cite
+      assert_response :bad_request
     end
     test "should raise an error when data and from_format are missing in creating" do
-      assert_raise(ArgumentError) {post :create, :ttl => "dummy",  :use_route => :cite}
+      post :create, :ttl => "dummy",  :use_route => :cite
+      assert_response :bad_request
     end
     
     test "should raise an error when a field is missing in index" do
-       assert_raise(ArgumentError) { get :flow, :id => "error", :use_route => :cite }
+       get :flow, :id => "error", :use_route => :cite
+       assert_response :bad_request
     end
     
     test "should test translate POST and GET" do
@@ -69,22 +76,28 @@ module CiteroEngine
     end
     
     test "should raise an error when to_format is missing in translate get" do
-      assert_raise(ArgumentError) { get :translate, :data => "itemType: book", :from_format => "csf", :use_route => :cite }
+      get :translate, :data => "itemType: book", :from_format => "csf", :use_route => :cite
+      assert_response :bad_request
     end
     test "should raise an error when from_format is missing in translate get" do
-      assert_raise(ArgumentError) { get :translate, :data => "itemType: book", :to_format => "csf", :use_route => :cite }
+      get :translate, :data => "itemType: book", :to_format => "csf", :use_route => :cite
+      assert_response :bad_request
     end
     test "should raise an error when data is missing in translate get" do
-      assert_raise(ArgumentError) { get :translate, :from_format => "csf", :to_format => "csf", :use_route => :cite }
+      get :translate, :from_format => "csf", :to_format => "csf", :use_route => :cite
+      assert_response :bad_request
     end
     test "should raise an error when to_format is missing in translate post" do  
-      assert_raise(ArgumentError) { post :translate, :data => "itemType: book", :from_format => "csf", :use_route => :cite }
+      post :translate, :data => "itemType: book", :from_format => "csf", :use_route => :cite
+      assert_response :bad_request
     end
     test "should raise an error when from_format is missing in translate post" do
-      assert_raise(ArgumentError) { post :translate, :data => "itemType: book", :to_format => "csf", :use_route => :cite }
+      post :translate, :data => "itemType: book", :to_format => "csf", :use_route => :cite
+      assert_response :bad_request
     end
     test "should raise an error when data is missing in translate post" do
-      assert_raise(ArgumentError) { post :translate, :from_format => "csf", :to_format => "csf", :use_route => :cite }
+      post :translate, :from_format => "csf", :to_format => "csf", :use_route => :cite
+      assert_response :bad_request
     end
     
     test "should convert openurl to format" do
@@ -108,7 +121,7 @@ module CiteroEngine
     
     test "should redirect to easybib" do
       Citero.map("").from_formats.each do |from| 
-        get :flow, :to_format => "easybibpush", :id => Record.find_by_title(from)[:id], :use_route => :cite
+        get :flow, :to_format => "pusheasybib", :id => Record.find_by_title(from)[:id], :use_route => :cite
         assert_response :success
         assert_template :partial => '_external_form'
         clear
