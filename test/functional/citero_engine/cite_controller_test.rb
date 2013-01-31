@@ -98,12 +98,12 @@ module CiteroEngine
     
     test "should redirect to endnote" do
       get :flow, :to_format => "endnote", :use_route => :cite
-      assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets%3Fresource_key%3Da3c7de8b5bea55c79fa672007be3e3d89fe5ee91%26to_format%3Dto_ris%26from_format%3Dfrom_openurl"
+      assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fassets%3Fresource_key%3Da3c7de8b5bea55c79fa672007be3e3d89fe5ee91%26to_format%3Dris%26from_format%3Dfrom_openurl"
     end
     
     test "should redirect to refworks" do
       get :flow, :to_format => "refworks", :use_route => :cite
-      assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=http%3A%2F%2Ftest.host%2Fassets%3Fresource_key%3D68b76a07f1e1e6ff4668ad8a1345fbff00ef87bf%26to_format%3Dto_ris%26from_format%3Dfrom_openurl"
+      assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=http%3A%2F%2Ftest.host%2Fassets%3Fresource_key%3D68b76a07f1e1e6ff4668ad8a1345fbff00ef87bf%26to_format%3Dris%26from_format%3Dfrom_openurl"
     end
     
     test "should redirect to easybib" do

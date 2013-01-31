@@ -69,7 +69,7 @@ module CiteroEngine
     end
     
     def callback
-      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&to_format=#{@to_format}&from_format=#{@from_format}" )
+      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&to_format=#{@to_format.split('_').last}&from_format=#{@from_format}" )
     end
     
     def cache_resource
