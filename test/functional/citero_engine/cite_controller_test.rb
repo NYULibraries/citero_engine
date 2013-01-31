@@ -121,7 +121,7 @@ module CiteroEngine
     
     test "should redirect to easybib" do
       Citero.map("").from_formats.each do |from| 
-        get :flow, :to_format => "pusheasybib", :id => Record.find_by_title(from)[:id], :use_route => :cite
+        get :flow, :to_format => "easybibpush", :id => Record.find_by_title(from)[:id], :use_route => :cite
         assert_response :success
         assert_template :partial => '_external_form'
         clear
