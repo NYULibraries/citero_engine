@@ -88,7 +88,9 @@ module CiteroEngine
     
     def get_from_cache 
       dc = Dalli::Client.new('localhost:11211')
-      dc.get(params[:resource_key]) if params[:resource_key] else nil
+      cached_copy = dc.get(params[:resource_key]) if params[:resource_key] else nil
+      p cached_copy
+      return cached_copy
     end
     
     # Creates a new record with data, format, and title, redirects to that resource
