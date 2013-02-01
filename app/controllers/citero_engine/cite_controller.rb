@@ -64,7 +64,7 @@ module CiteroEngine
     end
     
     def download
-      send_data @output.force_encoding('UTF-8'), :filename => filename, :type => 'application/ris'
+      send_data @output.force_encoding('UTF-8'), :filename => filename, :type => 'application/ris', :disposition => 'inline'
     end
     
     def push
