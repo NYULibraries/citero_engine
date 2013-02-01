@@ -13,18 +13,16 @@ module CiteroEngine
     end
     
     def flow
-      begin
-        gather
-        map
-        handle
-      rescue ArgumentError => exc
-        handle_invalid_arguments
-      end
+      gather
+      map
+      handle
+    rescue ArgumentError => exc
+      handle_invalid_arguments
     end
     
     def gather
       get_from_record if params[:id] else get_from_params
-      assume_openurl if @data.nil?
+      assume_openurl if @data.nil? and params[:resource_key].nil?
       @to_format ||= whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
       if @data.nil? or @from_format.nil? or @to_format.nil?
         raise ArgumentError, "Some parameters may be missing [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
@@ -42,7 +40,7 @@ module CiteroEngine
     end
     
     def get_from_params
-      @data ||= params[:data] if params[:data] else get_from_cache
+      @data ||= params[:data] if params[:data] else @data ||= get_from_cache
       @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
     end
     
@@ -64,7 +62,7 @@ module CiteroEngine
     end
     
     def download
-      send_data @output.force_encoding('UTF-8'), :filename => filename, :type => 'application/ris', :disposition => 'inline'
+      send_data @output.force_encoding('UTF-8'), :filename => filename, :type => 'application/ris'
     end
     
     def push
@@ -88,9 +86,7 @@ module CiteroEngine
     
     def get_from_cache 
       dc = Dalli::Client.new('localhost:11211')
-      cached_copy = dc.get(params[:resource_key]) if params[:resource_key] else nil
-      p cached_copy
-      return cached_copy
+      dc.get(params[:resource_key]) if params[:resource_key]
     end
     
     # Creates a new record with data, format, and title, redirects to that resource
