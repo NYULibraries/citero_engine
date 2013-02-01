@@ -27,15 +27,15 @@
             <td class="left_align"><a href="app-controllers-citero_engine-cite_controller_rb.html">app/controllers/citero_engine/cite_controller.rb</a></td>
             <td class='right_align'><tt>153</tt></td>
             <td class='right_align'><tt>89</tt></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>98.69%</tt></div>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>97.39%</tt></div>
       <div class="percent_graph">
-        <div class="covered" style="width:99px"></div>
-        <div class="uncovered" style="width:1px"></div>
+        <div class="covered" style="width:97px"></div>
+        <div class="uncovered" style="width:3px"></div>
       </div></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>97.75%</tt></div>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>95.51%</tt></div>
       <div class="percent_graph">
-        <div class="covered" style="width:98px"></div>
-        <div class="uncovered" style="width:2px"></div>
+        <div class="covered" style="width:96px"></div>
+        <div class="uncovered" style="width:4px"></div>
       </div></td>
           </tr>
         </tbody>
@@ -249,7 +249,7 @@
           <td><pre><a name="line67">67</a>     def download</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line68">68</a>       send_data @output, :filename =&gt; filename, :type =&gt; 'text/plain'</pre></td>
+          <td><pre><a name="line68">68</a>       send_data @output.force_encoding('UTF-8'), :filename =&gt; filename, :type =&gt; 'application/ris'</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line69">69</a>     end</pre></td>
@@ -266,7 +266,7 @@
         <tr class="marked">
           <td><pre><a name="line73">73</a>         cache_resource</pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line74">74</a>         redirect_to @push_to[:url]+callback, :status =&gt; 303</pre></td>
         </tr>
         <tr class="inferred">
@@ -287,7 +287,7 @@
         <tr class="marked">
           <td><pre><a name="line80">80</a>     def callback</pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line81">81</a>       ERB::Util.url_encode(&quot;#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&amp;to_format=#{@push_to[:format]}&amp;from_format=#{@from_format.split('_').last}&quot; )</pre></td>
         </tr>
         <tr class="inferred">
@@ -512,7 +512,7 @@
       </tbody>
     </table>
 
-    <p>Generated on 2013-01-31 15:37:22 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
+    <p>Generated on 2013-02-01 15:32:44 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
 
   </body>
 </html>
