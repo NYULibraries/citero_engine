@@ -64,7 +64,7 @@ module CiteroEngine
     end
     
     def download
-      send_data @output, :filename => filename, :type => 'text/plain'
+      send_data @output, :filename => filename, :type => 'application/ris'
     end
     
     def push
