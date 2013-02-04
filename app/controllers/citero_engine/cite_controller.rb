@@ -21,8 +21,8 @@ module CiteroEngine
     end
     
     def gather
-      get_from_record if params[:id] else get_from_params
-      assume_openurl if @data.nil? and params[:resource_key].nil?
+      if params[:id] then get_from_record else get_from_params end
+      if @data.nil? and params[:resource_key].nil? then assume_openurl end
       @to_format ||= whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
       if @data.nil? or @from_format.nil? or @to_format.nil?
         raise ArgumentError, "Some parameters may be missing [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
@@ -54,7 +54,7 @@ module CiteroEngine
     end
     
     def handle
-      if @push_to
+      if push_to?
         push
       else
         download
@@ -92,8 +92,7 @@ module CiteroEngine
     # Creates a new record with data, format, and title, redirects to that resource
     def create
       r = Record.create(:raw => params[:data], :formatting => params[:from_format], :title => params[:ttl])
-      if r.valid?
-        r.save
+      if r.save
         redirect_to "/cite", "id"=>params[:ttl], "format"=>params[:from_format], :status => 303
       else
         handle_invalid_arguments
@@ -102,7 +101,7 @@ module CiteroEngine
     
     # Direct access to translation process, used by existing resources
     def translate
-      handle_invalid_arguments and return if params[:data].nil? else flow
+      flow if params[:data] else handle_invalid_arguments and return
     end
     
     # Defines a form for the push to easybib
@@ -133,6 +132,10 @@ module CiteroEngine
       @push_formats ||= Hash[:easybibpush => Hash[ :format => :easybib, :action => :method, :method => :push_to_easybib], 
                              :endnote => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl='], 
                              :refworks => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url='] ]
+    end
+    
+    def push_to?
+      not @push_to.nil?
     end
     
     # Cleans the user input and finds the associated method for that format
