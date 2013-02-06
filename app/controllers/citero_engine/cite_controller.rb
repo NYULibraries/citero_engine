@@ -2,7 +2,6 @@ require_dependency "citero_engine/application_controller"
 require "citero_engine/engine"
 require "citero"
 require 'digest/sha1'
-require 'dalli'
 
 require 'open-uri'
 module CiteroEngine
@@ -54,11 +53,7 @@ module CiteroEngine
     end
     
     def handle
-      if push_to?
-        push
-      else
-        download
-      end
+      if push_to_is_set? then push else download end
     end
     
     def download
@@ -79,14 +74,12 @@ module CiteroEngine
     end
     
     def cache_resource
-      dc = Dalli::Client.new('localhost:11211')
       @resource_key = Digest::SHA1.hexdigest(@data)
-      dc.set(@resource_key, @data)
+      Rails.cache.write(@resource_key, @data)
     end
     
     def get_from_cache 
-      dc = Dalli::Client.new('localhost:11211')
-      dc.get(params[:resource_key]) if params[:resource_key]
+      Rails.cache.fetch(params[:resource_key]) if params[:resource_key]
     end
     
     # Creates a new record with data, format, and title, redirects to that resource
@@ -134,7 +127,7 @@ module CiteroEngine
                              :refworks => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url='] ]
     end
     
-    def push_to?
+    def push_to_is_set?
       not @push_to.nil?
     end
     
