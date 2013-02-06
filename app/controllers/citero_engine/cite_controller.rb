@@ -11,6 +11,21 @@ module CiteroEngine
       render :text => "CiteroEngine Mounted"
     end
     
+    # Creates a new record with data, format, and title, redirects to that resource
+    def create
+      record = Record.create(:raw => params[:data], :formatting => params[:from_format], :title => params[:ttl])
+      if record.save
+        redirect_to "/cite", "id"=>record[:id], :status => 303
+      else
+        handle_invalid_arguments
+      end
+    end
+    
+    # Direct access to translation process, used by existing resources
+    def translate
+      flow if params[:data] else handle_invalid_arguments and return
+    end
+    
     def flow
       gather
       map
@@ -28,10 +43,14 @@ module CiteroEngine
       end
     end
     
-    def handle_invalid_arguments
-      head :bad_request
+    def map
+      @output = Citero.map(@data).send(@from_format).send(@to_format)
     end
     
+    def handle
+      if push_to_is_set? then push else download end
+    end
+
     def get_from_record
       record = Record.find_by_id params[:id]
       @data = record[:raw] unless record.nil?
@@ -48,18 +67,27 @@ module CiteroEngine
       @from_format ||= 'from_openurl'
     end
     
-    def map
-      @output = Citero.map(@data).send(@from_format).send(@to_format)
+    # Cleans the user input and finds the associated method for that format
+    def whitelist_formats direction, format
+      if [:to, :from].include? direction
+        if Citero.to_formats.include? format.downcase or Citero.from_formats.include? format.downcase
+          return "#{direction.to_s}_#{format.downcase}"
+        end
+      end
+      if push_formats.include? format.to_sym
+        @push_to = push_formats[format.to_sym]
+        return "#{direction.to_s}_#{@push_to[:format].downcase}"
+      end
     end
     
-    def handle
-      if push_to_is_set? then push else download end
+    def handle_invalid_arguments
+      head :bad_request
     end
     
-    def download
-      send_data @output.force_encoding('UTF-8'), :filename => filename, :type => 'application/ris'
+    def push_to_is_set?
+      not @push_to.nil?
     end
-    
+
     def push
       if @push_to[:action].eql? :redirect
         cache_resource
@@ -68,9 +96,19 @@ module CiteroEngine
         send @push_to[:method]
       end
     end
+
+    def download
+      send_data @output.force_encoding('UTF-8'), :filename => filename, :type => 'application/ris'
+    end
+
+    def get_from_cache 
+      Rails.cache.fetch(params[:resource_key]) if params[:resource_key]
+    end
     
-    def callback
-      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&to_format=#{@push_to[:format]}&from_format=#{@from_format.split('_').last}" )
+    def push_formats
+      @push_formats ||= Hash[:easybibpush => Hash[ :format => :easybib, :action => :method, :method => :push_to_easybib], 
+                             :endnote => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl='], 
+                             :refworks => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url='] ]
     end
     
     def cache_resource
@@ -78,33 +116,8 @@ module CiteroEngine
       Rails.cache.write(@resource_key, @data)
     end
     
-    def get_from_cache 
-      Rails.cache.fetch(params[:resource_key]) if params[:resource_key]
-    end
-    
-    # Creates a new record with data, format, and title, redirects to that resource
-    def create
-      r = Record.create(:raw => params[:data], :formatting => params[:from_format], :title => params[:ttl])
-      if r.save
-        redirect_to "/cite", "id"=>params[:ttl], "format"=>params[:from_format], :status => 303
-      else
-        handle_invalid_arguments
-      end
-    end
-    
-    # Direct access to translation process, used by existing resources
-    def translate
-      flow if params[:data] else handle_invalid_arguments and return
-    end
-    
-    # Defines a form for the push to easybib
-    def push_to_easybib
-      @elements = [{:name => "data", :value => "[" + @output + "]", :type => "textarea"}]
-      @name = "Push to EasyBib"
-      @action = "http://www.easybib.com/cite/bulk"
-      @method = "POST"
-      @enctype = "application/x-www-form-urlencoded"
-      render :template => "citero_engine/cite/external_form"
+    def callback
+      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&to_format=#{@push_to[:format]}&from_format=#{@from_format.split('_').last}" )
     end
     
     # Creates the filename and extension. Few are application specific
@@ -121,27 +134,14 @@ module CiteroEngine
       name
     end
     
-    def push_formats
-      @push_formats ||= Hash[:easybibpush => Hash[ :format => :easybib, :action => :method, :method => :push_to_easybib], 
-                             :endnote => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl='], 
-                             :refworks => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url='] ]
-    end
-    
-    def push_to_is_set?
-      not @push_to.nil?
-    end
-    
-    # Cleans the user input and finds the associated method for that format
-    def whitelist_formats direction, format
-      if [:to, :from].include? direction
-        if Citero.to_formats.include? format.downcase or Citero.from_formats.include? format.downcase
-          return "#{direction.to_s}_#{format.downcase}"
-        end
-      end
-      if push_formats.include? format.to_sym
-        @push_to = push_formats[format.to_sym]
-        return "#{direction.to_s}_#{@push_to[:format].downcase}"
-      end
+    # Defines a form for the push to easybib
+    def push_to_easybib
+      @elements = [{:name => "data", :value => "[" + @output + "]", :type => "textarea"}]
+      @name = "Push to EasyBib"
+      @action = "http://www.easybib.com/cite/bulk"
+      @method = "POST"
+      @enctype = "application/x-www-form-urlencoded"
+      render :template => "citero_engine/cite/external_form"
     end
   end
 end
