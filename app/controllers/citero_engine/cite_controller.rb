@@ -28,7 +28,7 @@ module CiteroEngine
     
     def flow
       gather
-      map
+      fetch_from_cache or map
       handle
     rescue ArgumentError => exc
       handle_invalid_arguments
@@ -41,6 +41,9 @@ module CiteroEngine
       if @data.nil? or @from_format.nil? or @to_format.nil?
         raise ArgumentError, "Some parameters may be missing [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
       end
+    end
+    
+    def fetch_from_cache
     end
     
     def map
@@ -58,8 +61,8 @@ module CiteroEngine
     end
     
     def get_from_params
-      @data ||= params[:data] if params[:data] else @data ||= get_from_cache
       @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
+      @data ||= params[:data] if params[:data] else @data ||= get_from_cache
     end
     
     def assume_openurl
@@ -76,7 +79,8 @@ module CiteroEngine
       end
       if push_formats.include? format.to_sym
         @push_to = push_formats[format.to_sym]
-        return "#{direction.to_s}_#{@push_to[:format].downcase}"
+        @to_format = @push_to[:format].downcase
+        return "#{direction.to_s}_#{@to_format}"
       end
     end
     
@@ -102,7 +106,7 @@ module CiteroEngine
     end
 
     def get_from_cache 
-      Rails.cache.fetch(params[:resource_key]) if params[:resource_key]
+      Rails.cache.fetch(params[:resource_key]+@to_format.split('_').last) if params[:resource_key]
     end
     
     def push_formats
@@ -112,12 +116,12 @@ module CiteroEngine
     end
     
     def cache_resource
-      @resource_key = Digest::SHA1.hexdigest(@data)
-      Rails.cache.write(@resource_key, @data)
+      @resource_key = Digest::SHA1.hexdigest(map)
+      Rails.cache.write(@resource_key+@to_format.split('_').last, @data)
     end
     
     def callback
-      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&to_format=#{@push_to[:format]}&from_format=#{@from_format.split('_').last}" )
+      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&to_format=#{@to_format.split('_').last}&from_format=#{@from_format.split('_').last}" )
     end
     
     # Creates the filename and extension. Few are application specific
