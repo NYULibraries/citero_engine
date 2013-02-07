@@ -25,14 +25,14 @@
         <tbody>
           <tr>
             <td class="left_align"><a href="app-controllers-citero_engine-cite_controller_rb.html">app/controllers/citero_engine/cite_controller.rb</a></td>
-            <td class='right_align'><tt>151</tt></td>
-            <td class='right_align'><tt>86</tt></td>
+            <td class='right_align'><tt>152</tt></td>
+            <td class='right_align'><tt>87</tt></td>
             <td class="left_align"><div class="percent_graph_legend"><tt class=''>98.68%</tt></div>
       <div class="percent_graph">
         <div class="covered" style="width:99px"></div>
         <div class="uncovered" style="width:1px"></div>
       </div></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>97.67%</tt></div>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>97.70%</tt></div>
       <div class="percent_graph">
         <div class="covered" style="width:98px"></div>
         <div class="uncovered" style="width:2px"></div>
@@ -188,325 +188,328 @@
         <tr class="marked">
           <td><pre><a name="line47">47</a>     def fetch_from_cache</pre></td>
         </tr>
-        <tr class="inferred">
-          <td><pre><a name="line48">48</a>     end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line49">49</a>     </pre></td>
-        </tr>
         <tr class="marked">
-          <td><pre><a name="line50">50</a>     def map</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line51">51</a>       @output = Citero.map(@data).send(@from_format).send(@to_format)</pre></td>
+          <td><pre><a name="line48">48</a>       get_from_cache Digest::SHA1.hexdigest(@data)+@to_format</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line52">52</a>     end</pre></td>
+          <td><pre><a name="line49">49</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line53">53</a>     </pre></td>
+          <td><pre><a name="line50">50</a>     </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line54">54</a>     def handle</pre></td>
+          <td><pre><a name="line51">51</a>     def map</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line55">55</a>       if push_to_is_set? then push else download end</pre></td>
+          <td><pre><a name="line52">52</a>       @output = Citero.map(@data).send(@from_format).send(@to_format)</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line56">56</a>     end</pre></td>
+          <td><pre><a name="line53">53</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line57">57</a> </pre></td>
+          <td><pre><a name="line54">54</a>     </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line58">58</a>     def get_from_record</pre></td>
+          <td><pre><a name="line55">55</a>     def handle</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line59">59</a>       record = Record.find_by_id params[:id]</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line60">60</a>       @data = record[:raw] unless record.nil?</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line61">61</a>       @from_format = whitelist_formats :from, record[:formatting] unless record.nil?</pre></td>
+          <td><pre><a name="line56">56</a>       if push_to_is_set? then push else download end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line62">62</a>     end</pre></td>
+          <td><pre><a name="line57">57</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line63">63</a>     </pre></td>
+          <td><pre><a name="line58">58</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line64">64</a>     def get_from_params</pre></td>
+          <td><pre><a name="line59">59</a>     def get_from_record</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line65">65</a>       @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?</pre></td>
+          <td><pre><a name="line60">60</a>       record = Record.find_by_id params[:id]</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line66">66</a>       @data ||= params[:data] if params[:data] else @data ||= get_from_cache</pre></td>
+          <td><pre><a name="line61">61</a>       @data = record[:raw] unless record.nil?</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line62">62</a>       @from_format = whitelist_formats :from, record[:formatting] unless record.nil?</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line67">67</a>     end</pre></td>
+          <td><pre><a name="line63">63</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line68">68</a>     </pre></td>
+          <td><pre><a name="line64">64</a>     </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line69">69</a>     def assume_openurl</pre></td>
+          <td><pre><a name="line65">65</a>     def get_from_params</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line70">70</a>       @data ||= CGI::unescape(request.protocol+request.host_with_port+request.fullpath)</pre></td>
+          <td><pre><a name="line66">66</a>       @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line71">71</a>       @from_format ||= 'from_openurl'</pre></td>
+          <td><pre><a name="line67">67</a>       @data ||= params[:data] if params[:data] else @data ||= get_from_cache params[:resource_key]+@to_format.split('_').last unless params[:resource_key].nil?</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line72">72</a>     end</pre></td>
+          <td><pre><a name="line68">68</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line73">73</a>     </pre></td>
+          <td><pre><a name="line69">69</a>     </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line70">70</a>     def assume_openurl</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line71">71</a>       @data ||= CGI::unescape(request.protocol+request.host_with_port+request.fullpath)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line72">72</a>       @from_format ||= 'from_openurl'</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line74">74</a>     # Cleans the user input and finds the associated method for that format</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line75">75</a>     def whitelist_formats direction, format</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line76">76</a>       if [:to, :from].include? direction</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line77">77</a>         if Citero.to_formats.include? format.downcase or Citero.from_formats.include? format.downcase</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line78">78</a>           return &quot;#{direction.to_s}_#{format.downcase}&quot;</pre></td>
+          <td><pre><a name="line73">73</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line79">79</a>         end</pre></td>
+          <td><pre><a name="line74">74</a>     </pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line80">80</a>       end</pre></td>
+          <td><pre><a name="line75">75</a>     # Cleans the user input and finds the associated method for that format</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line81">81</a>       if push_formats.include? format.to_sym</pre></td>
+          <td><pre><a name="line76">76</a>     def whitelist_formats direction, format</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line82">82</a>         @push_to = push_formats[format.to_sym]</pre></td>
+          <td><pre><a name="line77">77</a>       if [:to, :from].include? direction</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line83">83</a>         @to_format = @push_to[:format].downcase</pre></td>
+          <td><pre><a name="line78">78</a>         if Citero.to_formats.include? format.downcase or Citero.from_formats.include? format.downcase</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line84">84</a>         return &quot;#{direction.to_s}_#{@to_format}&quot;</pre></td>
+          <td><pre><a name="line79">79</a>           return &quot;#{direction.to_s}_#{format.downcase}&quot;</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line85">85</a>       end</pre></td>
+          <td><pre><a name="line80">80</a>         end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line86">86</a>     end</pre></td>
+          <td><pre><a name="line81">81</a>       end</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line82">82</a>       if push_formats.include? format.to_sym</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line83">83</a>         @push_to = push_formats[format.to_sym]</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line84">84</a>         @to_format = @push_to[:format].downcase</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line85">85</a>         return &quot;#{direction.to_s}_#{@to_format}&quot;</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line87">87</a>     </pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line88">88</a>     def handle_invalid_arguments</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line89">89</a>       head :bad_request</pre></td>
+          <td><pre><a name="line86">86</a>       end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line90">90</a>     end</pre></td>
+          <td><pre><a name="line87">87</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line91">91</a>     </pre></td>
+          <td><pre><a name="line88">88</a>     </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line92">92</a>     def push_to_is_set?</pre></td>
+          <td><pre><a name="line89">89</a>     def handle_invalid_arguments</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line93">93</a>       not @push_to.nil?</pre></td>
+          <td><pre><a name="line90">90</a>       head :bad_request</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line94">94</a>     end</pre></td>
+          <td><pre><a name="line91">91</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line95">95</a> </pre></td>
+          <td><pre><a name="line92">92</a>     </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line96">96</a>     def push</pre></td>
+          <td><pre><a name="line93">93</a>     def push_to_is_set?</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line97">97</a>       if @push_to[:action].eql? :redirect</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line98">98</a>         cache_resource</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line99">99</a>         redirect_to @push_to[:url]+callback, :status =&gt; 303</pre></td>
+          <td><pre><a name="line94">94</a>       not @push_to.nil?</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line100">100</a>       elsif @push_to[:action].eql? :method</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line101">101</a>         send @push_to[:method]</pre></td>
+          <td><pre><a name="line95">95</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line102">102</a>       end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line103">103</a>     end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line104">104</a> </pre></td>
+          <td><pre><a name="line96">96</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line105">105</a>     def download</pre></td>
+          <td><pre><a name="line97">97</a>     def push</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line106">106</a>       send_data @output.force_encoding('UTF-8'), :filename =&gt; filename, :type =&gt; 'application/ris'</pre></td>
+          <td><pre><a name="line98">98</a>       if @push_to[:action].eql? :redirect</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line99">99</a>         cache_resource</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line100">100</a>         redirect_to @push_to[:url]+callback, :status =&gt; 303</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line107">107</a>     end</pre></td>
+          <td><pre><a name="line101">101</a>       elsif @push_to[:action].eql? :method</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line102">102</a>         send @push_to[:method]</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line108">108</a> </pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line109">109</a>     def get_from_cache </pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line110">110</a>       Rails.cache.fetch(params[:resource_key]+@to_format.split('_').last) if params[:resource_key]</pre></td>
+          <td><pre><a name="line103">103</a>       end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line111">111</a>     end</pre></td>
+          <td><pre><a name="line104">104</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line112">112</a>     </pre></td>
+          <td><pre><a name="line105">105</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line113">113</a>     def push_formats</pre></td>
+          <td><pre><a name="line106">106</a>     def download</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line114">114</a>       @push_formats ||= Hash[:easybibpush =&gt; Hash[ :format =&gt; :easybib, :action =&gt; :method, :method =&gt; :push_to_easybib], </pre></td>
+          <td><pre><a name="line107">107</a>       send_data @output.force_encoding('UTF-8'), :filename =&gt; filename, :type =&gt; 'application/ris'</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line115">115</a>                              :endnote =&gt; Hash[ :format =&gt; :ris, :action =&gt; :redirect, :url =&gt; 'http://www.myendnoteweb.com/?func=directExport&amp;partnerName=Primo&amp;dataIdentifier=1&amp;dataRequestUrl='], </pre></td>
+          <td><pre><a name="line108">108</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line116">116</a>                              :refworks =&gt; Hash[ :format =&gt; :ris, :action =&gt; :redirect, :url =&gt; 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&amp;filter=RIS%20Format&amp;encoding=65001&amp;url='] ]</pre></td>
+          <td><pre><a name="line109">109</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line110">110</a>     def get_from_cache key</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line111">111</a>       Rails.cache.fetch(key)</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line117">117</a>     end</pre></td>
+          <td><pre><a name="line112">112</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line118">118</a>     </pre></td>
+          <td><pre><a name="line113">113</a>     </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line119">119</a>     def cache_resource</pre></td>
+          <td><pre><a name="line114">114</a>     def push_formats</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line120">120</a>       @resource_key = Digest::SHA1.hexdigest(map)</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line121">121</a>       Rails.cache.write(@resource_key+@to_format.split('_').last, @data)</pre></td>
+          <td><pre><a name="line115">115</a>       @push_formats ||= Hash[:easybibpush =&gt; Hash[ :format =&gt; :easybib, :action =&gt; :method, :method =&gt; :push_to_easybib], </pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line122">122</a>     end</pre></td>
+          <td><pre><a name="line116">116</a>                              :endnote =&gt; Hash[ :format =&gt; :ris, :action =&gt; :redirect, :url =&gt; 'http://www.myendnoteweb.com/?func=directExport&amp;partnerName=Primo&amp;dataIdentifier=1&amp;dataRequestUrl='], </pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line123">123</a>     </pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line124">124</a>     def callback</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line125">125</a>       ERB::Util.url_encode(&quot;#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&amp;to_format=#{@to_format.split('_').last}&amp;from_format=#{@from_format.split('_').last}&quot; )</pre></td>
+          <td><pre><a name="line117">117</a>                              :refworks =&gt; Hash[ :format =&gt; :ris, :action =&gt; :redirect, :url =&gt; 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&amp;filter=RIS%20Format&amp;encoding=65001&amp;url='] ]</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line126">126</a>     end</pre></td>
+          <td><pre><a name="line118">118</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line127">127</a>     </pre></td>
+          <td><pre><a name="line119">119</a>     </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line120">120</a>     def cache_resource</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line121">121</a>       @resource_key = Digest::SHA1.hexdigest(@data)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line122">122</a>       Rails.cache.write(@resource_key+@to_format.split('_').last, map)</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line128">128</a>     # Creates the filename and extension. Few are application specific</pre></td>
+          <td><pre><a name="line123">123</a>     end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line124">124</a>     </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line129">129</a>     def filename</pre></td>
+          <td><pre><a name="line125">125</a>     def callback</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line130">130</a>       name = &quot;export&quot;</pre></td>
+          <td><pre><a name="line126">126</a>       ERB::Util.url_encode(&quot;#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&amp;to_format=#{@to_format.split('_').last}&amp;from_format=#{@from_format.split('_').last}&quot; )</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line127">127</a>     end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line128">128</a>     </pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line129">129</a>     # Creates the filename and extension. Few are application specific</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line131">131</a>       case @to_format</pre></td>
+          <td><pre><a name="line130">130</a>     def filename</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line132">132</a>       when &quot;to_bibtex&quot;</pre></td>
+          <td><pre><a name="line131">131</a>       name = &quot;export&quot;</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line132">132</a>       case @to_format</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line133">133</a>       when &quot;to_bibtex&quot;</pre></td>
         </tr>
         <tr class="uncovered">
-          <td><pre><a name="line133">133</a>         name += &quot;.bib&quot;</pre></td>
+          <td><pre><a name="line134">134</a>         name += &quot;.bib&quot;</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line134">134</a>       when &quot;to_easybib&quot;</pre></td>
+          <td><pre><a name="line135">135</a>       when &quot;to_easybib&quot;</pre></td>
         </tr>
         <tr class="uncovered">
-          <td><pre><a name="line135">135</a>         name += &quot;.json&quot;</pre></td>
+          <td><pre><a name="line136">136</a>         name += &quot;.json&quot;</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line136">136</a>       else</pre></td>
+          <td><pre><a name="line137">137</a>       else</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line137">137</a>         name += &quot;.&quot; + @to_format.split('_').last</pre></td>
+          <td><pre><a name="line138">138</a>         name += &quot;.&quot; + @to_format.split('_').last</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line138">138</a>       end</pre></td>
+          <td><pre><a name="line139">139</a>       end</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line139">139</a>       name</pre></td>
+          <td><pre><a name="line140">140</a>       name</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line140">140</a>     end</pre></td>
+          <td><pre><a name="line141">141</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line141">141</a>     </pre></td>
+          <td><pre><a name="line142">142</a>     </pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line142">142</a>     # Defines a form for the push to easybib</pre></td>
+          <td><pre><a name="line143">143</a>     # Defines a form for the push to easybib</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line143">143</a>     def push_to_easybib</pre></td>
+          <td><pre><a name="line144">144</a>     def push_to_easybib</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line144">144</a>       @elements = [{:name =&gt; &quot;data&quot;, :value =&gt; &quot;[&quot; + @output + &quot;]&quot;, :type =&gt; &quot;textarea&quot;}]</pre></td>
+          <td><pre><a name="line145">145</a>       @elements = [{:name =&gt; &quot;data&quot;, :value =&gt; &quot;[&quot; + @output + &quot;]&quot;, :type =&gt; &quot;textarea&quot;}]</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line145">145</a>       @name = &quot;Push to EasyBib&quot;</pre></td>
+          <td><pre><a name="line146">146</a>       @name = &quot;Push to EasyBib&quot;</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line146">146</a>       @action = &quot;http://www.easybib.com/cite/bulk&quot;</pre></td>
+          <td><pre><a name="line147">147</a>       @action = &quot;http://www.easybib.com/cite/bulk&quot;</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line147">147</a>       @method = &quot;POST&quot;</pre></td>
+          <td><pre><a name="line148">148</a>       @method = &quot;POST&quot;</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line148">148</a>       @enctype = &quot;application/x-www-form-urlencoded&quot;</pre></td>
+          <td><pre><a name="line149">149</a>       @enctype = &quot;application/x-www-form-urlencoded&quot;</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line149">149</a>       render :template =&gt; &quot;citero_engine/cite/external_form&quot;</pre></td>
+          <td><pre><a name="line150">150</a>       render :template =&gt; &quot;citero_engine/cite/external_form&quot;</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line150">150</a>     end</pre></td>
+          <td><pre><a name="line151">151</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line151">151</a>   end</pre></td>
+          <td><pre><a name="line152">152</a>   end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line152">152</a> end</pre></td>
+          <td><pre><a name="line153">153</a> end</pre></td>
         </tr>
       </tbody>
     </table>
 
-    <p>Generated on 2013-02-06 17:46:27 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
+    <p>Generated on 2013-02-07 13:34:06 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
 
   </body>
 </html>

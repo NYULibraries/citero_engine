@@ -44,6 +44,7 @@ module CiteroEngine
     end
     
     def fetch_from_cache
+      get_from_cache Digest::SHA1.hexdigest(@data)+@to_format
     end
     
     def map
@@ -62,7 +63,7 @@ module CiteroEngine
     
     def get_from_params
       @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
-      @data ||= params[:data] if params[:data] else @data ||= get_from_cache
+      @data ||= params[:data] if params[:data] else @data ||= get_from_cache params[:resource_key]+@to_format.split('_').last unless params[:resource_key].nil?
     end
     
     def assume_openurl
@@ -105,8 +106,8 @@ module CiteroEngine
       send_data @output.force_encoding('UTF-8'), :filename => filename, :type => 'application/ris'
     end
 
-    def get_from_cache 
-      Rails.cache.fetch(params[:resource_key]+@to_format.split('_').last) if params[:resource_key]
+    def get_from_cache key
+      Rails.cache.fetch(key)
     end
     
     def push_formats
@@ -116,8 +117,8 @@ module CiteroEngine
     end
     
     def cache_resource
-      @resource_key = Digest::SHA1.hexdigest(map)
-      Rails.cache.write(@resource_key+@to_format.split('_').last, @data)
+      @resource_key = Digest::SHA1.hexdigest(@data)
+      Rails.cache.write(@resource_key+@to_format.split('_').last, map)
     end
     
     def callback
