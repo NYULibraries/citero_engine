@@ -35,9 +35,9 @@ module CiteroEngine
     end
     
     def gather
+      @to_format ||= whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
       if params[:id] then get_from_record else get_from_params end
       if @data.nil? and params[:resource_key].nil? then assume_openurl end
-      @to_format ||= whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
       if @data.nil? or @from_format.nil? or @to_format.nil?
         raise ArgumentError, "Some parameters may be missing [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
       end
