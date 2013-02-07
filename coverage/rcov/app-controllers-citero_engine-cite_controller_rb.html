@@ -162,13 +162,13 @@
           <td><pre><a name="line38">38</a>     def gather</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line39">39</a>       if params[:id] then get_from_record else get_from_params end</pre></td>
+          <td><pre><a name="line39">39</a>       @to_format ||= whitelist_formats :to, params[:to_format] unless params[:to_format].nil?</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line40">40</a>       if @data.nil? and params[:resource_key].nil? then assume_openurl end</pre></td>
+          <td><pre><a name="line40">40</a>       if params[:id] then get_from_record else get_from_params end</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line41">41</a>       @to_format ||= whitelist_formats :to, params[:to_format] unless params[:to_format].nil?</pre></td>
+          <td><pre><a name="line41">41</a>       if @data.nil? and params[:resource_key].nil? then assume_openurl end</pre></td>
         </tr>
         <tr class="marked">
           <td><pre><a name="line42">42</a>       if @data.nil? or @from_format.nil? or @to_format.nil?</pre></td>
@@ -189,7 +189,7 @@
           <td><pre><a name="line47">47</a>     def fetch_from_cache</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line48">48</a>       get_from_cache Digest::SHA1.hexdigest(@data)+@to_format</pre></td>
+          <td><pre><a name="line48">48</a>       @output = get_from_cache Digest::SHA1.hexdigest(@data)+@to_format.split('_').last</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line49">49</a>     end</pre></td>
@@ -246,7 +246,7 @@
           <td><pre><a name="line66">66</a>       @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line67">67</a>       @data ||= params[:data] if params[:data] else @data ||= get_from_cache params[:resource_key]+@to_format.split('_').last unless params[:resource_key].nil?</pre></td>
+          <td><pre><a name="line67">67</a>       @data ||= params[:data] if params[:data] else @data ||= params[:resource_key] unless params[:resource_key].nil?</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line68">68</a>     end</pre></td>
@@ -509,7 +509,7 @@
       </tbody>
     </table>
 
-    <p>Generated on 2013-02-07 13:34:06 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
+    <p>Generated on 2013-02-07 17:45:06 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
 
   </body>
 </html>

@@ -44,7 +44,7 @@ module CiteroEngine
     end
     
     def fetch_from_cache
-      get_from_cache Digest::SHA1.hexdigest(@data)+@to_format
+      @output = get_from_cache Digest::SHA1.hexdigest(@data)+@to_format.split('_').last
     end
     
     def map
@@ -63,7 +63,7 @@ module CiteroEngine
     
     def get_from_params
       @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
-      @data ||= params[:data] if params[:data] else @data ||= get_from_cache params[:resource_key]+@to_format.split('_').last unless params[:resource_key].nil?
+      @data ||= params[:data] if params[:data] else @data ||= params[:resource_key] unless params[:resource_key].nil?
     end
     
     def assume_openurl
