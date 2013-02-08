@@ -22,12 +22,11 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.2.8"
   s.add_dependency "rake", "0.9.2.2"
   s.add_dependency "test-unit"
-  s.add_dependency "citero", "~> 1.1.0"
+  s.add_dependency "citero", "~> 1.1"
   s.add_dependency "brakeman"
   s.add_dependency "simplecov", "0.7.1"
   s.add_dependency "simplecov-rcov", "0.2.3"
   s.add_dependency "rails_config"
-  s.add_dependency "dalli"
 
   s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
 end

@@ -2,7 +2,7 @@ require_dependency "citero_engine/application_controller"
 require "citero_engine/engine"
 require "citero"
 require 'digest/sha1'
-
+  
 require 'open-uri'
 module CiteroEngine
   class CiteController < ApplicationController
@@ -23,7 +23,7 @@ module CiteroEngine
     
     # Direct access to translation process, used by existing resources
     def translate
-      flow if params[:data] else handle_invalid_arguments and return
+      if params[:data] then flow else handle_invalid_arguments and return end
     end
     
     def flow
@@ -44,7 +44,13 @@ module CiteroEngine
     end
     
     def fetch_from_cache
-      @output = get_from_cache Digest::SHA1.hexdigest(@data)+@to_format.split('_').last
+      if params[:resource_key] then key = @data else key = Digest::SHA1.hexdigest(@data) end
+      key += @to_format.split('_').last
+      @output = Rails.cache.fetch key
+      if @output.nil? and params[:resource_key]
+        raise ArgumentError, "The resource_key is invalid [resource_key => #{params[:resource_key]}]"
+      end
+      return @output
     end
     
     def map
@@ -63,7 +69,7 @@ module CiteroEngine
     
     def get_from_params
       @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
-      @data ||= params[:data] if params[:data] else @data ||= params[:resource_key] unless params[:resource_key].nil?
+      if params[:data] then @data ||= params[:data] else @data ||= params[:resource_key] unless params[:resource_key].nil? end
     end
     
     def assume_openurl
@@ -95,6 +101,7 @@ module CiteroEngine
 
     def push
       if @push_to[:action].eql? :redirect
+        @data = "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
         cache_resource
         redirect_to @push_to[:url]+callback, :status => 303
       elsif @push_to[:action].eql? :method
@@ -106,9 +113,6 @@ module CiteroEngine
       send_data @output.force_encoding('UTF-8'), :filename => filename, :type => 'application/ris'
     end
 
-    def get_from_cache key
-      Rails.cache.fetch(key)
-    end
     
     def push_formats
       @push_formats ||= Hash[:easybibpush => Hash[ :format => :easybib, :action => :method, :method => :push_to_easybib], 
