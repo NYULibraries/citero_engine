@@ -45,7 +45,7 @@ module CiteroEngine
     
     def fetch_from_cache
       if params[:resource_key] then key = @data else key = Digest::SHA1.hexdigest(@data) end
-      key += @to_format.split('_').last
+      key += @to_format.formatize
       @output = Rails.cache.fetch key
       if @output.nil? and params[:resource_key]
         raise ArgumentError, "The resource_key is invalid [resource_key => #{params[:resource_key]}]"
@@ -122,11 +122,11 @@ module CiteroEngine
     
     def cache_resource
       @resource_key = Digest::SHA1.hexdigest(@data)
-      Rails.cache.write(@resource_key+@to_format.split('_').last, map)
+      Rails.cache.write(@resource_key+@to_format.formatize, map)
     end
     
     def callback
-      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&to_format=#{@to_format.split('_').last}&from_format=#{@from_format.split('_').last}" )
+      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&to_format=#{@to_format.formatize}&from_format=#{@from_format.formatize}" )
     end
     
     # Creates the filename and extension. Few are application specific
@@ -138,7 +138,7 @@ module CiteroEngine
       when "to_easybib"
         name += ".json"
       else
-        name += "." + @to_format.split('_').last
+        name += "." + @to_format.formatize
       end
       name
     end

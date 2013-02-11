@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
   <head>
-    <title>app/views/citero_engine/cite/_external_form.html.erb</title>
+    <title>lib/citero_engine/acts_as_record.rb</title>
     <link href="./assets/0.2.3/screen.css" media="all" rel="stylesheet" type="text/css" />
     <link href="./assets/0.2.3/print.css" media="print" rel="stylesheet" type="text/css" />
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
@@ -9,7 +9,7 @@
   </head>
   <body>
     <h1>Citation engine gem C0 Coverage Information - Simploco - RCov</h1>
-    <h2>app/views/citero_engine/cite/_external_form.html.erb</h2>
+    <h2>lib/citero_engine/acts_as_record.rb</h2>
 
     <div class="report_table_wrapper">
       <table class='report' id='report_table'>
@@ -24,9 +24,9 @@
         </thead>
         <tbody>
           <tr>
-            <td class="left_align"><a href="app-views-citero_engine-cite-_external_form_html_erb.html">app/views/citero_engine/cite/_external_form.html.erb</a></td>
+            <td class="left_align"><a href="lib-citero_engine-acts_as_record_rb.html">lib/citero_engine/acts_as_record.rb</a></td>
             <td class='right_align'><tt>26</tt></td>
-            <td class='right_align'><tt>13</tt></td>
+            <td class='right_align'><tt>15</tt></td>
             <td class="left_align"><div class="percent_graph_legend"><tt class=''>100.00%</tt></div>
       <div class="percent_graph">
         <div class="covered" style="width:100px"></div>
@@ -51,87 +51,87 @@
     <table class="details">
       <tbody>
         <tr class="marked">
-          <td><pre><a name="line2">2</a> &lt;%= javascript_tag do %&gt;</pre></td>
+          <td><pre><a name="line2">2</a> module CiteroEngine</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line3">3</a> 	jQuery(document).ready(function($) {</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line4">4</a> 		submit_external_form();</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line5">5</a> 		function submit_external_form() {</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line6">6</a> 			// Hide the page</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line7">7</a> 			$(&quot;body&quot;).hide();</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line8">8</a> 			$form = $(&quot;.external_form&quot;);</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line9">9</a> 			$form.trigger(&quot;submit&quot;);</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line10">10</a> 		}</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line11">11</a> 	});</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line12">12</a> &lt;% end %&gt;</pre></td>
+          <td><pre><a name="line3">3</a>   module ActsAsRecord</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line13">13</a> &lt;div class=&quot;inner_form_dialog&quot;&gt;</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line14">14</a> 	&lt;form id=&quot;&lt;%= @id %&gt;&quot; action=&quot;&lt;%= @action %&gt;&quot; method=&quot;&lt;%= @method %&gt;&quot; class=&quot;external_form&quot; enctype=&quot;&lt;%= @enctype %&gt;&quot;&gt;</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line15">15</a> 		&lt;h2&gt;&lt;%= @name %&gt;&lt;/h2&gt;</pre></td>
+          <td><pre><a name="line4">4</a>     extend ActiveSupport::Concern</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line16">16</a> 		&lt;div class=&quot;formError&quot;&gt;</pre></td>
+          <td><pre><a name="line5">5</a>  </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line17">17</a> 		&lt;%= @error || flash[:error] %&gt;</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line18">18</a> 		&lt;/div&gt;</pre></td>
+          <td><pre><a name="line6">6</a>     included do</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line19">19</a> 		&lt;fieldset&gt;</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line20">20</a> 			&lt;legend&gt;&lt;%= @legend %&gt;&lt;/legend&gt;</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line21">21</a> 			&lt;%= raw build_external_form %&gt;</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line22">22</a> 			&lt;div class=&quot;section&quot;&gt;</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line23">23</a> 				&lt;%= submit_tag @name%&gt;</pre></td>
-        </tr>
-        <tr class="marked">
-          <td><pre><a name="line24">24</a> 			&lt;/div&gt;</pre></td>
+          <td><pre><a name="line7">7</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line25">25</a> 		&lt;/fieldset&gt;</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line26">26</a> 	&lt;/form&gt;</pre></td>
+          <td><pre><a name="line8">8</a>  </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line27">27</a> &lt;/div&gt;</pre></td>
+          <td><pre><a name="line9">9</a>     module ClassMethods</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line10">10</a>       def acts_as_record(options = {})</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line11">11</a>         cattr_accessor :format_field</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line12">12</a>         cattr_accessor :title_field</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line13">13</a>         cattr_accessor :raw_field</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line14">14</a>         self.format_field = (options[:format_field] || :formatting).to_s</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line15">15</a>         self.title_field = (options[:title_field] || :title).to_s</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line16">16</a>         self.raw_field = (options[:raw_field] || :raw).to_s</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line17">17</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line18">18</a>     end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line19">19</a>     </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line20">20</a>     def format(string)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line21">21</a>       write_attribute(self.class.format_field, string)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line22">22</a>     end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line23">23</a>     </pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line24">24</a>   end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line25">25</a> end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line26">26</a>  </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line27">27</a> ActiveRecord::Base.send :include, CiteroEngine::ActsAsRecord</pre></td>
         </tr>
       </tbody>
     </table>
 
-    <p>Generated on 2013-02-11 18:26:52 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
+    <p>Generated on 2013-02-11 13:33:30 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
 
   </body>
 </html>

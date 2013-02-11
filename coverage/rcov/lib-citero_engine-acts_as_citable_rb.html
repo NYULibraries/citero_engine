@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
   <head>
-    <title>app/helpers/citero_engine/application_helper.rb</title>
+    <title>lib/citero_engine/acts_as_citable.rb</title>
     <link href="./assets/0.2.3/screen.css" media="all" rel="stylesheet" type="text/css" />
     <link href="./assets/0.2.3/print.css" media="print" rel="stylesheet" type="text/css" />
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
@@ -9,7 +9,7 @@
   </head>
   <body>
     <h1>Citation engine gem C0 Coverage Information - Simploco - RCov</h1>
-    <h2>app/helpers/citero_engine/application_helper.rb</h2>
+    <h2>lib/citero_engine/acts_as_citable.rb</h2>
 
     <div class="report_table_wrapper">
       <table class='report' id='report_table'>
@@ -24,9 +24,9 @@
         </thead>
         <tbody>
           <tr>
-            <td class="left_align"><a href="app-helpers-citero_engine-application_helper_rb.html">app/helpers/citero_engine/application_helper.rb</a></td>
-            <td class='right_align'><tt>14</tt></td>
-            <td class='right_align'><tt>8</tt></td>
+            <td class="left_align"><a href="lib-citero_engine-acts_as_citable_rb.html">lib/citero_engine/acts_as_citable.rb</a></td>
+            <td class='right_align'><tt>26</tt></td>
+            <td class='right_align'><tt>15</tt></td>
             <td class="left_align"><div class="percent_graph_legend"><tt class=''>100.00%</tt></div>
       <div class="percent_graph">
         <div class="covered" style="width:100px"></div>
@@ -54,43 +54,79 @@
           <td><pre><a name="line2">2</a> module CiteroEngine</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line3">3</a>   module ApplicationHelper</pre></td>
+          <td><pre><a name="line3">3</a>   module ActsAsCitable</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line4">4</a>     def build_external_form</pre></td>
+          <td><pre><a name="line4">4</a>     extend ActiveSupport::Concern</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line5">5</a>  </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line5">5</a>         f = &quot;&quot;</pre></td>
+          <td><pre><a name="line6">6</a>     included do</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line7">7</a>     end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line8">8</a>  </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line6">6</a>         @elements.each do |element|</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line7">7</a>           # Return input element for no js and not textarea</pre></td>
+          <td><pre><a name="line9">9</a>     module ClassMethods</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line8">8</a>           f += &quot;&lt;input name=\&quot;#{element[:name]}\&quot; type=\&quot;#{(element[:type].nil?) ? &quot;text&quot; : element[:type]}\&quot; value='#{element[:value]}' /&gt;&quot; unless (element[:type] and element[:type].eql?(&quot;textarea&quot;))</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line9">9</a>           # Return textarea element for no js and type=textarea</pre></td>
+          <td><pre><a name="line10">10</a>       def acts_as_citable(options = {})</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line10">10</a>           f += &quot;&lt;textarea name=\&quot;#{element[:name]}\&quot; id=\&quot;#{element[:name]}\&quot;&gt;#{element[:value]}&lt;/textarea&gt;&quot; unless (element[:type].nil? or not element[:type].eql?(&quot;textarea&quot;))</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line11">11</a>         end</pre></td>
+          <td><pre><a name="line11">11</a>         cattr_accessor :format_field</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line12">12</a>         return f</pre></td>
+          <td><pre><a name="line12">12</a>         cattr_accessor :title_field</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line13">13</a>         cattr_accessor :raw_field</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line14">14</a>         self.format_field = (options[:format_field] || :formatting).to_s</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line15">15</a>         self.title_field = (options[:title_field] || :title).to_s</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line16">16</a>         self.raw_field = (options[:raw_field] || :raw).to_s</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line13">13</a>       end</pre></td>
+          <td><pre><a name="line17">17</a>       end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line14">14</a>   end</pre></td>
+          <td><pre><a name="line18">18</a>     end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line15">15</a> end</pre></td>
+          <td><pre><a name="line19">19</a>     </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line20">20</a>     def format(string)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line21">21</a>       write_attribute(self.class.format_field, string)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line22">22</a>     end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line23">23</a>     </pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line24">24</a>   end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line25">25</a> end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line26">26</a>  </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line27">27</a> ActiveRecord::Base.send :include, CiteroEngine::ActsAsCitable</pre></td>
         </tr>
       </tbody>
     </table>
