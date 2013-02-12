@@ -30,8 +30,7 @@ module CiteroEngine
         Citero.map("").to_formats.each do |to|
           get :flow, :id => Record.find_by_title(from)[:id], :to_format => to,  :use_route => :cite
           assert_response :success
-          clear
-          initialize_cite
+          @cite = CiteController.new
         end
       end
     end
@@ -104,8 +103,6 @@ module CiteroEngine
       Citero.map("").to_formats.each do |to|
         get :flow, "rft_val_fmt" => "info:ofi/fmt:kev:mtx:book", :to_format => to,  :use_route => :cite
         assert_response :success
-        clear
-        initialize_cite
       end
     end
     

@@ -35,7 +35,7 @@ module CiteroEngine
     end
 
     def gather
-      @to_format ||= whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
+      @to_format = whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
       if params[:id]
         get_from_record
       elsif params[:from_format]
@@ -87,10 +87,8 @@ module CiteroEngine
 
     # Cleans the user input and finds the associated method for that format
     def whitelist_formats direction, format
-      if [:to, :from].include? direction
-        if Citero.to_formats.include? format.downcase or Citero.from_formats.include? format.downcase
+      if (direction == :to && Citero.to_formats.include?(format.downcase))||(direction == :from && Citero.from_formats.include?(format.downcase))
           return "#{direction.to_s}_#{format.downcase}"
-        end
       end
       if push_formats.include? format.to_sym
         @push_to = push_formats[format.to_sym]
