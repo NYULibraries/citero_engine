@@ -23,28 +23,47 @@ module CiteroEngine
     
     # Direct access to translation process, used by existing resources
     def translate
-      if params[:data] then flow else handle_invalid_arguments and return end
+      if params[:data] and params[:from_format] then flow else handle_invalid_arguments and return end
     end
     
     def flow
       gather
-      fetch_from_cache or map
+      if @output.nil? then fetch_from_cache or map end
       handle
     rescue ArgumentError => exc
       handle_invalid_arguments
     end
-    
+
     def gather
       @to_format ||= whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
-      if params[:id] then get_from_record else get_from_params end
-      if @data.nil? and params[:resource_key].nil? then assume_openurl end
+      if params[:id]
+        get_from_record
+      elsif params[:from_format]
+        get_from_params and if params[:resource_key] then get_from_cache end
+      end
+      if @data.nil? then assume_openurl end
       if @data.nil? or @from_format.nil? or @to_format.nil?
         raise ArgumentError, "Some parameters may be missing [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
       end
     end
+  
+    def get_from_record
+      record = Record.find_by_id params[:id]
+      @data = record[:raw] unless record.nil?
+      @from_format = whitelist_formats :from, record[:formatting] unless record.nil?
+    end
+
+    def get_from_params
+      @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
+      @data ||= params[:data] unless params[:data].nil?
+    end
+    
+    def get_from_cache
+      @data = fetch_from_cache
+    end
     
     def fetch_from_cache
-      if params[:resource_key] then key = @data else key = Digest::SHA1.hexdigest(@data) end
+      if params[:resource_key] then key = params[:resource_key] else key = Digest::SHA1.hexdigest(@data) end
       key += @to_format.formatize
       @output = Rails.cache.fetch key
       if @output.nil? and params[:resource_key]
@@ -53,30 +72,19 @@ module CiteroEngine
       return @output
     end
     
+    def assume_openurl
+      @data ||= CGI::unescape(request.protocol+request.host_with_port+request.fullpath)
+      @from_format ||= 'from_openurl'
+    end
+    
     def map
-      @output = Citero.map(@data).send(@from_format).send(@to_format)
+      @output ||= Citero.map(@data).send(@from_format).send(@to_format)
     end
     
     def handle
       if push_to_is_set? then push else download end
     end
 
-    def get_from_record
-      record = Record.find_by_id params[:id]
-      @data = record[:raw] unless record.nil?
-      @from_format = whitelist_formats :from, record[:formatting] unless record.nil?
-    end
-    
-    def get_from_params
-      @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
-      if params[:data] then @data ||= params[:data] else @data ||= params[:resource_key] unless params[:resource_key].nil? end
-    end
-    
-    def assume_openurl
-      @data ||= CGI::unescape(request.protocol+request.host_with_port+request.fullpath)
-      @from_format ||= 'from_openurl'
-    end
-    
     # Cleans the user input and finds the associated method for that format
     def whitelist_formats direction, format
       if [:to, :from].include? direction
