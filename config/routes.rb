@@ -5,5 +5,5 @@ CiteroEngine::Engine.routes.draw do
   match "translate/:data/:from_format/:to_format" => 'cite#translate'
   match "cite" => 'cite#flow'
   post "records" => 'cite#create'
-  post "batch" => 'cite#batch'
+  # post "batch" => 'cite#batch'
 end

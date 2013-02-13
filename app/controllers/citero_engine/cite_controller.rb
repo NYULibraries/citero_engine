@@ -11,21 +11,21 @@ module CiteroEngine
       render :text => "CiteroEngine Mounted"
     end
     
-    def batch
-      @to_format = whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
-      if params[:from_format].nil? || !params[:from_format].is_a?(Array) || params[:data].nil? || !params[:data].is_a?(Array) || params[:data].length != params[:from_format].length
-        handle_invalid_arguments
-      else
-        bulk = ""
-        params[:from_format].each_with_index do |val, index|
-          @from_format = whitelist_formats :from, val
-          @data = params[:data][index]
-          p @data
-          bulk +=  map + "\n\n"
-        end
-        render :text => bulk
-      end
-    end
+    # def batch
+    #   @to_format = whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
+    #   if params[:from_format].nil? || !params[:from_format].is_a?(Array) || params[:data].nil? || !params[:data].is_a?(Array) || params[:data].length != params[:from_format].length
+    #     handle_invalid_arguments
+    #   else
+    #     bulk = ""
+    #     params[:from_format].each_with_index do |val, index|
+    #       @from_format = whitelist_formats :from, val
+    #       @data = params[:data][index]
+    #       bulk +=  map + "\n\n"
+    #     end
+    #     @output = bulk
+    #     download
+    #   end
+    # end
     
     # Creates a new record with data, format, and title, redirects to that resource
     def create

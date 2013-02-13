@@ -26,16 +26,16 @@
           <tr>
             <td class="left_align"><a href="app-controllers-citero_engine-cite_controller_rb.html">app/controllers/citero_engine/cite_controller.rb</a></td>
             <td class='right_align'><tt>178</tt></td>
-            <td class='right_align'><tt>105</tt></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>91.01%</tt></div>
+            <td class='right_align'><tt>94</tt></td>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>96.63%</tt></div>
       <div class="percent_graph">
-        <div class="covered" style="width:91px"></div>
-        <div class="uncovered" style="width:9px"></div>
+        <div class="covered" style="width:97px"></div>
+        <div class="uncovered" style="width:3px"></div>
       </div></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>84.76%</tt></div>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>93.62%</tt></div>
       <div class="percent_graph">
-        <div class="covered" style="width:85px"></div>
-        <div class="uncovered" style="width:15px"></div>
+        <div class="covered" style="width:94px"></div>
+        <div class="uncovered" style="width:6px"></div>
       </div></td>
           </tr>
         </tbody>
@@ -89,50 +89,50 @@
         <tr class="inferred">
           <td><pre><a name="line14">14</a>     </pre></td>
         </tr>
-        <tr class="marked">
-          <td><pre><a name="line15">15</a>     def batch</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line16">16</a>       @to_format = whitelist_formats :to, params[:to_format] unless params[:to_format].nil?</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line17">17</a>       if params[:from_format].nil? || !params[:from_format].is_a?(Array) || params[:data].nil? || !params[:data].is_a?(Array) || params[:data].length != params[:from_format].length</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line18">18</a>         handle_invalid_arguments</pre></td>
+        <tr class="inferred">
+          <td><pre><a name="line15">15</a>     # def batch</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line19">19</a>       else</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line20">20</a>         bulk = &quot;&quot;</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line21">21</a>         params[:from_format].each_with_index do |val, index|</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line22">22</a>           @from_format = whitelist_formats :from, val</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line23">23</a>           @data = params[:data][index]</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line24">24</a>           p @data</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line25">25</a>           bulk +=  map + &quot;\n\n&quot;</pre></td>
+          <td><pre><a name="line16">16</a>     #   @to_format = whitelist_formats :to, params[:to_format] unless params[:to_format].nil?</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line26">26</a>         end</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line27">27</a>         render :text =&gt; bulk</pre></td>
+          <td><pre><a name="line17">17</a>     #   if params[:from_format].nil? || !params[:from_format].is_a?(Array) || params[:data].nil? || !params[:data].is_a?(Array) || params[:data].length != params[:from_format].length</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line28">28</a>       end</pre></td>
+          <td><pre><a name="line18">18</a>     #     handle_invalid_arguments</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line29">29</a>     end</pre></td>
+          <td><pre><a name="line19">19</a>     #   else</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line20">20</a>     #     bulk = &quot;&quot;</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line21">21</a>     #     params[:from_format].each_with_index do |val, index|</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line22">22</a>     #       @from_format = whitelist_formats :from, val</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line23">23</a>     #       @data = params[:data][index]</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line24">24</a>     #       bulk +=  map + &quot;\n\n&quot;</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line25">25</a>     #     end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line26">26</a>     #     @output = bulk</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line27">27</a>     #     download</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line28">28</a>     #   end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line29">29</a>     # end</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line30">30</a>     </pre></td>
@@ -587,7 +587,7 @@
       </tbody>
     </table>
 
-    <p>Generated on 2013-02-13 14:26:33 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
+    <p>Generated on 2013-02-13 17:30:31 -0500 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
 
   </body>
 </html>
