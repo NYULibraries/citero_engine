@@ -11,6 +11,22 @@ module CiteroEngine
       render :text => "CiteroEngine Mounted"
     end
     
+    def batch
+      @to_format = whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
+      if params[:from_format].nil? || !params[:from_format].is_a?(Array) || params[:data].nil? || !params[:data].is_a?(Array) || params[:data].length != params[:from_format].length
+        handle_invalid_arguments
+      else
+        bulk = ""
+        params[:from_format].each_with_index do |val, index|
+          @from_format = whitelist_formats :from, val
+          @data = params[:data][index]
+          p @data
+          bulk +=  map + "\n\n"
+        end
+        render :text => bulk
+      end
+    end
+    
     # Creates a new record with data, format, and title, redirects to that resource
     def create
       record = Record.create(:raw => params[:data], :formatting => params[:from_format], :title => params[:ttl])
@@ -42,7 +58,7 @@ module CiteroEngine
         get_from_params and if params[:resource_key] then get_from_cache end
       end
       if @data.nil? then assume_openurl end
-      if @data.nil? or @from_format.nil? or @to_format.nil?
+      if @data.nil? || @from_format.nil? || @to_format.nil?
         raise ArgumentError, "Some parameters may be missing [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
       end
     end
@@ -78,7 +94,7 @@ module CiteroEngine
     end
     
     def map
-      @output ||= Citero.map(@data).send(@from_format).send(@to_format)
+      @output = Citero.map(@data).send(@from_format).send(@to_format)
     end
     
     def handle
