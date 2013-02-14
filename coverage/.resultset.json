@@ -56,7 +56,7 @@
       "/Users/hannan/Documents/workspace/citation_engine_gem/lib/citero_engine/core_ext.rb": [
         1,
         1,
-        37
+        43
       ],
       "/Users/hannan/Documents/workspace/citation_engine_gem/app/controllers/citero_engine/application_controller.rb": [
         1,
@@ -149,7 +149,7 @@
         1,
         2,
         2,
-        2,
+        4,
         2,
         null,
         1,
@@ -174,7 +174,7 @@
         null,
         1,
         42,
-        45,
+        51,
         39,
         null,
         3,
@@ -239,7 +239,7 @@
         null,
         null,
         1,
-        0,
+        8,
         null,
         null,
         1,
@@ -288,9 +288,9 @@
         null,
         null,
         1,
-        4,
-        4,
-        4,
+        10,
+        10,
+        10,
         null,
         null,
         1,
@@ -321,6 +321,6 @@
         5
       ]
     },
-    "timestamp": 1360881078
+    "timestamp": 1360882076
   }
 }

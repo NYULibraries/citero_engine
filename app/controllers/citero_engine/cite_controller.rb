@@ -20,7 +20,7 @@ module CiteroEngine
         params[:from_format].each_with_index do |val, index|
           get_data_and_from_format false, val, params[:data][index], false
           check_data_and_from_format
-          bulk +=  fetch_from_cache or map + "\n\n"
+          bulk += (fetch_from_cache or map) + "\n\n"
           cache_resource
         end
         @output = bulk
