@@ -20,7 +20,8 @@ module CiteroEngine
         params[:from_format].each_with_index do |val, index|
           get_data_and_from_format false, val, params[:data][index], false
           check_data_and_from_format
-          bulk +=  map + "\n\n"
+          bulk +=  fetch_from_cache or map + "\n\n"
+          cache_resource
         end
         @output = bulk
         download
@@ -44,7 +45,7 @@ module CiteroEngine
     
     def flow
       gather
-      if @output.nil? then fetch_from_cache or map end
+      if @output.nil? then fetch_from_cache or ( map and cache_resource ) end
       handle
     rescue ArgumentError => exc
       handle_invalid_arguments
@@ -159,7 +160,8 @@ module CiteroEngine
     
     def cache_resource
       @resource_key = Digest::SHA1.hexdigest(@data)
-      Rails.cache.write(@resource_key+@to_format.formatize, map)
+      if @output.nil? then map end
+      Rails.cache.write(@resource_key+@to_format.formatize, @output)
     end
     
     def callback
