@@ -11,21 +11,21 @@ module CiteroEngine
       render :text => "CiteroEngine Mounted"
     end
     
-    # def batch
-    #   @to_format = whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
-    #   if params[:from_format].nil? || !params[:from_format].is_a?(Array) || params[:data].nil? || !params[:data].is_a?(Array) || params[:data].length != params[:from_format].length
-    #     handle_invalid_arguments
-    #   else
-    #     bulk = ""
-    #     params[:from_format].each_with_index do |val, index|
-    #       @from_format = whitelist_formats :from, val
-    #       @data = params[:data][index]
-    #       bulk +=  map + "\n\n"
-    #     end
-    #     @output = bulk
-    #     download
-    #   end
-    # end
+    def batch
+      get_to_format
+      if !params[:from_format].is_a?(Array) || !params[:data].is_a?(Array) || params[:data].length != params[:from_format].length
+        handle_invalid_arguments
+      else
+        bulk = ""
+        params[:from_format].each_with_index do |val, index|
+          get_data_and_from_format false, val, params[:data][index], false
+          check_data_and_from_format
+          bulk +=  map + "\n\n"
+        end
+        @output = bulk
+        download
+      end
+    end
     
     # Creates a new record with data, format, and title, redirects to that resource
     def create
@@ -51,39 +51,54 @@ module CiteroEngine
     end
 
     def gather
-      @to_format = whitelist_formats :to, params[:to_format] unless params[:to_format].nil?
-      if params[:id]
-        get_from_record
-      elsif params[:from_format]
-        get_from_params and if params[:resource_key] then get_from_cache end
+      get_to_format
+      get_data_and_from_format
+      if @data.nil? then assume_openurl end      
+      check_data_and_from_format
+    end
+    
+    def check_data_and_from_format
+      if @from_format.nil? || @data.nil?
+        raise ArgumentError, "No input format or data available. [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
       end
-      if @data.nil? then assume_openurl end
-      if @data.nil? || @from_format.nil? || @to_format.nil?
-        raise ArgumentError, "Some parameters may be missing [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
+    end
+    
+    def get_to_format
+      if params[:to_format].nil?
+        raise ArgumentError, "No destination format available. [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
+      end
+      @to_format = whitelist_formats :to, params[:to_format]
+    end
+    
+    def get_data_and_from_format id = params[:id], from = params[:id], data = params[:data], rec_key = params[:resource_key]
+      if id
+        get_from_record id
+      elsif from
+        get_from_params from, data and if rec_key then get_from_cache rec_key end
       end
     end
   
-    def get_from_record
-      record = Record.find_by_id params[:id]
+    def get_from_record id = params[:id]
+      record = Record.find_by_id id
       @data = record[:raw] unless record.nil?
       @from_format = whitelist_formats :from, record[:formatting] unless record.nil?
     end
 
-    def get_from_params
-      @from_format ||= whitelist_formats :from, params[:from_format] unless params[:from_format].nil?
-      @data ||= params[:data] unless params[:data].nil?
+    def get_from_params from = params[:from_format], data = params[:data]
+      @from_format = whitelist_formats :from, from unless from.nil?
+      @data = data unless data.nil?
     end
     
-    def get_from_cache
-      @data = fetch_from_cache
+    def get_from_cache rec_key = params[:resource_key]
+      @data = fetch_from_cache rec_key
     end
     
-    def fetch_from_cache
-      if params[:resource_key] then key = params[:resource_key] else key = Digest::SHA1.hexdigest(@data) end
+    def fetch_from_cache rec_key = params[:resource_key]
+      if rec_key.nil? then key = Digest::SHA1.hexdigest(@data) end
       key += @to_format.formatize
       @output = Rails.cache.fetch key
-      if @output.nil? and params[:resource_key]
-        raise ArgumentError, "The resource_key is invalid [resource_key => #{params[:resource_key]}]"
+      if @output.nil? and rec_key
+        raise ArgumentError, "The resource_key is invalid [resource_key => #{rec_key}]"
       end
       return @output
     end
