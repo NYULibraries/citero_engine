@@ -6,9 +6,9 @@ test/dummy/log/*.log
 test/dummy/tmp/
 test/dummy/.sass-cache
 rvm.env
+coverage/
 
-
-Gemfile.lock
+aaaaaaa.lock
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml

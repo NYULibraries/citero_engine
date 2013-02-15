@@ -18,12 +18,6 @@ module CiteroEngine
     def clear
       @cite = nil
     end
-    test "should create a record" do
-      assert_difference('Record.count') do
-        post :create, :data => "itemType: book", :from_format => "csf", :ttl => "dummy", :use_route => :cite
-      end
-      assert_redirected_to '/cite'
-    end
     
     test "should convert format to format" do
       Citero.map("").from_formats.each do |from| 
@@ -33,31 +27,6 @@ module CiteroEngine
           @cite = CiteController.new
         end
       end
-    end
-    
-    test "should raise an error when ttl is missing in creating" do
-      post :create, :data => "itemType: book", :from_format => "csf", :use_route => :cite
-      assert_response :bad_request
-    end
-    test "should raise an error when from_format is missing in creating" do
-      post :create, :data => "itemType: book", :ttl => "dummy",  :use_route => :cite
-      assert_response :bad_request
-    end
-    test "should raise an error when from_format and ttl are missing in creating" do
-      post :create, :data => "itemType: book",  :use_route => :cite
-      assert_response :bad_request
-    end
-    test "should raise an error when data is missing in creating" do
-      post :create, :from_format => "csf", :ttl => "dummy",  :use_route => :cite
-      assert_response :bad_request
-    end
-    test "should raise an error when data and ttl are missing in creating" do
-      post :create, :from_format => "csf",  :use_route => :cite
-      assert_response :bad_request
-    end
-    test "should raise an error when data and from_format are missing in creating" do
-      post :create, :ttl => "dummy",  :use_route => :cite
-      assert_response :bad_request
     end
     
     test "should raise an error when a field is missing in index" do
@@ -74,30 +43,6 @@ module CiteroEngine
       assert_response :success
     end
     
-    test "should raise an error when to_format is missing in translate get" do
-      get :translate, :data => "itemType: book", :from_format => "csf", :use_route => :cite
-      assert_response :bad_request
-    end
-    test "should raise an error when from_format is missing in translate get" do
-      get :translate, :data => "itemType: book", :to_format => "csf", :use_route => :cite
-      assert_response :bad_request
-    end
-    test "should raise an error when data is missing in translate get" do
-      get :translate, :from_format => "csf", :to_format => "csf", :use_route => :cite
-      assert_response :bad_request
-    end
-    test "should raise an error when to_format is missing in translate post" do  
-      post :translate, :data => "itemType: book", :from_format => "csf", :use_route => :cite
-      assert_response :bad_request
-    end
-    test "should raise an error when from_format is missing in translate post" do
-      post :translate, :data => "itemType: book", :to_format => "csf", :use_route => :cite
-      assert_response :bad_request
-    end
-    test "should raise an error when data is missing in translate post" do
-      post :translate, :from_format => "csf", :to_format => "csf", :use_route => :cite
-      assert_response :bad_request
-    end
     
     test "should convert openurl to format" do
       Citero.map("").to_formats.each do |to|
@@ -126,10 +71,6 @@ module CiteroEngine
       end
     end 
     
-    test "should mount the engine" do
-      get :index, :use_route => :cite
-      assert_response :success
-    end
     
     test "should batch map multiple citations" do
       post :batch, :to_format => "ris", :from_format => ["csf", "csf"], :data => ["itemType: book", "itemType: journalArticle"], :use_route => :cite

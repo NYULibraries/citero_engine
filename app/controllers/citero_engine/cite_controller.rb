@@ -6,11 +6,6 @@ require 'digest/sha1'
 require 'open-uri'
 module CiteroEngine
   class CiteController < ApplicationController
-    # Mount point for the engine
-    def index
-      render :text => "CiteroEngine Mounted"
-    end
-    
     def batch
       get_to_format
       if !params[:from_format].is_a?(Array) || !params[:data].is_a?(Array) || params[:data].length != params[:from_format].length
@@ -28,20 +23,6 @@ module CiteroEngine
       end
     end
     
-    # Creates a new record with data, format, and title, redirects to that resource
-    def create
-      record = Record.create(:raw => params[:data], :formatting => params[:from_format], :title => params[:ttl])
-      if record.save
-        redirect_to "/cite", "id"=>record[:id], :status => 303
-      else
-        handle_invalid_arguments
-      end
-    end
-    
-    # Direct access to translation process, used by existing resources
-    def translate
-      if params[:data] and params[:from_format] then flow else handle_invalid_arguments and return end
-    end
     
     def flow
       gather
