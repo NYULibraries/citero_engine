@@ -22,7 +22,11 @@ module CiteroEngine
       def initialize *args
         @data = args[0]
         @from_format = args[1]
-        @resource_key = args[3]
+        (args[2].nil?) ? construct_key : @resource_key = args[2]
+      end
+      
+      def construct_key
+        @resource_key = Digest::SHA1.hexdigest(@data)+'_'+@from_format.formatize
       end
     end
     
@@ -81,9 +85,17 @@ module CiteroEngine
       end
     end
     
+    def fetch_or_map_and_cache
+      citations.collect do |cite|
+        output = ""
+        output += (Rails.cache.fetch(cite.resource_key) { Citero.map(cite.data).send(cite.from_format).send(@to_format) } )+ "\n\n"
+      end
+      # p output
+    end
     
     def flow
       citations
+      fetch_or_map_and_cache
       gather
       if @output.nil? then fetch_from_cache or ( map and cache_resource ) end
       handle
