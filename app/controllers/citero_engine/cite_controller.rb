@@ -6,6 +6,64 @@ require 'digest/sha1'
 require 'open-uri'
 module CiteroEngine
   class CiteController < ApplicationController
+    before_filter :valid_to_format?
+    
+    def valid_to_format?
+      head :bad_request unless to_format      
+    end
+    
+    def to_format
+      @to_format ||= whitelist_formats :to, params[:to_format]
+    end
+    private :to_format
+    
+    class Citation
+      attr_reader :data, :from_format, :resource_key
+      def initialize *args
+        @data = args[0]
+        @from_format = args[1]
+        @resource_key = args[3]
+      end
+    end
+    
+    def citations
+     unless defined? @citations
+      @citations = []
+      @citations += record_citation  + resource_citation + format_citation << open_url_citation
+     else
+      return @citations
+     end
+    end
+    
+    def record_citation
+      (params[:id].nil?) ? [] :
+        params[:id].collect do |id|
+          record = Record.find_by_id id
+          if record.nil?
+            return []
+          end
+          Citation.new record[:raw], (whitelist_formats :from, record[:formatting])
+        end
+    end
+    
+    def resource_citation
+      (params[:resource_key].nil?) ? [] :
+        params[:resource_key].collect do |key|
+          Citation.new nil, nil, (Rails.cache.fetch key)
+      end
+    end
+    
+    def format_citation
+      (params[:from_format].nil? || params[:data].nil?) ? [] :
+        params[:from_format].collect.with_index do |format, index|
+          Citation.new params[:data].to_a[index], (whitelist_formats :from, format)
+        end
+    end
+    
+    def open_url_citation
+      Citation.new CGI::unescape(request.protocol+request.host_with_port+request.fullpath), (whitelist_formats :from, 'openurl')
+    end
+    
     def batch
       get_to_format
       if !params[:from_format].is_a?(Array) || !params[:data].is_a?(Array) || params[:data].length != params[:from_format].length
@@ -25,6 +83,7 @@ module CiteroEngine
     
     
     def flow
+      citations
       gather
       if @output.nil? then fetch_from_cache or ( map and cache_resource ) end
       handle
@@ -100,8 +159,11 @@ module CiteroEngine
 
     # Cleans the user input and finds the associated method for that format
     def whitelist_formats direction, format
+      if direction.nil? || format.nil?
+        return
+      end
       if (direction == :to && Citero.to_formats.include?(format.downcase))||(direction == :from && Citero.from_formats.include?(format.downcase))
-          return "#{direction.to_s}_#{format.downcase}"
+        return "#{direction.to_s}_#{format.downcase}"
       end
       if push_formats.include? format.to_sym
         @push_to = push_formats[format.to_sym]
