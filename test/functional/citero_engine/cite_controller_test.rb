@@ -73,7 +73,7 @@ module CiteroEngine
     
     
     test "should batch map multiple citations" do
-      post :batch, :to_format => "ris", :from_format => ["csf", "csf"], :data => ["itemType: book", "itemType: journalArticle"], :use_route => :cite
+      post :flow, :to_format => "ris", :from_format => ["csf", "csf"], :data => ["itemType: book", "itemType: journalArticle"], :use_route => :cite
       assert_response :success
     end
   end

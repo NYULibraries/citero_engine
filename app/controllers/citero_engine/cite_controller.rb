@@ -68,23 +68,6 @@ module CiteroEngine
       Citation.new CGI::unescape(request.protocol+request.host_with_port+request.fullpath), (whitelist_formats :from, 'openurl')
     end
     
-    def batch
-      get_to_format
-      if !params[:from_format].is_a?(Array) || !params[:data].is_a?(Array) || params[:data].length != params[:from_format].length
-        handle_invalid_arguments
-      else
-        bulk = ""
-        params[:from_format].each_with_index do |val, index|
-          get_data_and_from_format false, val, params[:data][index], false
-          check_data_and_from_format
-          bulk += (fetch_from_cache or map) + "\n\n"
-          cache_resource
-        end
-        @output = bulk
-        download
-      end
-    end
-    
     def fetch_or_map_and_cache
       @output = ""
       citations.collect do |cite|
@@ -95,74 +78,12 @@ module CiteroEngine
     def flow
       citations
       fetch_or_map_and_cache
-      # gather
-      #       if @output.nil? then fetch_from_cache or ( map and cache_resource ) end
       handle
     rescue ArgumentError => exc
       handle_invalid_arguments
     end
+    
 
-    def gather
-      get_to_format
-      get_data_and_from_format
-      if @data.nil? then assume_openurl end      
-      check_data_and_from_format
-    end
-    
-    def check_data_and_from_format
-      if @from_format.nil? || @data.nil?
-        raise ArgumentError, "No input format or data available. [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
-      end
-    end
-    
-    def get_to_format
-      if params[:to_format].nil?
-        raise ArgumentError, "No destination format available. [data => #{@data}, from_format => #{@from_format}, to_format => #{@to_format}]"
-      end
-      @to_format = whitelist_formats :to, params[:to_format]
-    end
-    
-    def get_data_and_from_format id = params[:id], from = params[:id], data = params[:data], rec_key = params[:resource_key]
-      if id
-        get_from_record id
-      elsif from
-        get_from_params from, data and if rec_key then get_from_cache rec_key end
-      end
-    end
-  
-    def get_from_record id = params[:id]
-      record = Record.find_by_id id
-      @data = record[:raw] unless record.nil?
-      @from_format = whitelist_formats :from, record[:formatting] unless record.nil?
-    end
-
-    def get_from_params from = params[:from_format], data = params[:data]
-      @from_format = whitelist_formats :from, from unless from.nil?
-      @data = data unless data.nil?
-    end
-    
-    def get_from_cache rec_key = params[:resource_key]
-      @data = fetch_from_cache rec_key
-    end
-    
-    def fetch_from_cache rec_key = params[:resource_key]
-      if rec_key.nil? then key = Digest::SHA1.hexdigest(@data) end
-      key += @to_format.formatize
-      @output = Rails.cache.fetch key
-      if @output.nil? and rec_key
-        raise ArgumentError, "The resource_key is invalid [resource_key => #{rec_key}]"
-      end
-      return @output
-    end
-    
-    def assume_openurl
-      @data ||= CGI::unescape(request.protocol+request.host_with_port+request.fullpath)
-      @from_format ||= 'from_openurl'
-    end
-    
-    def map
-      @output = Citero.map(@data).send(@from_format).send(@to_format)
-    end
     
     def handle
       if push_to_is_set? then push else download end
@@ -194,7 +115,6 @@ module CiteroEngine
     def push
       if @push_to[:action].eql? :redirect
         @data = "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
-        cache_resource
         redirect_to @push_to[:url]+callback, :status => 303
       elsif @push_to[:action].eql? :method
         send @push_to[:method]
@@ -212,11 +132,6 @@ module CiteroEngine
                              :refworks => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url='] ]
     end
     
-    def cache_resource
-      @resource_key = Digest::SHA1.hexdigest(@data)
-      if @output.nil? then map end
-      Rails.cache.write(@resource_key+@to_format.formatize, @output)
-    end
     
     def callback
       callback = "#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?"
