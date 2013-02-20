@@ -12,11 +12,11 @@ module CiteroEngine
     teardown :clear
     
     def initialize_cite
-      @cite = CiteController.new
+      @controller = CiteController.new
     end
     
     def clear
-      @cite = nil
+      @controller = nil
     end
     
     test "should convert format to format" do
@@ -24,7 +24,8 @@ module CiteroEngine
         Citero.map("").to_formats.each do |to|
           get :flow, :id => Record.find_by_title(from)[:id], :to_format => to,  :use_route => :cite
           assert_response :success
-          @cite = CiteController.new
+          clear
+          initialize_cite
         end
       end
     end
@@ -43,6 +44,10 @@ module CiteroEngine
       assert_response :success
     end
     
+    test "should ignore invalid id" do
+      get :flow, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :id => "unkown", :use_route => :cite 
+      assert_response :success
+    end
     
     test "should convert openurl to format" do
       Citero.map("").to_formats.each do |to|

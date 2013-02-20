@@ -33,7 +33,7 @@ module CiteroEngine
     def citations
      unless defined? @citations
       @citations = []
-      @citations += record_citation  + resource_citation + format_citation << open_url_citation
+      @citations += record_citation + resource_citation + format_citation << open_url_citation
      else
       return @citations
      end
@@ -53,7 +53,7 @@ module CiteroEngine
     def resource_citation
       (params[:resource_key].nil?) ? [] :
         params[:resource_key].collect do |key|
-          Citation.new nil, nil, (Rails.cache.fetch key)
+          Citation.new nil, nil, key
       end
     end
     
