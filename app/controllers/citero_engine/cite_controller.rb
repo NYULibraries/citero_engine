@@ -25,8 +25,8 @@ module CiteroEngine
         (args[2].nil?) ? construct_key : @resource_key = args[2]
       end
       
-      def construct_key
-        @resource_key = Digest::SHA1.hexdigest(@data)+'_'+@from_format.formatize
+      def construct_key 
+        @resource_key = Digest::SHA1.hexdigest(@data)
       end
     end
     
@@ -74,7 +74,7 @@ module CiteroEngine
     def fetch_or_map_and_cache
       @output = ""
       citations.collect do |cite|
-        @output += (Rails.cache.fetch(cite.resource_key) { Citero.map(cite.data).send(cite.from_format).send(@to_format) } ) + "\n"
+        @output += (Rails.cache.fetch(cite.resource_key+@to_format) { Citero.map(cite.data).send(cite.from_format).send(@to_format) } ) + "\n\n\n\n\n"
       end
     rescue TypeError => exc
       raise ArgumentError, "Data or source format not provided. [data => #{@data}, from_format => #{@from_format}]"
