@@ -86,18 +86,17 @@ module CiteroEngine
     end
     
     def fetch_or_map_and_cache
+      @output = ""
       citations.collect do |cite|
-        output = ""
-        output += (Rails.cache.fetch(cite.resource_key) { Citero.map(cite.data).send(cite.from_format).send(@to_format) } )+ "\n\n"
+        @output += (Rails.cache.fetch(cite.resource_key) { Citero.map(cite.data).send(cite.from_format).send(@to_format) } ) + "\n"
       end
-      # p output
     end
     
     def flow
       citations
       fetch_or_map_and_cache
-      gather
-      if @output.nil? then fetch_from_cache or ( map and cache_resource ) end
+      # gather
+      #       if @output.nil? then fetch_from_cache or ( map and cache_resource ) end
       handle
     rescue ArgumentError => exc
       handle_invalid_arguments
@@ -220,7 +219,12 @@ module CiteroEngine
     end
     
     def callback
-      ERB::Util.url_encode("#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?resource_key=#{@resource_key}&to_format=#{@to_format.formatize}&from_format=#{@from_format.formatize}" )
+      callback = "#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?"
+      citations.collect do |cite|
+        callback += "resource_key[]=#{cite.resource_key}&"
+      end
+      callback += "to_format=#{@to_format.formatize}"
+      ERB::Util.url_encode(callback)
     end
     
     # Creates the filename and extension. Few are application specific
