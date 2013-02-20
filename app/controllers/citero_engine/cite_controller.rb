@@ -33,7 +33,10 @@ module CiteroEngine
     def citations
      unless defined? @citations
       @citations = []
-      @citations += record_citation + resource_citation + format_citation << open_url_citation
+      @citations += record_citation + resource_citation + format_citation
+      if @citations.empty?
+        @citations << open_url_citation
+      end
      else
       return @citations
      end
@@ -73,6 +76,8 @@ module CiteroEngine
       citations.collect do |cite|
         @output += (Rails.cache.fetch(cite.resource_key) { Citero.map(cite.data).send(cite.from_format).send(@to_format) } ) + "\n"
       end
+    rescue TypeError => exc
+      raise ArgumentError, "Data or source format not provided. [data => #{@data}, from_format => #{@from_format}]"
     end
     
     def flow

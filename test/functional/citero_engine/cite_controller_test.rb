@@ -81,5 +81,10 @@ module CiteroEngine
       post :flow, :to_format => "ris", :from_format => ["csf", "csf"], :data => ["itemType: book", "itemType: journalArticle"], :use_route => :cite
       assert_response :success
     end
+    
+    test "should fail since resource key is invalid" do 
+      get :flow, :to_format => "ris", :resource_key => "unknown", :use_route => :cite
+      assert_response :bad_request
+    end
   end
 end
