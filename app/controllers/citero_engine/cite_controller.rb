@@ -132,7 +132,6 @@ module CiteroEngine
                              :refworks => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url='] ]
     end
     
-    
     def callback
       callback = "#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?"
       citations.collect do |cite|
