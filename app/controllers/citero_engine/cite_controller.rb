@@ -102,6 +102,7 @@ module CiteroEngine
       if (direction == :to && Citero.to_formats.include?(format.downcase))||(direction == :from && Citero.from_formats.include?(format.downcase))
         return "#{direction.to_s}_#{format.downcase}"
       end
+      # p format.to_sym
       if push_formats.include? format.to_sym
         @push_to = push_formats[format.to_sym]
         @to_format = @push_to[:format].downcase
