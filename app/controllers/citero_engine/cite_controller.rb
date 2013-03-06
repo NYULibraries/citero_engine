@@ -1,56 +1,28 @@
-require_dependency "citero_engine/application_controller"
 require "citero_engine/engine"
-require "citero"
 require 'digest/sha1'
-  
 require 'open-uri'
 module CiteroEngine
-  class CiteController < ApplicationController
+  class CiteController < ActionController::Base
     before_filter :valid_to_format?
     
     def valid_to_format?
       head :bad_request unless to_format      
     end
-    
     def to_format
       @to_format ||= whitelist_formats :to, params[:to_format]
     end
     private :to_format
     
-    class Citation
-      attr_reader :data, :from_format, :resource_key
-      def initialize *args
-        @data = args[0]
-        @from_format = args[1]
-        (args[2].nil?) ? construct_key : @resource_key = args[2]
-      end
-      
-      def construct_key 
-        @resource_key = Digest::SHA1.hexdigest(@data)
-      end
-    end
     
     def citations
      unless defined? @citations
       @citations = []
-      @citations += record_citation + resource_citation + format_citation
+      @citations += resource_citation + format_citation
       if @citations.empty?
         @citations << open_url_citation
       end
-     else
-      return @citations
      end
-    end
-    
-    def record_citation
-      (params[:id].nil?) ? [] :
-        params[:id].collect do |id|
-          record = Record.find_by_id id
-          if record.nil?
-            return []
-          end
-          Citation.new record[:raw], (whitelist_formats :from, record[:formatting])
-        end
+     @citations
     end
     
     def resource_citation
@@ -71,18 +43,17 @@ module CiteroEngine
       Citation.new CGI::unescape(request.protocol+request.host_with_port+request.fullpath), (whitelist_formats :from, 'openurl')
     end
     
-    def fetch_or_map_and_cache
-      @output = ""
-      citations.collect do |cite|
-        @output += (Rails.cache.fetch(cite.resource_key+@to_format) { Citero.map(cite.data).send(cite.from_format).send(@to_format) } ) + "\n\n\n\n\n"
-      end
-    rescue TypeError => exc
+    def map
+      @output ||= 
+        citations.collect { |cite|
+          (Rails.cache.fetch(cite.resource_key+@to_format) { cite.send(@to_format) } ) 
+        }.join "\n\n"
+    rescue TypeError, ActiveRecord::StatementInvalid => exc
       raise ArgumentError, "Data or source format not provided. [data => #{@data}, from_format => #{@from_format}]"
     end
     
     def flow
-      citations
-      fetch_or_map_and_cache
+      map
       handle
     rescue ArgumentError => exc
       handle_invalid_arguments
@@ -128,7 +99,7 @@ module CiteroEngine
     end
 
     def download
-      send_data @output.force_encoding('UTF-8'), :filename => filename, :type => 'application/ris'
+      send_data @output.force_encoding('UTF-8'), :filename => filename, :type => @to_format.formatize.to_sym
     end
 
     

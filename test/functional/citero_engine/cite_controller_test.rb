@@ -7,7 +7,6 @@ require 'citero'
 
 module CiteroEngine
   class CiteControllerTest < ActionController::TestCase
-    fixtures :"citero_engine/records"
     setup :initialize_cite
     teardown :clear
     
@@ -20,9 +19,9 @@ module CiteroEngine
     end
     
     test "should convert format to format" do
-      Citero.map("").from_formats.each do |from| 
-        Citero.map("").to_formats.each do |to|
-          get :flow, :id => Record.find_by_title(from)[:id], :to_format => to,  :use_route => :cite
+      Citero.from_formats.each do |from| 
+        Citero.to_formats.each do |to|
+          get :flow, :data => $formats[from.to_sym], :from_format => from, :to_format => to,  :use_route => :cite
           assert_response :success
           clear
           initialize_cite
@@ -50,7 +49,7 @@ module CiteroEngine
     end
     
     test "should convert openurl to format" do
-      Citero.map("").to_formats.each do |to|
+      Citero.to_formats.each do |to|
         get :flow, "rft_val_fmt" => "info:ofi/fmt:kev:mtx:book", :to_format => to,  :use_route => :cite
         assert_response :success
       end
@@ -67,15 +66,14 @@ module CiteroEngine
     end
     
     test "should redirect to easybib" do
-      Citero.map("").from_formats.each do |from| 
-        get :flow, :to_format => "easybibpush", :id => Record.find_by_title(from)[:id], :use_route => :cite
+      Citero.from_formats.each do |from| 
+        get :flow, :to_format => "easybibpush", :from_format => from, :data => $formats[from], :use_route => :cite
         assert_response :success
         assert_template :partial => '_external_form'
         clear
         initialize_cite
       end
     end 
-    
     
     test "should batch map multiple citations" do
       post :flow, :to_format => "ris", :from_format => ["csf", "csf"], :data => ["itemType: book", "itemType: journalArticle"], :use_route => :cite

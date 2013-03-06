@@ -1,5 +1,5 @@
 require 'citero_engine/core_ext'
-require 'citero_engine/acts_as_citable'
+require "acts_as_citable"
 
 module CiteroEngine
   class Engine < Rails::Engine

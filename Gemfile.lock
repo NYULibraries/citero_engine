@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     citero-engine (0.1.0)
-      citero (~> 1.1)
+      acts_as_citable
       rails (~> 3.2)
       rails_config
       rake (~> 10.0)
@@ -41,6 +41,9 @@ GEM
     activesupport (3.2.12)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    acts_as_citable (0.1.0)
+      citero (~> 1.0)
+      rails (~> 3.2.12)
     arel (3.0.2)
     brakeman (1.9.2)
       erubis (~> 2.6)
@@ -53,9 +56,14 @@ GEM
       sass (~> 3.0)
       terminal-table (~> 1.4)
     builder (3.0.4)
-    citero (1.1.3)
-      bundler (~> 1.2)
-      rake (~> 10.0)
+    citero (1.2.2)
+    colorize (0.5.8)
+    coveralls (0.6.0)
+      colorize
+      multi_json (~> 1.3)
+      rest-client
+      simplecov (>= 0.7)
+      thor
     erubis (2.7.0)
     fastercsv (1.5.5)
     haml (3.1.8)
@@ -103,6 +111,8 @@ GEM
     rake (10.0.3)
     rdoc (3.12.1)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     ruby2ruby (2.0.3)
       ruby_parser (~> 3.1)
       sexp_processor (~> 4.0)
@@ -128,7 +138,7 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.35)
+    tzinfo (0.3.36)
 
 PLATFORMS
   java
@@ -138,6 +148,7 @@ DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
   brakeman
   citero-engine!
+  coveralls
   jquery-rails
   simplecov
   simplecov-rcov
