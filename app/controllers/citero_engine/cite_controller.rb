@@ -48,7 +48,7 @@ module CiteroEngine
         citations.collect { |cite|
           (Rails.cache.fetch(cite.resource_key+@to_format) { cite.send(@to_format) } ) 
         }.join "\n\n"
-    rescue TypeError, ActiveRecord::StatementInvalid => exc
+    rescue Exception => exc
       raise ArgumentError, "Data or source format not provided. [data => #{@data}, from_format => #{@from_format}]"
     end
     
