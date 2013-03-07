@@ -1,3 +1,3 @@
 CiteroEngine::Engine.routes.draw do
-  match "cite" => 'cite#flow'
+  match "cite" => 'cite'
 end
