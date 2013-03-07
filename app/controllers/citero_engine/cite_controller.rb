@@ -28,28 +28,28 @@ module CiteroEngine
     def resource_citation
       (params[:resource_key].nil?) ? [] :
         params[:resource_key].collect do |key|
-          Citation.new nil, nil, key
-      end
+          Citation.new :data => nil, :from_format => nil, :resource_key => key
+        end
     end
     
     def format_citation
       (params[:from_format].nil? || params[:data].nil?) ? [] :
         params[:from_format].collect.with_index do |format, index|
-          Citation.new params[:data].to_a[index], (whitelist_formats :from, format)
+          Citation.new :data => params[:data].to_a[index], :from_format => (whitelist_formats :from, format)
         end
     end
     
     def open_url_citation
-      Citation.new CGI::unescape(request.protocol+request.host_with_port+request.fullpath), (whitelist_formats :from, 'openurl')
+      Citation.new :data => CGI::unescape(request.protocol+request.host_with_port+request.fullpath), :from_format => (whitelist_formats :from, 'openurl')
     end
     
     def map
       @output ||= 
         citations.collect { |cite|
-          (Rails.cache.fetch(cite.resource_key+@to_format) { cite.send(@to_format) } ) 
+          (Rails.cache.fetch(cite.resource_key+@to_format) { cite.send(@to_format) } )
         }.join "\n\n"
     rescue Exception => exc
-      raise ArgumentError, "Data or source format not provided. [data => #{@data}, from_format => #{@from_format}]"
+      raise ArgumentError, "#{exc}\n Data or source format not provided. [citations => #{citations}, to_format => #{@to_format}]"
     end
     
     def flow
@@ -70,10 +70,11 @@ module CiteroEngine
       if direction.nil? || format.nil?
         return
       end
-      if (direction == :to && Citero.to_formats.include?(format.downcase))||(direction == :from && Citero.from_formats.include?(format.downcase))
-        return "#{direction.to_s}_#{format.downcase}"
+      if (direction == :to && Citero.to_formats.include?(format.downcase))
+        return "#{:to.to_s}_#{format.downcase}"
+      elsif (direction == :from && Citero.from_formats.include?(format.downcase))
+        return format.downcase
       end
-      # p format.to_sym
       if push_formats.include? format.to_sym
         @push_to = push_formats[format.to_sym]
         @to_format = @push_to[:format].downcase

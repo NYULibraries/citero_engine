@@ -1,17 +1,15 @@
 module CiteroEngine
   class Citation < ActiveRecord::Base
-    attr_reader :data, :from_format, :resource_key
+    attr_accessible :data, :from_format, :resource_key
     acts_as_citable do |c|
       c.format_field = 'from_format'
     end
-    def initialize *args
-      @data = args[0]
-      @from_format = args[1]
-      (args[2].nil?) ? construct_key : @resource_key = args[2]
-    end
+    after_initialize :construct_key
 
     def construct_key 
-      @resource_key = Digest::SHA1.hexdigest(@data)
+      if read_attribute(:resource_key).nil? && read_attribute(:data) 
+        write_attribute(:resource_key, Digest::SHA1.hexdigest(read_attribute(:data)))
+      end
     end
   end
 end
