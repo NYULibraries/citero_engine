@@ -15,11 +15,12 @@ Gem::Specification.new do |s|
   s.email       = 'hab278@nyu.edu'
   s.files       = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files  = Dir["test/**/*"]
+  s.homepage    = "https://github.com/NYULibraries/CiteroEngine"
 
   s.add_dependency "rails", "~> 3.2"
   s.add_dependency "rake", "~> 10.0"
   s.add_dependency "rails_config"
-  s.add_dependency 'acts_as_citable'
+  # s.add_dependency 'acts_as_citable'
 
   s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
   s.add_development_dependency "brakeman"
