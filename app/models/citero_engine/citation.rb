@@ -1,19 +1,12 @@
 module CiteroEngine
   # Citation class, holds data from format and/or resource key
   class Citation
+    extend ActsAsCitable
     # Required fields
     attr_reader :data, :from_format, :resource_key
-    
-    include ActsAsCitable::InstanceMethods
-    ActsAsCitable::InstanceMethods.module_eval{
-      def data
-        @data
-      end
-      
-      def format
-        @from_format
-      end
-    }
+    acts_as_citable do |c|
+      c.format_field = :from_format
+    end
     
     # Post initilaize hook
     def initialize *args

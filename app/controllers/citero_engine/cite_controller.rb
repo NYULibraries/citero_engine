@@ -57,7 +57,7 @@ module CiteroEngine
     # Raises an argument error if any error is caught in mapping (usually the formats are messed up)
     def map
       @output ||= 
-        citations.collect { |cite| Rails.cache.fetch(cite.resource_key+@to_format) { cite.send(@to_format) } }.join "\n\n"
+        citations.collect { |cite| Rails.cache.fetch(cite.instance_variable_get(:@resource_key)+@to_format) { cite.send(@to_format) } }.join "\n\n"
     rescue Exception => exc
       raise ArgumentError, "#{exc}\n Data or source format not provided and/or mismatched. [citations => #{citations}, to_format => #{@to_format}]"
     end
@@ -99,7 +99,6 @@ module CiteroEngine
     # For debugging purposes prints out the error. Also sends bad request header
     def handle_invalid_arguments exc
       logger.debug exc
-      p exc
       head :bad_request
     end
 
