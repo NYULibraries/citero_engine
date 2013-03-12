@@ -19,6 +19,7 @@ module CiteroEngine
     def construct_key 
       @resource_key = Digest::SHA1.hexdigest(@data)
     end
-    
   end
+  
+  ActsAsCitableClass = Citation
 end
