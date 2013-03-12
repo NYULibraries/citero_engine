@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/NYULibraries/acts_as_citable.git
-  revision: d8a4a05156c6763396c687eaa2d4eb1aa99476e4
+  revision: fec4a9eb0325faa402102660a3273371c2a20f3a
   branch: devel
   specs:
     acts_as_citable (0.1.0)
@@ -149,7 +149,7 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.36)
+    tzinfo (0.3.37)
 
 PLATFORMS
   java
