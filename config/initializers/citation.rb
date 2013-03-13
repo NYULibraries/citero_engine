@@ -2,11 +2,12 @@ module CiteroEngine
   ActiveSupport.on_load(:after_initialize) do
     ActiveRecord::Base.class_eval do
       # acts_as_citable
-      attr_reader :resource_key
-      after_initialize :setup_acts_as_citable
+      attr_accessor :resource_key
+      
+      after_initialize :construct_key
 
-      def setup_acts_as_citable
-        @resource_key =  Digest::SHA1.hexdigest(_data)
+      def construct_key
+        @resource_key = Digest::SHA1.hexdigest(_data)
       end
     end
   end

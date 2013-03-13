@@ -12,16 +12,16 @@ module CiteroEngine
     end
 
     test "test typeones formatting should populate records fields" do
-      typeone = TypeOne.new(:formatting => "CSF", :raw => "itemType: book")
+      typeone = TypeOne.new(:formatting => "csf", :raw => "itemType: book")
       # typeone.formatting("CSF")
-      # p typeone.to_ris
-      assert_equal "CSF", typeone.formatting
+      assert_equal "csf", typeone.formatting
     end
 
     test "test typetwos formatting should populate records fields" do
-      # typetwo = TypeTwo.new
-      # typetwo.format("PNX")
-      # assert_equal "PNX", typetwo.from_format
+      CiteroEngine::ActsAsCitableClass = TypeOne
+            # 
+            # t = CiteroEngine::ActsAsCitableClass.new(:formatting => "csf", :raw => "itemType: book")
+            # p t.tryfff
     end
   end
 end

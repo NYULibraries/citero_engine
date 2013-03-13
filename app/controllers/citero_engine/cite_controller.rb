@@ -36,7 +36,7 @@ module CiteroEngine
     def resource_citation
       (params[:resource_key].nil?) ? [] :
         params[:resource_key].collect do |key|
-          Citation.new nil, nil, key
+          Citation.new :resource_key => key
         end
     end
     
@@ -44,13 +44,14 @@ module CiteroEngine
     def format_citation
       (params[:from_format].nil? || params[:data].nil?) ? [] :
         params[:from_format].collect.with_index do |format, index|
-          Citation.new params[:data].to_a[index],  (whitelist_formats :from, format)
+          # p ActsAsCitableClass.format_field
+          ActsAsCitableClass.new ActsAsCitableClass.data_field.to_sym => params[:data].to_a[index],  ActsAsCitableClass.format_field.to_sym => (whitelist_formats :from, format)
         end
     end
     
     # Returns a single citation object with data and format set as the url and openurl respectively
     def open_url_citation
-      Citation.new CGI::unescape(request.protocol+request.host_with_port+request.fullpath),  (whitelist_formats :from, 'openurl')
+      ActsAsCitableClass.new  ActsAsCitableClass.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),  ActsAsCitableClass.format_field.to_sym => (whitelist_formats :from, 'openurl')
     end
     
     # Maps the output and caches it, alternatively it fetches the already cached result. Seperates each output with two new lines.
