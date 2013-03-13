@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211225050) do
+ActiveRecord::Schema.define(:version => 20130211192122) do
 
   create_table "citero_engine_records", :force => true do |t|
     t.string   "formatting"
