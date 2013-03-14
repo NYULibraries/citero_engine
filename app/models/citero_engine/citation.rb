@@ -13,7 +13,5 @@ module CiteroEngine
       self.from_format = args[:from_format]
       self.resource_key = args[:resource_key]
     end
-    
-    CiteroEngine.acts_as_citable_class = Citation
   end
 end
