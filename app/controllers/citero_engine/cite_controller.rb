@@ -24,19 +24,26 @@ module CiteroEngine
     # Constructs an array containing all the citations
     def citations
      unless defined? @citations
-      @citations = resource_citation + format_citation
+      @citations = record_citation + resource_citation + format_citation
       if @citations.empty?
         @citations << open_url_citation
       end
      end
-     @citations
+     @citations.compact 
+    end
+    
+    def record_citation
+      (params[:id].nil?) ? [] :
+        params[:id].collect do |id|
+          record = CiteroEngine.acts_as_citable_class.find_by_id id if CiteroEngine.acts_as_citable_class.respond_to? :find_by_id 
+        end
     end
     
     # Constructs new citation objects with only the citation key set, returns an array
     def resource_citation
       (params[:resource_key].nil?) ? [] :
         params[:resource_key].collect do |key|
-           CiteroEngine.acts_as_citable_class.new :resource_key => key
+           CiteroEngine.acts_as_citable_class.new().resource_key = key 
         end
     end
     
@@ -126,9 +133,9 @@ module CiteroEngine
     def callback
       # Starts with current url minus the querystring..
       callback = "#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?"
-      citations.collect do |cite|
+      citations.collect do |citation|
         # then adds a resource key for each cached resource
-        callback += "resource_key[]=#{cite.resource_key}&"
+        callback += (!citation.respond_to? :new_record || citation.new_record?) ? "resource_key[]=#{citation.resource_key}&" : "id[]=#{citation.id}&"
       end
       # and finally the to format
       callback += "to_format=#{@to_format.formatize}"

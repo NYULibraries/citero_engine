@@ -39,7 +39,7 @@ GEM
       activesupport (= 3.2.12)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
-    activerecord-jdbc-adapter (1.2.7)
+    activerecord-jdbc-adapter (1.2.8)
     activerecord-jdbcsqlite3-adapter (1.2.7)
       activerecord-jdbc-adapter (~> 1.2.7)
       jdbc-sqlite3 (~> 3.7.2)
