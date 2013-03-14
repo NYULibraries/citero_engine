@@ -18,7 +18,7 @@ module CiteroEngine
     end
 
     test "test typetwos formatting should populate records fields" do
-      CiteroEngine::ActsAsCitableClass = TypeOne
+      # CiteroEngine::ActsAsCitableClass = TypeOne
             # 
             # t = CiteroEngine::ActsAsCitableClass.new(:formatting => "csf", :raw => "itemType: book")
             # p t.tryfff

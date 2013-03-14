@@ -36,7 +36,7 @@ module CiteroEngine
     def resource_citation
       (params[:resource_key].nil?) ? [] :
         params[:resource_key].collect do |key|
-          Citation.new :resource_key => key
+           CiteroEngine.acts_as_citable_class.new :resource_key => key
         end
     end
     
@@ -45,20 +45,20 @@ module CiteroEngine
       (params[:from_format].nil? || params[:data].nil?) ? [] :
         params[:from_format].collect.with_index do |format, index|
           # p ActsAsCitableClass.format_field
-          ActsAsCitableClass.new ActsAsCitableClass.data_field.to_sym => params[:data].to_a[index],  ActsAsCitableClass.format_field.to_sym => (whitelist_formats :from, format)
+          CiteroEngine.acts_as_citable_class.new  CiteroEngine.acts_as_citable_class.data_field.to_sym => params[:data].to_a[index],   CiteroEngine.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, format)
         end
     end
     
     # Returns a single citation object with data and format set as the url and openurl respectively
     def open_url_citation
-      ActsAsCitableClass.new  ActsAsCitableClass.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),  ActsAsCitableClass.format_field.to_sym => (whitelist_formats :from, 'openurl')
+       CiteroEngine.acts_as_citable_class.new   CiteroEngine.acts_as_citable_class.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),   CiteroEngine.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, 'openurl')
     end
     
     # Maps the output and caches it, alternatively it fetches the already cached result. Seperates each output with two new lines.
     # Raises an argument error if any error is caught in mapping (usually the formats are messed up)
     def map
       @output ||= 
-        citations.collect { |cite| Rails.cache.fetch(cite.instance_variable_get(:@resource_key)+@to_format) { cite.send(@to_format) } }.join "\n\n"
+        citations.collect { |citation| Rails.cache.fetch(citation.resource_key+to_format) { citation.send(to_format) } }.join "\n\n"
     rescue Exception => exc
       raise ArgumentError, "#{exc}\n Data or source format not provided and/or mismatched. [citations => #{citations}, to_format => #{@to_format}]"
     end
