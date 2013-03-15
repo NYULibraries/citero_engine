@@ -21,7 +21,7 @@ module CiteroEngine
       CiteroEngine.acts_as_citable_class = "TypeOne"
       t = CiteroEngine.acts_as_citable_class.new(:formatting => "csf", :raw => "itemType: book")
       t.id = 1
-      CiteroEngine.acts_as_citable_class = "CiteroEngine::Citation"
+      # CiteroEngine.acts_as_citable_class = "CiteroEngine::Citation"
     end
   end
 end

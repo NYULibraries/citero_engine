@@ -1,3 +1,3 @@
 CiteroEngine::Engine.routes.draw do
-  match "cite" => 'cite'
+  match "cite" => 'cite#index'
 end
