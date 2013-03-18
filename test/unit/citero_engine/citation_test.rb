@@ -17,6 +17,10 @@ module CiteroEngine
     end
 
     test "test typetwos formatting should populate records fields" do
+      typetwo = TypeOne.new(:format => "csf", :data => "itemType: book")
+      assert_equal "csf", typeone.format
+    end
+    test "test typeones ability to act as citable"
       CiteroEngine.acts_as_citable_class = "TypeOne"
       t = CiteroEngine.acts_as_citable_class.new(:formatting => "csf", :raw => "itemType: book")
       t.id = 1
