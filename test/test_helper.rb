@@ -31,3 +31,5 @@ $formats ||= Hash[
               :bibtex => "@article{Adams2001\n}",
               :pnx => "<display><type>book</type></display>"
   ]
+  
+$acts_as_citable_classes = ["CiteroEngine::Citation", "TypeOne"]

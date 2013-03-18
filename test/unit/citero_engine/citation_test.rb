@@ -13,7 +13,6 @@ module CiteroEngine
 
     test "test typeones formatting should populate records fields" do
       typeone = TypeOne.new(:formatting => "csf", :raw => "itemType: book")
-      # typeone.formatting("CSF")
       assert_equal "csf", typeone.formatting
     end
 
@@ -21,7 +20,8 @@ module CiteroEngine
       CiteroEngine.acts_as_citable_class = "TypeOne"
       t = CiteroEngine.acts_as_citable_class.new(:formatting => "csf", :raw => "itemType: book")
       t.id = 1
-      # CiteroEngine.acts_as_citable_class = "CiteroEngine::Citation"
+      assert_equal t.to_ris, "TY  - BOOK\nER  -\n\n"
+      CiteroEngine.acts_as_citable_class = "CiteroEngine::Citation"
     end
   end
 end
