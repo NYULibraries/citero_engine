@@ -12,6 +12,7 @@ module CiteroEngine
     
     # Sends bad request if there is no destination format
     def valid_to_format?
+      p "Bad to format"
       head :bad_request unless to_format      
     end
     
@@ -43,7 +44,9 @@ module CiteroEngine
     def resource_citation
       (params[:resource_key].nil?) ? [] :
         params[:resource_key].collect do |key|
-           CiteroEngine.acts_as_citable_class.new().resource_key = key 
+           citation = CiteroEngine.acts_as_citable_class.new()
+           citation.resource_key = key 
+           citation
         end
     end
     
@@ -106,6 +109,7 @@ module CiteroEngine
     
     # For debugging purposes prints out the error. Also sends bad request header
     def handle_invalid_arguments exc
+      p exc
       logger.debug exc
       head :bad_request
     end
