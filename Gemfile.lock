@@ -1,16 +1,8 @@
-GIT
-  remote: git://github.com/NYULibraries/acts_as_citable.git
-  revision: fec4a9eb0325faa402102660a3273371c2a20f3a
-  branch: devel
-  specs:
-    acts_as_citable (0.1.0)
-      citero (~> 1.0)
-      rails (~> 3.2.12)
-
 PATH
   remote: .
   specs:
     citero-engine (0.1.0)
+      acts_as_citable (~> 1.0)
       rails (~> 3.2)
       rails_config
       rake (~> 10.0)
@@ -49,6 +41,9 @@ GEM
     activesupport (3.2.12)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    acts_as_citable (1.0.0)
+      citero (~> 1.0)
+      rails (~> 3.2.12)
     arel (3.0.2)
     brakeman (1.9.3)
       erubis (~> 2.6)
@@ -157,7 +152,6 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
-  acts_as_citable!
   brakeman
   citero-engine!
   coveralls
