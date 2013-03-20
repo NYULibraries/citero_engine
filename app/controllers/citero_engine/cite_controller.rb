@@ -12,7 +12,6 @@ module CiteroEngine
     
     # Sends bad request if there is no destination format
     def valid_to_format?
-      p "Bad to format"
       head :bad_request unless to_format      
     end
     
