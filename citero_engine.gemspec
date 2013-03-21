@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rake", "~> 10.0"
   s.add_dependency "rails_config"
   s.add_dependency "acts_as_citable", "~> 1.0"
+  s.add_dependency "jquery-rails", "~> 2.2"
 
   s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
   s.add_development_dependency "brakeman"

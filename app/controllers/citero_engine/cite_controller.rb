@@ -9,6 +9,7 @@ module CiteroEngine
   class CiteController < ActionController::Base
     # There must be a destination format, or else this whole thing doesnt make sense
     before_filter :valid_to_format?
+    layout "citero_engine/application"
     
     # Sends bad request if there is no destination format
     def valid_to_format?

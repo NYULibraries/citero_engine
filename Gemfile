@@ -6,7 +6,7 @@ source "http://rubygems.org"
 gemspec
 
 # jquery-rails is used by the dummy application
-gem "jquery-rails"
+# gem "jquery-rails"
 gem "coveralls", require: false
 
 # gem "acts_as_citable", :git => 'git://github.com/NYULibraries/acts_as_citable.git', :branch => 'devel'
