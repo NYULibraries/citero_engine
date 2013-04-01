@@ -18,3 +18,4 @@ gem "coveralls", require: false
 
 # To use debugger
 # gem 'debugger'
+gem 'ruby-debug'

@@ -100,9 +100,9 @@ module CiteroEngine
         return format.downcase
       end
       # if the format is still not found, it might be a push request, check if that is the case
-      if push_formats.include? format.to_sym
-        @push_to = push_formats[format.to_sym]
-        @to_format = @push_to[:format].downcase
+      if CiteroEngine.push_formats.include? format.to_sym
+        @push_to = CiteroEngine.push_formats[format.to_sym]
+        @to_format = @push_to.to_format.downcase
         return "#{direction.to_s}_#{@to_format}"
       end
     end
@@ -117,14 +117,14 @@ module CiteroEngine
     # Redirects or calls a predefined method depending on the webservice selected
     def push
       # for redirects
-      if @push_to[:action].eql? :redirect
+      if @push_to.action.eql? :redirect
         # Openurl is data
         @data = "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
         # and redirect to the url supplied by the webservice and the callback url
-        redirect_to @push_to[:url]+callback, :status => 303
-      elsif @push_to[:action].eql? :method
+        redirect_to @push_to.url+callback, :status => 303
+      elsif @push_to.action.eql? :render
         # call the method this service needs
-        send @push_to[:method]
+        render_push @push_to
       end
     end
 
@@ -160,22 +160,12 @@ module CiteroEngine
       end
       name
     end
-    
-    # Defines the push formats, looking to move this out
-    def push_formats
-      @push_formats ||= Hash[:easybibpush => Hash[ :format => :easybib, :action => :method, :method => :push_to_easybib], 
-                             :endnote => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl='], 
-                             :refworks => Hash[ :format => :ris, :action => :redirect, :url => 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url='] ]
-    end
-    
-    # Defines a form for the push to easybib
-    def push_to_easybib
-      @elements = [{:name => "data", :value => "[" + @output + "]", :type => "textarea"}]
-      @name = "Push to EasyBib"
-      @action = "http://www.easybib.com/cite/bulk"
-      @method = "POST"
-      @enctype = "application/x-www-form-urlencoded"
-      render :template => "citero_engine/cite/external_form"
+
+    def render_push push
+      push.vars.each do |key, value|
+        instance_variable_set "@#{key}", value.outputize(@output)
+      end
+      render :template => push.template
     end
   end
 end
