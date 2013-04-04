@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "citero-engine"
   s.version     = CiteroEngine::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.date        = '2013-04-03'
+  s.date        = '2013-04-04'
   s.summary     = "Web engine to allow download and push capabilities to an array of bibiligraphic records."
   s.description = "Leverages citero gem and acts_as_citable to deliver a download and push mechanism."
   s.authors     = ["hab278"]
