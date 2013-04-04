@@ -8,7 +8,7 @@ test/dummy/.sass-cache
 rvm.env
 coverage/
 
-aaaaaaa.lock
+Gemfile.lock
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
