@@ -136,7 +136,7 @@ module CiteroEngine
     # The callback url is defined here
     def callback
       # Starts with current url minus the querystring..
-      callback = "#{request.protocol}#{request.host_with_port}#{request.fullpath.split('?')[0]}?"
+      callback = "#{cite_url}?"
       citations.collect do |citation|
         # then adds a resource key for each cached resource
         callback += (!citation.respond_to? :new_record || citation.new_record?) ? "resource_key[]=#{citation.resource_key}&" : "id[]=#{citation.id}&"
