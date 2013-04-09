@@ -74,7 +74,7 @@ module CiteroEngine
       $acts_as_citable_classes.each do |citable_class|
         CiteroEngine.acts_as_citable_class = citable_class
         get :index, :to_format => "endnote", :use_route => :cite
-        assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fcite%2Fcite%3Fresource_key%5B%5D%3Dcc141d92caee81bd0601a5ee365fdf9ec31d23bb%26to_format%3Dris"
+        assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=https%3A%2F%2Ftest.host%2Fcite%2Fcite%3Fresource_key%5B%5D%3Dcc141d92caee81bd0601a5ee365fdf9ec31d23bb%26to_format%3Dris"
       end
     end
     
@@ -82,7 +82,7 @@ module CiteroEngine
       $acts_as_citable_classes.each do |citable_class|
         CiteroEngine.acts_as_citable_class = citable_class
         get :index, :to_format => "refworks", :use_route => :cite
-        assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=http%3A%2F%2Ftest.host%2Fcite%2Fcite%3Fresource_key%5B%5D%3D1ad5e264e5a423b07ab635982e79e35290b85c41%26to_format%3Dris"
+        assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=https%3A%2F%2Ftest.host%2Fcite%2Fcite%3Fresource_key%5B%5D%3D1ad5e264e5a423b07ab635982e79e35290b85c41%26to_format%3Dris"
       end
     end
     
