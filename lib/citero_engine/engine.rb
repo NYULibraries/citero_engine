@@ -33,7 +33,7 @@ module CiteroEngine
     # @refworks ||= PushFormat.new :name => :refworks, :to_format => :ris, :action => :redirect, :url => 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url='
     @refworks ||= PushFormat.new( :name => :refworks, :to_format => :ris, :action => :render, :template => "citero_engine/cite/external_form",
     :vars => Hash[
-       "elements" => [{:name => 'ImportData', :value => "[ @output ]", :type => 'textarea'}],
+       "elements" => [{:name => 'ImportData', :value => "@output", :type => 'textarea'}],
        "name" => "ExportRWForm",
        "action" => "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RefWorks%20Tagged%20Format&encoding=65001",
        "method" => "POST",
