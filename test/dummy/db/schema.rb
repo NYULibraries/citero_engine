@@ -13,14 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20130211192122) do
 
-  create_table "citero_engine_records", :force => true do |t|
-    t.string   "formatting"
-    t.text     "title"
-    t.string   "raw"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "type_ones", :force => true do |t|
     t.string   "formatting"
     t.string   "title"

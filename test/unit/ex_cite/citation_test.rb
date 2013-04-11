@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CiteroEngine
+module ExCite
   class RecordTest < ActiveSupport::TestCase
 
     test "typeones fields should be records fields" do
@@ -22,11 +22,11 @@ module CiteroEngine
     end
     
     test "test typeones ability to act as citable" do
-      CiteroEngine.acts_as_citable_class = "TypeOne"
-      t = CiteroEngine.acts_as_citable_class.new(:formatting => "csf", :raw => "itemType: book")
+      ExCite.acts_as_citable_class = "TypeOne"
+      t = ExCite.acts_as_citable_class.new(:formatting => "csf", :raw => "itemType: book")
       t.id = 1
       assert_equal t.to_ris, "TY  - BOOK\nER  -\n\n"
-      CiteroEngine.acts_as_citable_class = "CiteroEngine::Citation"
+      ExCite.acts_as_citable_class = "ExCite::Citation"
     end
   end
 end

@@ -3,7 +3,7 @@ require File.expand_path('../boot', __FILE__)
 require 'rails/all'
 
 Bundler.require
-require 'citero_engine/engine'
+require 'ex_cite/engine'
 
 module Dummy
   class Application < Rails::Application

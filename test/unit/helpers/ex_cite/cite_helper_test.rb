@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CiteroEngine
+module ExCite
   class CiteHelperTest < ActionView::TestCase
   end
 end

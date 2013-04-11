@@ -1,4 +1,4 @@
-module CiteroEngine
+module ExCite
   module ApplicationHelper
     def build_external_form
       f = ""

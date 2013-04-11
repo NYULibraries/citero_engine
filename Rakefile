@@ -15,7 +15,7 @@ end
 
 RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'doc'
-  rdoc.title    = 'CiteroEngine'
+  rdoc.title    = 'ExCite'
   rdoc.options << '--line-numbers'
   rdoc.options << '--markup markdown'
   rdoc.rdoc_files.include('README.md')

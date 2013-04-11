@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
 
-  mount CiteroEngine::Engine, :at => '/cite'
+  mount ExCite::Engine, :at => '/cite'
 end

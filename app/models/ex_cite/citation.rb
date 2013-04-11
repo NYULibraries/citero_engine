@@ -1,4 +1,4 @@
-module CiteroEngine
+module ExCite
   # Citation class, holds data from format and/or resource key
   class Citation
     extend ActsAsCitable

@@ -1,7 +1,7 @@
-require "citero_engine/engine"
+require "ex_cite/engine"
 require 'digest/sha1'
 require 'open-uri'
-module CiteroEngine
+module ExCite
   # Logic behind the webservice. First it gathers all the resource keys and creates Citation objects out of them and then
   # it gathers any and all from formats and data variables that were sent via post and creates an array out of them. If the
   # array is still empty it uses the URL as an OpenURL. It then loops through the array and translates and caches (or fetches)
@@ -9,7 +9,7 @@ module CiteroEngine
   class CiteController < ActionController::Base
     # There must be a destination format, or else this whole thing doesnt make sense
     before_filter :valid_to_format?
-    layout "citero_engine/application"
+    layout "ex_cite/application"
     
     # Sends bad request if there is no destination format
     def valid_to_format?
@@ -36,7 +36,7 @@ module CiteroEngine
     def record_citation
       (params[:id].nil?) ? [] :
         params[:id].collect do |id|
-          record = CiteroEngine.acts_as_citable_class.find_by_id id if CiteroEngine.acts_as_citable_class.respond_to? :find_by_id 
+          record = ExCite.acts_as_citable_class.find_by_id id if ExCite.acts_as_citable_class.respond_to? :find_by_id 
         end
     end
     
@@ -44,7 +44,7 @@ module CiteroEngine
     def resource_citation
       (params[:resource_key].nil?) ? [] :
         params[:resource_key].collect do |key|
-           citation = CiteroEngine.acts_as_citable_class.new()
+           citation = ExCite.acts_as_citable_class.new()
            citation.resource_key = key 
            citation
         end
@@ -55,13 +55,13 @@ module CiteroEngine
       (params[:from_format].nil? || params[:data].nil?) ? [] :
         params[:from_format].collect.with_index do |format, index|
           # p ActsAsCitableClass.format_field
-          CiteroEngine.acts_as_citable_class.new  CiteroEngine.acts_as_citable_class.data_field.to_sym => params[:data].to_a[index],   CiteroEngine.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, format)
+          ExCite.acts_as_citable_class.new  ExCite.acts_as_citable_class.data_field.to_sym => params[:data].to_a[index],   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, format)
         end
     end
     
     # Returns a single citation object with data and format set as the url and openurl respectively
     def open_url_citation
-       CiteroEngine.acts_as_citable_class.new   CiteroEngine.acts_as_citable_class.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),   CiteroEngine.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, 'openurl')
+       ExCite.acts_as_citable_class.new   ExCite.acts_as_citable_class.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, 'openurl')
     end
     
     # Maps the output and caches it, alternatively it fetches the already cached result. Seperates each output with two new lines.
@@ -100,8 +100,8 @@ module CiteroEngine
         return format.downcase
       end
       # if the format is still not found, it might be a push request, check if that is the case
-      if CiteroEngine.push_formats.include? format.to_sym
-        @push_to = CiteroEngine.push_formats[format.to_sym]
+      if ExCite.push_formats.include? format.to_sym
+        @push_to = ExCite.push_formats[format.to_sym]
         @to_format = @push_to.to_format.downcase
         return "#{direction.to_s}_#{@to_format}"
       end

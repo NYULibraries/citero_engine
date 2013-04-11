@@ -1,4 +1,4 @@
-module CiteroEngine
+module ExCite
   module ResourceKey
     def self.included(klass)
       klass.class_eval do
