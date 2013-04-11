@@ -19,3 +19,5 @@ gem "coveralls", require: false
 # To use debugger
 # gem 'debugger'
 gem 'ruby-debug'
+
+gem 'acts_as_citable', :git => "git@github.com:NYULibraries/acts_as_citable.git", :branch => "devel"
