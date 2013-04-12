@@ -1,7 +1,3 @@
-Citation::Engine.routes.draw do
-  root :to => 'cite#index'
-  match "cite/:id" => 'cite#redir'
-  match "cite" => 'cite#redir'
-  match "translate/:data/:from/:to" => 'cite#translate'
-  post "records" => 'cite#create'
+ExCite::Engine.routes.draw do
+  match "export_citations(/:to_format)(/:id)" => 'export_citations#index', :via => [:get, :post], :as => "export_citations"
 end

@@ -1,9 +1,9 @@
-Citation Engine Gem
+ExCite Engine Gem
 ======================
-[![Build Status](https://secure.travis-ci.org/NYULibraries/citationEngineGem.png)](http://travis-ci.org/NYULibraries/citationEngineGem)
+[![Build Status](https://secure.travis-ci.org/NYULibraries/ex_citeEngineGem.png)](http://travis-ci.org/NYULibraries/ex_citeEngineGem)
 
 
-A JRuby wrapper for the Citation tool, enables use of the citation tool in JRuby distributed as a Rails 3 Engine Gem.
+A JRuby wrapper for the ExCite tool, enables use of the ex_cite tool in JRuby distributed as a Rails 3 Engine Gem.
 
 Install
 ==========
@@ -11,7 +11,7 @@ Install
 Mount the engine gem to your rails project like so:
 
 ```ruby
-mount Citation::Engine, :at => '/MOUNT_NAME'
+mount ExCite::Engine, :at => '/MOUNT_NAME'
 ```
 
 Formats supported
