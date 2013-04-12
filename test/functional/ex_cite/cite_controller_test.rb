@@ -2,7 +2,7 @@
 # encoding: utf-8
 require 'test_helper'
 require 'rack/utils'
-require 'citero'
+require 'citero-jruby'
 
 
 module ExCite
