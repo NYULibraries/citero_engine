@@ -78,13 +78,18 @@ module ExCite
       end
     end
     
-    # test "should redirect to refworks" do
-    #   $acts_as_citable_classes.each do |citable_class|
-    #     ExCite.acts_as_citable_class = citable_class
-    #     get :index, :to_format => "refworks", :use_route => :cite
-    #     assert_redirected_to "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url=https%3A%2F%2Ftest.host%2Fcite%2Fcite%3Fresource_key%5B%5D%3D1ad5e264e5a423b07ab635982e79e35290b85c41%26to_format%3Dris"
-    #   end
-    # end
+    test "should redirect to refworks" do
+      $acts_as_citable_classes.each do |citable_class|
+        ExCite.acts_as_citable_class = citable_class
+        Citero.from_formats.each do |from| 
+          get :index, :to_format => "refworks", :from_format => from, :data => $formats[from], :use_route => :cite
+          assert_response :success
+          assert_template :partial => '_external_form'
+          clear
+          initialize_cite
+        end
+      end
+    end
     
     test "should redirect to easybib" do
       $acts_as_citable_classes.each do |citable_class|
