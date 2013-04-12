@@ -6,7 +6,7 @@ module ExCite
   # it gathers any and all from formats and data variables that were sent via post and creates an array out of them. If the
   # array is still empty it uses the URL as an OpenURL. It then loops through the array and translates and caches (or fetches)
   # each one using acts_as_citable. It then either downloads the data or redirects to another webservice.
-  class CiteController < ActionController::Base
+  class ExportCitationsController < ActionController::Base
     # There must be a destination format, or else this whole thing doesnt make sense
     before_filter :valid_to_format?
     layout "ex_cite/application"
@@ -136,7 +136,7 @@ module ExCite
     # The callback url is defined here
     def callback
       # Starts with current url minus the querystring..
-      callback = "#{cite_url}?"
+      callback = "#{export_citations_url}?"
       citations.collect do |citation|
         # then adds a resource key for each cached resource
         callback += (!citation.respond_to? :new_record || citation.new_record?) ? "resource_key[]=#{citation.resource_key}&" : "id[]=#{citation.id}&"

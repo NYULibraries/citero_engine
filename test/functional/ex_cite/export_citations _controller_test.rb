@@ -6,12 +6,12 @@ require 'citero-jruby'
 
 
 module ExCite
-  class CiteControllerTest < ActionController::TestCase
+  class ExportCitationsControllerTest < ActionController::TestCase
     setup :initialize_cite
     teardown :clear
     
     def initialize_cite
-      @controller = CiteController.new
+      @controller = ExportCitationsController.new
     end
     
     def clear
@@ -74,7 +74,7 @@ module ExCite
       $acts_as_citable_classes.each do |citable_class|
         ExCite.acts_as_citable_class = citable_class
         get :index, :to_format => "endnote", :use_route => :cite
-        assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fcite%2Fcite%3Fresource_key%5B%5D%3Dcc141d92caee81bd0601a5ee365fdf9ec31d23bb%26to_format%3Dris"
+        assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fcite%2Fexport_citations%3Fresource_key%5B%5D%3Dcc141d92caee81bd0601a5ee365fdf9ec31d23bb%26to_format%3Dris"
       end
     end
     

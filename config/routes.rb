@@ -1,4 +1,3 @@
 ExCite::Engine.routes.draw do
-  get "cite/:to_format(/:id)" => "cite#index", as: :to_format
-  match "cite" => 'cite#index', :via => [:get,:post]
+  match "export_citations(/:to_format)" => 'export_citations#index', :via => [:get, :post], :as => "export_citations"
 end
