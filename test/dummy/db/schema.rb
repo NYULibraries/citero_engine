@@ -11,14 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121024174852) do
+ActiveRecord::Schema.define(:version => 20130211192122) do
 
-  create_table "citation_records", :force => true do |t|
+  create_table "type_ones", :force => true do |t|
     t.string   "formatting"
     t.string   "title"
-    t.text     "raw"
+    t.string   "raw"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "type_twos", :force => true do |t|
+    t.string   "from_format"
+    t.string   "item"
+    t.string   "data"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
 end

@@ -1,7 +1,7 @@
 before_script:
     - mkdir -p test/dummy/db
     - touch test/dummy/db/test.sqlite3
-    - rvm install jruby-1.7.0
-    - rvm use jruby-1.7.0
+    - rvm install jruby-1.7.2
+    - rvm use jruby-1.7.2
     - bundle install
     - rake db:migrate
