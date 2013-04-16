@@ -1,7 +1,6 @@
 ExCite Engine Gem
 ======================
-[![Build Status](https://secure.travis-ci.org/NYULibraries/ex_cite.png)](http://travis-ci.org/NYULibraries/ex_cite)
-
+[![Build Status](https://travis-ci.org/NYULibraries/ex_cite.png?branch=master)](https://travis-ci.org/NYULibraries/ex_cite)
 
 A JRuby wrapper for the citero tool, enables use of the citero tool in JRuby distributed as a Rails 3 Engine Gem.
 
