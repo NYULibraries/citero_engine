@@ -20,4 +20,5 @@ gem "coveralls", require: false
 # gem 'debugger'
 gem 'ruby-debug'
 
-# gem 'acts_as_citable', :github => "git@github.com:NYULibraries/acts_as_citable.git", :branch => "devel"
+# gem 'citero-jruby', :github => "NYULibraries/citero-jruby"
+# gem 'acts_as_citable', :github => "NYULibraries/acts_as_citable", :branch => "devel"
