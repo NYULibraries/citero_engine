@@ -60,16 +60,15 @@ module ExCite
     
     # Returns a single citation object with data and format set as the url and openurl respectively
     def open_url_citation
-      e = ExCite.acts_as_citable_class.new   ExCite.acts_as_citable_class.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, 'openurl')
-      p e
-      e
+      ExCite.acts_as_citable_class.new   ExCite.acts_as_citable_class.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, 'openurl')
     end
     
     # Maps the output and caches it, alternatively it fetches the already cached result. Seperates each output with two new lines.
     # Raises an argument error if any error is caught in mapping (usually the formats are messed up)
     def map
       @output ||= 
-        citations.collect { |citation| Rails.cache.fetch(citation.resource_key+to_format) { citation.send(to_format) } }.join "\n\n"  
+        # citations.collect { |citation| Rails.cache.fetch(citation.resource_key+to_format) { citation.send(to_format) } }.join "\n\n"  
+          citations.collect { |citation| citation.send(to_format) }.join "\n\n"
     rescue Exception => exc
       raise ArgumentError, "#{exc}\n Data or source format not provided and/or mismatched. [citations => #{citations}, to_format => #{@to_format}]"
     end
