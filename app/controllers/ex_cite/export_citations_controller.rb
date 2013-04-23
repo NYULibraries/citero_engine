@@ -70,7 +70,7 @@ module ExCite
         # citations.collect { |citation| Rails.cache.fetch(citation.resource_key+to_format) { citation.send(to_format) } }.join "\n\n"  
           citations.collect { |citation| citation.send(to_format) }.join "\n\n"
     rescue Exception => exc
-      raise ArgumentError, "#{exc}\n Data or source format not provided and/or mismatched. [citations => #{citations}, to_format => #{@to_format}]"
+      raise ArgumentError, "#{exc}\n Data or source format not provided and/or mismatched. [citations => #{citations}, to_format => #{@to_format}]  "
     end
     
     # Maps then decides wether its a push request or a download, catches all bad argument errors
