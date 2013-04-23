@@ -54,14 +54,15 @@ module ExCite
     def format_citation
       (params[:from_format].nil? || params[:data].nil?) ? [] :
         params[:from_format].collect.with_index do |format, index|
-          # p ActsAsCitableClass.format_field
           ExCite.acts_as_citable_class.new  ExCite.acts_as_citable_class.data_field.to_sym => params[:data].to_a[index],   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, format)
         end
     end
     
     # Returns a single citation object with data and format set as the url and openurl respectively
     def open_url_citation
-       ExCite.acts_as_citable_class.new   ExCite.acts_as_citable_class.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, 'openurl')
+      e = ExCite.acts_as_citable_class.new   ExCite.acts_as_citable_class.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, 'openurl')
+      p e
+      e
     end
     
     # Maps the output and caches it, alternatively it fetches the already cached result. Seperates each output with two new lines.
