@@ -31,7 +31,7 @@ module ExCite
        ])
     @endnote ||= PushFormat.new :name => :endnote, :to_format => :ris, :action => :redirect, :url => 'http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl='
     # @refworks ||= PushFormat.new :name => :refworks, :to_format => :ris, :action => :redirect, :url => 'http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RIS%20Format&encoding=65001&url='
-    @refworks ||= PushFormat.new( :name => :refworks, :to_format => :ris, :action => :render, :template => "ex_cite/cite/external_form",
+    @refworks ||= PushFormat.new( :name => :refworks, :to_format => :refworks_tagged, :action => :render, :template => "ex_cite/cite/external_form",
     :vars => Hash[
        "elements" => [{:name => 'ImportData', :value => "@output", :type => 'textarea'}],
        "name" => "ExportRWForm",
