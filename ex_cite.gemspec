@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency "acts_as_citable", "~> 1.2.0"
 
   s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
-  s.add_development_dependency "brakeman"
+  s.add_development_dependency "brakeman", "~> 1.9.5"
   s.add_development_dependency "simplecov"
   s.add_development_dependency "simplecov-rcov"
   s.add_development_dependency "test-unit"
