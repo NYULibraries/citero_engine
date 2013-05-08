@@ -6,7 +6,7 @@ module ExCite
         # Return input element for no js and not textarea
         f += "<input name=\"#{element[:name]}\" type=\"#{(element[:type].nil?) ? "text" : element[:type]}\" value='#{@value}' />" unless (element[:type] and element[:type].eql?("textarea"))
         # Return textarea element for no js and type=textarea
-        f += "<textarea name=\"#{element[:name]}\" id=\"#{element[:name]}\">#{element[:value]}</textarea>" unless (element[:type].nil? or not element[:type].eql?("textarea"))
+        f += "<textarea name=\"#{element[:name]}\" id=\"#{element[:name]}\">#{@value}</textarea>" unless (element[:type].nil? or not element[:type].eql?("textarea"))
       end
       return f
     end
