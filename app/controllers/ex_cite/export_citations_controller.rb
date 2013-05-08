@@ -69,6 +69,7 @@ module ExCite
       @output ||= 
         # citations.collect { |citation| Rails.cache.fetch(citation.resource_key+to_format) { citation.send(to_format) } }.join "\n\n"  
           citations.collect { |citation| citation.send(to_format) }.join "\n\n"
+      p @output
     rescue Exception => exc
       raise ArgumentError, "#{exc}\n Data or source format not provided and/or mismatched. [citations => #{citations}, to_format => #{@to_format}]  "
     end
