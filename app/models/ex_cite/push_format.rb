@@ -11,10 +11,5 @@ module ExCite
       self.template = args[:template]
       self.url = args[:url]
     end
-    
-    def set_value val
-      @value = val
-    end
-    
   end
 end

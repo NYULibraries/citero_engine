@@ -165,7 +165,6 @@ module ExCite
       push.vars.each do |key, value|
         instance_variable_set "@#{key}", value
       end
-      push.set_value @output
       render :template => push.template
     end
   end
