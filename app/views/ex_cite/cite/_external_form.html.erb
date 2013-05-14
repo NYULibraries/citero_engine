@@ -19,7 +19,7 @@
 			<legend><%= @legend %></legend>
 			<%= raw build_external_form %>
 			<div class="section">
-				<%= submit_tag @push_to.name.capitalize%>
+				<%= submit_tag "Push to #{@push_to.name.capitalize}"%>
 			</div>
 		</fieldset>
 	</form>
