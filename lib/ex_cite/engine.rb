@@ -24,7 +24,7 @@ module ExCite
     @easybib ||= PushFormat.new( :name => :easybibpush, :to_format => :easybib, :action => :render, :template => "ex_cite/cite/external_form",
     :vars => Hash[
        "elements" => {:name => 'data', :type => 'textarea'},
-       "name" => "Push",
+       "name" => "Push to EasyBib",
        "action" => "http://www.easybib.com/cite/bulk",
        "method" => "POST",
        "enctype" => "application/x-www-form-urlencoded"
@@ -32,8 +32,8 @@ module ExCite
     @endnote ||= PushFormat.new :name => :endnote, :to_format => :ris, :action => :redirect, :url => 'http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl='
     @refworks ||= PushFormat.new( :name => :refworks, :to_format => :refworks_tagged, :action => :render, :template => "ex_cite/cite/external_form",
     :vars => Hash[
-       "elements" => {:name => 'data', :type => 'textarea'},
-       "name" => "Push",
+       "elements" => {:name => 'ImportData', :type => 'textarea'},
+       "name" => "Push to Refworks",
        "action" => "http://www.refworks.com/express/ExpressImport.asp?vendor=Primo&filter=RefWorks%20Tagged%20Format&encoding=65001",
        "method" => "POST",
        "enctype" => "application/x-www-form-urlencoded"

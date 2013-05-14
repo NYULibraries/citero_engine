@@ -66,8 +66,7 @@ module ExCite
     # Maps the output and caches it, alternatively it fetches the already cached result. Seperates each output with two new lines.
     # Raises an argument error if any error is caught in mapping (usually the formats are messed up)
     def map
-      @output ||= 
-        citations.collect { |citation| Rails.cache.fetch(citation.resource_key+to_format) { citation.send(to_format) } }.join "\n\n"  
+      @output ||= citations.collect { |citation| Rails.cache.fetch(citation.resource_key+to_format) { citation.send(to_format) } }.join_and_enclose delimiters.join(",")
     rescue Exception => exc
       raise ArgumentError, "#{exc}\n Data or source format not provided and/or mismatched. [citations => #{citations}, to_format => #{@to_format}]  "
     end
@@ -165,6 +164,15 @@ module ExCite
         instance_variable_set "@#{key}", value
       end
       render :template => push.template
+    end
+    
+    def delimiters
+      case @to_format
+      when "to_easybib"
+        return [",\n","[","]"]
+      else
+        return ["\n\n"]
+      end
     end
   end
 end
