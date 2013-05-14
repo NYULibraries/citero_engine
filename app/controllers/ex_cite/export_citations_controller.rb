@@ -122,7 +122,7 @@ module ExCite
         redirect_to @push_to.url+callback, :status => 303
       elsif @push_to.action.eql? :render
         # call the method this service needs
-        render_push @push_to
+        render_push
       end
     end
 
@@ -159,11 +159,8 @@ module ExCite
       name
     end
 
-    def render_push push
-      push.vars.each do |key, value|
-        instance_variable_set "@#{key}", value
-      end
-      render :template => push.template
+    def render_push
+      render :template => @push_to.template
     end
     
     def delimiters

@@ -14,8 +14,8 @@ end
 
 Array.class_eval do
   def join_and_enclose seperator, *args
-    left_end = args[0] ? args[0] : ""
-    right_end = args[1] ? args[1] : left_end
+    left_end = (args[0] or "")
+    right_end = (args[1] or left_end)
     left_end + self.join(seperator) + right_end
   end
 end
