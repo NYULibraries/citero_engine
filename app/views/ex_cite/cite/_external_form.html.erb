@@ -11,7 +11,7 @@
 <% end %>
 <div class="inner_form_dialog">
 	<form id="<%= @id %>" action="<%= @push_to.url %>" method="<%= @push_to.method %>" class="external_form" enctype="<%= @push_to.enctype %>">
-		<h2>Push to<%= @push_to.name %></h2>
+		<h2>Push to <%= @push_to.name.capitalize %></h2>
 		<div class="formError">
 		<%= @error || flash[:error] %>
 		</div>
@@ -19,7 +19,7 @@
 			<legend><%= @legend %></legend>
 			<%= raw build_external_form %>
 			<div class="section">
-				<%= submit_tag @push_to.name%>
+				<%= submit_tag @push_to.name.capitalize%>
 			</div>
 		</fieldset>
 	</form>
