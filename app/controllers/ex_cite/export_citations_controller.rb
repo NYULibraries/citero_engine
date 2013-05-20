@@ -37,6 +37,7 @@ module ExCite
       (params[:id].nil?) ? [] :
         params[:id].collect do |id|
           record = ExCite.acts_as_citable_class.find_by_id id if ExCite.acts_as_citable_class.respond_to? :find_by_id 
+          (record.nil?) ? (raise(ArgumentError, "This ID cannot be found.")) : record
         end
     end
     
@@ -44,9 +45,9 @@ module ExCite
     def resource_citation
       (params[:resource_key].nil?) ? [] :
         params[:resource_key].collect do |key|
-           citation = ExCite.acts_as_citable_class.new()
-           citation.resource_key = key 
-           citation
+          citation = ExCite.acts_as_citable_class.new()
+          citation.resource_key = key
+          citation
         end
     end
     
@@ -107,7 +108,6 @@ module ExCite
     
     # For debugging purposes prints out the error. Also sends bad request header
     def handle_invalid_arguments exc
-      p exc
       logger.debug exc
       head :bad_request
     end

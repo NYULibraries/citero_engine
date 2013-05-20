@@ -14,10 +14,4 @@ module ExCite
     engine_name "ex_cite"
     ExCite.acts_as_citable_class = "ExCite::Citation"
   end
-  
-  def self.config &block
-    if block
-      yield self
-    end
-  end
 end
