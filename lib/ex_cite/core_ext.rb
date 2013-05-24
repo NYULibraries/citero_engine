@@ -10,23 +10,12 @@ String.class_eval do
   def to_a
     self.split('',1)
   end
-  
-  def outputize output
-    if self.include? "@output" 
-      self.gsub!("@output", output)
-    end
-    self
-  end
-end
-
-Hash.class_eval do
-  def outputize output
-    self.values.each {|val| val.outputize output}
-  end
 end
 
 Array.class_eval do
-  def outputize output
-    self.each {|val| val.outputize output}
+  def join_and_enclose seperator, *args
+    left_end = (args[0] or "")
+    right_end = (args[1] or left_end)
+    left_end + self.join(seperator) + right_end
   end
 end
