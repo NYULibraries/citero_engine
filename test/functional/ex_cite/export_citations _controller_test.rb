@@ -56,16 +56,6 @@ module ExCite
       end
     end
     
-    # test "should ignore invalid id" do
-    #   $acts_as_citable_classes.each do |citable_class|
-    #     ExCite.acts_as_citable_class = citable_class
-    #     get :index, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :id => "unkown", :use_route => :export_citations 
-    #     assert_response :success
-    #     clear
-    #     initialize_cite
-    #   end
-    # end
-    
     test "should convert openurl to format" do
       $acts_as_citable_classes.each do |citable_class|
         ExCite.acts_as_citable_class = citable_class
