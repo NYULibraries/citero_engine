@@ -56,16 +56,6 @@ module ExCite
       end
     end
     
-    test "should ignore invalid id" do
-      $acts_as_citable_classes.each do |citable_class|
-        ExCite.acts_as_citable_class = citable_class
-        get :index, :data => "itemType: book", :from_format => "csf", :to_format => "ris", :id => "unkown", :use_route => :export_citations 
-        assert_response :success
-        clear
-        initialize_cite
-      end
-    end
-    
     test "should convert openurl to format" do
       $acts_as_citable_classes.each do |citable_class|
         ExCite.acts_as_citable_class = citable_class
@@ -124,10 +114,30 @@ module ExCite
       end
     end
     
-    test "should fail since resource key is invalid" do 
+    test "should attempt to find by resource_key" do
       $acts_as_citable_classes.each do |citable_class|
         ExCite.acts_as_citable_class = citable_class
         get :index, :to_format => "ris", :resource_key => "unknown", :use_route => :export_citations
+        assert_response :bad_request
+        clear
+        initialize_cite
+      end
+    end
+    
+    test "should attempt to find by id" do
+      $acts_as_citable_classes.each do |citable_class|
+        ExCite.acts_as_citable_class = citable_class
+        get :index, :to_format => "ris", :id => "unknown", :use_route => :export_citations
+        assert_response :bad_request
+        clear
+        initialize_cite
+      end
+    end
+    
+    test "should handle missing to_format" do
+      $acts_as_citable_classes.each do |citable_class|
+        ExCite.acts_as_citable_class = citable_class
+        get :index, :data => "itemType: book", :from_format => "csf", :use_route => :export_citations
         assert_response :bad_request
         clear
         initialize_cite

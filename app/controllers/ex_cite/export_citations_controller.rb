@@ -37,6 +37,7 @@ module ExCite
       (params[:id].nil?) ? [] :
         params[:id].collect do |id|
           record = ExCite.acts_as_citable_class.find_by_id id if ExCite.acts_as_citable_class.respond_to? :find_by_id 
+          (record.nil?) ? (raise(ArgumentError, "This ID cannot be found.")) : record
         end
     end
     
@@ -44,9 +45,9 @@ module ExCite
     def resource_citation
       (params[:resource_key].nil?) ? [] :
         params[:resource_key].collect do |key|
-           citation = ExCite.acts_as_citable_class.new()
-           citation.resource_key = key 
-           citation
+          citation = ExCite.acts_as_citable_class.new()
+          citation.resource_key = key
+          citation
         end
     end
     
@@ -66,9 +67,7 @@ module ExCite
     # Maps the output and caches it, alternatively it fetches the already cached result. Seperates each output with two new lines.
     # Raises an argument error if any error is caught in mapping (usually the formats are messed up)
     def map
-      @output ||= 
-        # citations.collect { |citation| Rails.cache.fetch(citation.resource_key+to_format) { citation.send(to_format) } }.join "\n\n"  
-          citations.collect { |citation| citation.send(to_format) }.join "\n\n"
+      @output ||= citations.collect { |citation| Rails.cache.fetch(citation.resource_key+to_format) { citation.send(to_format) } }.join_and_enclose *delimiters
     rescue Exception => exc
       raise ArgumentError, "#{exc}\n Data or source format not provided and/or mismatched. [citations => #{citations}, to_format => #{@to_format}]  "
     end
@@ -109,7 +108,6 @@ module ExCite
     
     # For debugging purposes prints out the error. Also sends bad request header
     def handle_invalid_arguments exc
-      p exc
       logger.debug exc
       head :bad_request
     end
@@ -124,7 +122,7 @@ module ExCite
         redirect_to @push_to.url+callback, :status => 303
       elsif @push_to.action.eql? :render
         # call the method this service needs
-        render_push @push_to
+        render_push
       end
     end
 
@@ -161,11 +159,17 @@ module ExCite
       name
     end
 
-    def render_push push
-      push.vars.each do |key, value|
-        instance_variable_set "@#{key}", value.outputize(@output)
+    def render_push
+      render :template => @push_to.template
+    end
+    
+    def delimiters
+      case @to_format
+      when "to_easybib"
+        return [",\n","[","]"]
+      else
+        return ["\n\n"]
       end
-      render :template => push.template
     end
   end
 end

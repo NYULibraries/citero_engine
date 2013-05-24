@@ -30,7 +30,40 @@ The data[] array and the from\_format[] array must correspond to each other, tha
 
 Finally, you can send an OpenURL request, simply define the :to_format and pass in the query string.
 
+Services
+========
 
+Some services, such as Endnote, RefWorks, and EasyBib are already included in ex_cite. These services are configurable right out of the box for your needs.
+
+There are two ways to use services, rendering and redirect. The render method will render a view with a 200 response, and the redirect will, as expected,
+redirect to another page with a 302 response. 
+
+To configure a built-in service, such as Endnote, Refworks, or EasyBib, simply modify the following objects
+
+```ruby
+ExCite.easybib
+ExCite.refworks
+ExCite.endnote
+```
+
+The available options are as follow, with available defaults shown
+
+```ruby
+:name			=> 	'Service' # What you want to call this service, and how it will be accessed, i.e. 'easybibpush'
+:to_format		=>	# The format that the service is expecting
+:action			=>	'render' # Either :redirect or :render is supported
+:template		=>	'ex_cite/cite/external_form' # The template view to render. You are free to use your own, ex_cite provides one for free!
+:url			=>	# The url to redirect to or the url to send the form to
+:method			=>	'POST' # This is the form action
+:enctype		=>	'application/x-www-form-urlencoded' # This is the enctype for the form
+:element_name	=> 	'data' # The default view constructs a form that automatically posts, this is the name of the textbox.
+```
+To add a new service, simply
+
+```ruby
+easybib = PushFormat.new( :name => :easybibpush, :to_format => :easybib, :action => :render, :template => "ex_cite/cite/external_form", :url => "http://www.easybib.com/cite/bulk")
+ExCite.push_formats['easybib'] = easybib
+```
 Examples
 ========
 

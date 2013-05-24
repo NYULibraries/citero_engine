@@ -1,11 +1,12 @@
-require 'coveralls'
-Coveralls.wear!
-
-require 'simplecov'
-require 'simplecov-rcov'
-
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-SimpleCov.start 'rails'
+unless ENV['TRAVIS']
+  require 'simplecov'
+  require 'simplecov-rcov'
+  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+  SimpleCov.start 'rails'
+else
+  require 'coveralls'
+  Coveralls.wear!
+end
 
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
