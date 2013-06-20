@@ -13,7 +13,7 @@ module ExCite
     
     # Sends bad request if there is no destination format
     def valid_to_format?
-      head :bad_request unless to_format      
+      head :bad_request unless to_format
     end
     
     # Checks to see if destination format is valid and stores it in a class variable
@@ -92,7 +92,7 @@ module ExCite
         return
       end
       # if the to format is found, it returns the method name for that to format
-      if (direction == :to && Citero.to_formats.include?(format.downcase))
+      if (direction == :to && (Citero.to_formats.include?(format.downcase) || Citero.citation_styles.include?(format.downcase)))
         return "#{:to.to_s}_#{format.downcase}"
       # if the from format is found, it returns just that because the object already knows what method to call
       elsif (direction == :from && Citero.from_formats.include?(format.downcase))
@@ -165,7 +165,7 @@ module ExCite
     
     def delimiters
       case @to_format
-      when "to_easybib"
+      when "to_easybib", "to_csl"
         return [",\n","[","]"]
       else
         return ["\n\n"]
