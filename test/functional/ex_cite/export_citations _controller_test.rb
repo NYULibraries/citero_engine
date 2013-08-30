@@ -144,7 +144,8 @@ module ExCite
       end
     end
     
-    test "should convert to csl" do
+    
+    test "Should conver tto csl" do
       $acts_as_citable_classes.each do |citable_class|
         ExCite.acts_as_citable_class = citable_class
         Citero.from_formats.each do |from| 
@@ -155,15 +156,6 @@ module ExCite
             initialize_cite
           end
         end
-      end
-    end
-    
-    test "should be able to change protocol" do
-      $acts_as_citable_classes.each do |citable_class|
-        ExCite.acts_as_citable_class = citable_class
-        ExCite.endnote.protocol = :https
-        assert_equal "https://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=", ExCite.endnote.url
-        ExCite.endnote.protocol = :http
       end
     end
   end
