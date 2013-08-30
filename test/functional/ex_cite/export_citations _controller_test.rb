@@ -68,6 +68,18 @@ module ExCite
       end
     end
     
+    test "should redirect with specified protocol" do
+      $acts_as_citable_classes.each do |citable_class|
+        ExCite.acts_as_citable_class = citable_class
+        ExCite.endnote.protocol = :https
+        get :index, :to_format => "endnote", :use_route => :export_citations
+        assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=https%3A%2F%2Ftest.host%2Fcite%2Fexport_citations%3Fresource_key%5B%5D%3Dcc141d92caee81bd0601a5ee365fdf9ec31d23bb%26to_format%3Dris"
+        ExCite.endnote.protocol = :http
+        clear
+        initialize_cite
+      end
+    end
+    
     test "should redirect to endnote" do
       $acts_as_citable_classes.each do |citable_class|
         ExCite.acts_as_citable_class = citable_class
