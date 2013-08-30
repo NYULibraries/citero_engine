@@ -54,14 +54,17 @@ ExCite.endnote
 The available options are as follow, with available defaults shown
 
 ```ruby
-:name			=> 	'Service' # What you want to call this service, and how it will be accessed, i.e. 'easybibpush'
-:to_format		=>	# The format that the service is expecting
-:action			=>	'render' # Either :redirect or :render is supported
-:template		=>	'ex_cite/cite/external_form' # The template view to render. You are free to use your own, ex_cite provides one for free!
-:url			=>	# The url to redirect to or the url to send the form to
-:method			=>	'POST' # This is the form action
-:enctype		=>	'application/x-www-form-urlencoded' # This is the enctype for the form
-:element_name	=> 	'data' # The default view constructs a form that automatically posts, this is the name of the textbox.
+:name				=> 	'Service' # What you want to call this service, and how it will be accessed, i.e. 'easybibpush'
+:to_format			=>	# The format that the service is expecting
+:action				=>	'render' # Either :redirect or :render is supported
+:template			=>	'ex_cite/cite/external_form' # The template view to render. You are free to use your own, ex_cite provides one for free!
+:url				=>	# The url to redirect to or the url to send the form to
+:method				=>	'POST' # This is the form action
+:enctype			=>	'application/x-www-form-urlencoded' # This is the enctype for the form
+:element_name		=> 	'data' # The default view constructs a form that automatically posts, this is the name of the textbox.
+:callback_protocol	=>	:http # The protocol the callback url is to use for this application. Defaults to :http, supports :https
+
+alias :protocol :callback_protocol	# An alias, should you wish to use this outdated version.
 ```
 To add a new service, simply
 
