@@ -134,7 +134,7 @@ module ExCite
     # The callback url is defined here
     def callback
       # Starts with current url minus the querystring..
-      callback = "#{export_citations_url}?"
+      callback = "#{export_citations_url.gsub(/https*/, @push_to.protocol.to_s)}?"
       citations.collect do |citation|
         # then adds a resource key for each cached resource
         callback += (!citation.respond_to? :new_record || citation.new_record?) ? "resource_key[]=#{citation.resource_key}&" : "id[]=#{citation.id}&"
