@@ -8,38 +8,20 @@ module ExCite
       self.to_format = args[:to_format]
       self.action = (args[:action] or :render)
       self.template = (args[:template] or "ex_cite/cite/external_form")
-      self.protocol = args[:protocol]
       self.url = args[:url]
+      self.protocol ||= args[:protocol]
       self.method = (args[:method] or "POST")
       self.enctype = (args[:enctype] or "application/x-www-form-urlencoded")
       self.element_name = (args[:element_name] or "data")
     end
     
     def url
-      if @protocol.empty?
-        @url
-      else
-        "#{@protocol}://#{@url}"
-      end
-    end
-
-    def url=(str)
-      if str.downcase.start_with? "http://"
-        self.protocol = :http
-      elsif str.downcase.start_with? "https://"
-        self.protocol = :https
-      end
-      str = self.protocol.eql?(:http) ? str.gsub(/http:\/\//, "") : str.gsub(/https:\/\//, "")
-      @url = str
+      (self.protocol.nil? || self.protocol.to_s.empty?) ? @url : "#{self.protocol}://#{@url}"
     end
     
-    def protocol
-      @protocol
-    end
-
-    def protocol=(str)
-      url="#{str}://#{@url}" unless str.nil?
-      @protocol = str
+    def url=str
+      self.protocol = str.starts_with? "https" ? :https : :http
+      @url = str.gsub(/https*:\/{2}/, "")
     end
   end
 end
