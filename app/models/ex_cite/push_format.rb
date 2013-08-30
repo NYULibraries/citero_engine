@@ -3,6 +3,7 @@ module ExCite
   class PushFormat
     # Required fields
     attr_accessor :name, :to_format, :action, :template, :url, :method, :enctype, :element_name, :callback_protocol
+    alias :protocol= :callback_protocol=
     def initialize args = {}
       self.name = (args[:name] or 'Service')
       self.to_format = args[:to_format]
