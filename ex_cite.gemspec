@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "ex_cite"
   s.version     = ExCite::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.date        = '2013-08-30'
+  s.date        = '2013-09-10'
   s.summary     = "Web engine to allow download and push capabilities to an array of bibiligraphic records."
   s.description = "Leverages citero-jruby gem and acts_as_citable to deliver a download and push mechanism."
   s.authors     = ["hab278"]
