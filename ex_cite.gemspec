@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "ex_cite"
   s.version     = ExCite::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.date        = '2013-09-10'
+  s.date        = '2013-10-18'
   s.summary     = "Web engine to allow download and push capabilities to an array of bibiligraphic records."
   s.description = "Leverages citero-jruby gem and acts_as_citable to deliver a download and push mechanism."
   s.authors     = ["hab278"]
@@ -18,12 +18,10 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/NYULibraries/ex_cite"
 
   s.add_dependency "rails", "~> 3.2"
-  s.add_dependency "rake", "~> 10.0"
-  s.add_dependency "rails_config"
-  s.add_dependency "jquery-rails", "~> 2.2"
   s.add_dependency "acts_as_citable", "~> 2.0.0"
 
   s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
+  s.add_development_dependency "rake", "~> 10.0"
   s.add_development_dependency "brakeman", "~> 1.9.5"
   s.add_development_dependency "simplecov"
   s.add_development_dependency "simplecov-rcov"
