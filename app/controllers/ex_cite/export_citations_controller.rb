@@ -160,7 +160,7 @@ module ExCite
     end
 
     def render_push
-      render :template => @push_to.template
+      render :layout => false, :template => @push_to.template
     end
     
     def delimiters
