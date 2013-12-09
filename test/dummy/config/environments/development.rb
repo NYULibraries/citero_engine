@@ -7,7 +7,9 @@ Dummy::Application.configure do
   config.cache_classes = false
 
   # Log error messages when you accidentally call methods on nil.
-  config.whiny_nils = true
+  if ActiveRecord::VERSION::MAJOR < 4
+    config.whiny_nils = true
+  end
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -23,7 +25,9 @@ Dummy::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
+  if ActiveRecord::VERSION::MAJOR < 4
+    config.active_record.mass_assignment_sanitizer = :strict
+  end
 
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
@@ -34,4 +38,5 @@ Dummy::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+  config.eager_load
 end

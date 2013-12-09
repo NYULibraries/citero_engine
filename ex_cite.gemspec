@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.test_files  = Dir["test/**/*"]
   s.homepage    = "https://github.com/NYULibraries/ex_cite"
 
-  s.add_dependency "rails", "~> 3.2"
-  s.add_dependency "acts_as_citable", "~> 2.0.0"
+  s.add_dependency "rails", "> 4.0"
+  # s.add_dependency "acts_as_citable", "~> 2.0.0"
 
   s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
   s.add_development_dependency "rake", "~> 10.0"

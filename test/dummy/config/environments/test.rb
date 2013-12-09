@@ -12,7 +12,9 @@ Dummy::Application.configure do
   config.static_cache_control = "public, max-age=3600"
 
   # Log error messages when you accidentally call methods on nil
-  config.whiny_nils = true
+  if ActiveRecord::VERSION::MAJOR < 4
+    config.whiny_nils = true
+  end
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -30,8 +32,11 @@ Dummy::Application.configure do
   config.action_mailer.delivery_method = :test
 
   # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
+  if ActiveRecord::VERSION::MAJOR < 4
+    config.active_record.mass_assignment_sanitizer = :strict
+  end
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  config.eager_load = false
 end
