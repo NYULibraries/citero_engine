@@ -1,6 +1,6 @@
 ExCite Engine Gem
 ======================
-[![Build Status](http://jenkins1.bobst.nyu.edu/buildStatus/icon?job=ex_cite)](http://jenkins1.bobst.nyu.edu/job/ex_cite/)
+[![Build Status](http://jenkins.library.nyu.edu/view/Citero/job/ex_cite%20Staging%20Test/badge/icon)](http://jenkins.library.nyu.edu/view/Citero/job/ex_cite%20Staging%20Test/)
 [![Build Status](https://travis-ci.org/NYULibraries/ex_cite.png?branch=master)](https://travis-ci.org/NYULibraries/ex_cite)
 [![Coverage Status](https://coveralls.io/repos/NYULibraries/ex_cite/badge.png?branch=master)](https://coveralls.io/r/NYULibraries/ex_cite?branch=master)
 [![Dependency Status](https://gemnasium.com/NYULibraries/ex_cite.png)](https://gemnasium.com/NYULibraries/ex_cite)
