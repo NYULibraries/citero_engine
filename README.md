@@ -18,6 +18,14 @@ Mount the engine gem to your rails project like so:
 mount ExCite::Engine, :at => '/MOUNT_LOCATION'
 ```
 
+You'll need to require the [jquery-rails](https://github.com/rails/jquery-rails) gem also.
+
+In your Gemfile
+
+```ruby
+gem "jquery-rails"
+```
+
 Formats supported
 ========
 Currently supporting PNX, RIS, CSF, BiBTeX, OpenURL, XERXES_XML, and EasyBib JSON.
