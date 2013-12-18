@@ -6,19 +6,16 @@ source "http://rubygems.org"
 gemspec
 
 # jquery-rails is used by the dummy application
-# gem "jquery-rails"
+gem "jquery-rails"
 gem "coveralls", require: false
 
-# gem "acts_as_citable", :git => 'git://github.com/NYULibraries/acts_as_citable.git', :branch => 'devel'
+group :assets do
+  gem "therubyrhino", "~> 2.0.2", platform: :jruby
+  gem "therubyracer", "~> 0.12.0", platform: :ruby
+  gem "uglifier", "~> 2.2.1"
+end
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
-
-# To use debugger
-# gem 'debugger'
-gem 'ruby-debug'
-
-# gem 'citero-jruby', :github => "NYULibraries/citero-jruby"
-# gem 'acts_as_citable', :github => "NYULibraries/acts_as_citable", :branch => "devel"
