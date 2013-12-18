@@ -20,6 +20,10 @@ module ExCite
       formats = Hash[ExCite.easybib.name => ExCite.easybib, ExCite.endnote.name => ExCite.endnote, ExCite.refworks.name => ExCite.refworks]
       ExCite.push_formats = formats
     end
+    
+    initializer "#{engine_name}.asset_pipeline" do |app|
+      app.config.assets.precompile << 'ex_cite.js'
+    end
   end
 
   ActiveSupport.on_load(:after_initialize) do

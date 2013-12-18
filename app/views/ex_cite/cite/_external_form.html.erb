@@ -1,15 +1,4 @@
-<%=	javascript_include_tag "application" %>
-<%= javascript_tag do %>
-	jQuery(document).ready(function($) {
-		submit_external_form();
-		function submit_external_form() {
-			// Hide the page
-			$("body").hide();
-			$form = $(".external_form");
-			$form.trigger("submit");
-		}
-	});
-<% end %>
+<%=	javascript_include_tag "ex_cite" %>
 <div class="inner_form_dialog">
 	<form id="<%= @id %>" action="<%= @push_to.url %>" method="<%= @push_to.method %>" class="external_form" enctype="<%= @push_to.enctype %>">
 		<h2>Push to <%= @push_to.name.capitalize %></h2>
