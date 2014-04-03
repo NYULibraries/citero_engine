@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.2"
   s.add_dependency "acts_as_citable", "~> 2.0"
   s.add_dependency "jquery-rails", "~> 3.0.4"
+  s.add_dependency "mail"
 
   s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
   s.add_development_dependency "rake", "~> 10.0"

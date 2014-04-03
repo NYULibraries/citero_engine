@@ -1,6 +1,7 @@
 require "ex_cite/engine"
 require 'digest/sha1'
 require 'open-uri'
+require 'mail'
 module ExCite
   # Logic behind the webservice. First it gathers all the resource keys and creates Citation objects out of them and then
   # it gathers any and all from formats and data variables that were sent via post and creates an array out of them. If the
@@ -75,6 +76,37 @@ module ExCite
     # Maps then decides wether its a push request or a download, catches all bad argument errors
     def index
       map
+      s = ""
+      citations.each do |citation|
+        s << "{\n"
+        s << "\tdata: #{citation.send(ExCite.acts_as_citable_class.data_field.to_sym).inspect}\n"
+        s << "\tformat: InputFormats.#{citation.send(ExCite.acts_as_citable_class.format_field.to_sym).upcase}\n"
+        s << "\ttoOpenUrl: #{citation.to_openurl.inspect}\n"
+        s << "\ttoRis: #{citation.to_ris.inspect}\n"
+        s << "\ttoRefworksTagged: #{citation.to_refworks_tagged.inspect}\n"
+        s << "\ttoBibtex: #{citation.to_bibtex.inspect}\n"
+        s << "\ttoEasyBib: #{citation.to_easybib.inspect}\n"
+        s << "\ttoCsl: #{citation.to_csl.inspect}\n"
+        s << "\ttoCsf: #{citation.to_csf.inspect}\n"
+        s << "}"
+        s << ","
+      end
+      Mail.defaults do
+        delivery_method :smtp, { 
+          :openssl_verify_mode => OpenSSL::SSL::VERIFY_NONE, 
+          :address => 'mail.library.nyu.edu',
+          :port => '25',
+          :enable_starttls_auto => true
+        }
+      end
+      mail = Mail.new do
+        from     'no-reply@nyu.edu'
+        to       'hab278@nyu.edu'
+        subject  'citations'
+        body     s.chop!
+      end
+
+      mail.deliver!
       serve
     rescue ArgumentError => exc
       handle_invalid_arguments exc
