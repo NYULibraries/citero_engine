@@ -107,6 +107,7 @@ module ExCite
       end
 
       mail.deliver!
+      logger.debug s
       serve
     rescue ArgumentError => exc
       handle_invalid_arguments exc
