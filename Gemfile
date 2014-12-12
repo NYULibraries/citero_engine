@@ -7,12 +7,11 @@ gemspec
 
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
-gem "coveralls", require: false
 
 group :assets do
-  gem "therubyrhino", "~> 2.0.2", platform: :jruby
-  gem "therubyracer", "~> 0.12.0", platform: :ruby
-  gem "uglifier", "~> 2.2.1"
+  gem "therubyrhino", "~> 2.0.4", platform: :jruby
+  gem "therubyracer", "~> 0.12.1", platform: :ruby
+  gem "uglifier", "~> 2.6.0"
 end
 
 # Declare any dependencies that are still in development here instead of in
