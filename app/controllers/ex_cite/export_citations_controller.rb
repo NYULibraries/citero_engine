@@ -30,27 +30,30 @@ module ExCite
         @citations << open_url_citation
       end
      end
-     @citations.compact 
+     @citations.compact
     end
-    
+
     def record_citation
       (params[:id].nil?) ? [] :
         params[:id].collect do |id|
-          record = ExCite.acts_as_citable_class.find_by_id id if ExCite.acts_as_citable_class.respond_to? :find_by_id 
+          record = ExCite.acts_as_citable_class.find_by_id id if ExCite.acts_as_citable_class.respond_to? :find_by_id
           (record.nil?) ? (raise(ArgumentError, "This ID cannot be found.")) : record
         end
     end
-    
+
     # Constructs new citation objects with only the citation key set, returns an array
     def resource_citation
-      (params[:resource_key].nil?) ? [] :
-        params[:resource_key].collect do |key|
-          citation = ExCite.acts_as_citable_class.new()
-          citation.resource_key = key
-          citation
-        end
+      resources = []
+      return resources if params[:resource_key].nil?
+      resources << Rails.cache.fetch(params[:resource_key])
+      resources.flatten!
+      resources.collect do |key|
+        citation = ExCite.acts_as_citable_class.new()
+        citation.resource_key = key
+        citation
+      end
     end
-    
+
     # Constructs new citation objects with data and source format set (the citation key is constructed automatically), returns an array
     def format_citation
       (params[:from_format].nil? || params[:data].nil?) ? [] :
@@ -135,9 +138,20 @@ module ExCite
     def callback
       # Starts with current url minus the querystring..
       callback = "#{export_citations_url.gsub(/https?/, @push_to.callback_protocol.to_s)}?"
-      citations.collect do |citation|
+      resource_keys = []
+      citations.each do |citation|
+        if !citation.respond_to? :new_record || citation.new_record?
+          resource_keys << citation.resource_key
+        end
+      end
+      unless resource_keys.empty?
+        resource_key = Digest::SHA1.hexdigest(resource_keys.sort.join)
+        Rails.cache.write(resource_key,resource_keys)
+        callback += "resource_key=#{resource_key}&"
+      end
+      citations.each do |citation|
         # then adds a resource key for each cached resource
-        callback += (!citation.respond_to? :new_record || citation.new_record?) ? "resource_key[]=#{citation.resource_key}&" : "id[]=#{citation.id}&"
+        callback += (!citation.respond_to? :new_record || citation.new_record?) ? "" : "id[]=#{citation.id}&"
       end
       # and finally the to format
       callback += "to_format=#{@to_format.formatize}"
