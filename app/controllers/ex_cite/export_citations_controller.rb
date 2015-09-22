@@ -10,18 +10,18 @@ module ExCite
     # There must be a destination format, or else this whole thing doesnt make sense
     before_filter :valid_to_format?
     layout "ex_cite/application"
-    
+
     # Sends bad request if there is no destination format
     def valid_to_format?
       head :bad_request unless to_format
     end
-    
+
     # Checks to see if destination format is valid and stores it in a class variable
     def to_format
       @to_format ||= whitelist_formats :to, params[:to_format]
     end
     private :to_format
-    
+
     # Constructs an array containing all the citations
     def citations
      unless defined? @citations
@@ -61,12 +61,12 @@ module ExCite
           ExCite.acts_as_citable_class.new  ExCite.acts_as_citable_class.data_field.to_sym => params[:data].to_a[index],   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, format)
         end
     end
-    
+
     # Returns a single citation object with data and format set as the url and openurl respectively
     def open_url_citation
       ExCite.acts_as_citable_class.new   ExCite.acts_as_citable_class.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, 'openurl')
     end
-    
+
     # Maps the output and caches it, alternatively it fetches the already cached result. Seperates each output with two new lines.
     # Raises an argument error if any error is caught in mapping (usually the formats are messed up)
     def map
@@ -74,7 +74,7 @@ module ExCite
     rescue Exception => exc
       raise ArgumentError, "#{exc}\n Data or source format not provided and/or mismatched. [citations => #{citations}, to_format => #{@to_format}]  "
     end
-    
+
     # Maps then decides wether its a push request or a download, catches all bad argument errors
     def index
       map
@@ -82,7 +82,7 @@ module ExCite
     rescue ArgumentError => exc
       handle_invalid_arguments exc
     end
-    
+
     # Pushes to a web service if that is what was requested else it downloads
     def serve
       @push_to ? push : download
@@ -108,7 +108,7 @@ module ExCite
         return "#{direction.to_s}_#{@to_format}"
       end
     end
-    
+
     # For debugging purposes prints out the error. Also sends bad request header
     def handle_invalid_arguments exc
       logger.debug exc
@@ -176,7 +176,7 @@ module ExCite
     def render_push
       render :layout => false, :template => @push_to.template
     end
-    
+
     def delimiters
       case @to_format
       when "to_easybib", "to_csl"
