@@ -73,7 +73,7 @@ module ExCite
         ExCite.acts_as_citable_class = citable_class
         ExCite.endnote.protocol = :https
         get :index, :to_format => "endnote", :use_route => :export_citations
-        assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=https%3A%2F%2Ftest.host%2Fex_cite%2Fexport_citations%3Fresource_key%5B%5D%3Dcc141d92caee81bd0601a5ee365fdf9ec31d23bb%26to_format%3Dris"
+        assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=https%3A%2F%2Ftest.host%2Fex_cite%2Fexport_citations%3Fresource_key%3D5b174a9f0bbae8e128c8fd3c5c74b22c5a772cfd%26to_format%3Dris"
         ExCite.endnote.callback_protocol = :http
         clear
         initialize_cite
@@ -84,7 +84,7 @@ module ExCite
       $acts_as_citable_classes.each do |citable_class|
         ExCite.acts_as_citable_class = citable_class
         get :index, :to_format => "endnote", :use_route => :export_citations
-        assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fex_cite%2Fexport_citations%3Fresource_key%5B%5D%3Dcc141d92caee81bd0601a5ee365fdf9ec31d23bb%26to_format%3Dris"
+        assert_redirected_to "http://www.myendnoteweb.com/?func=directExport&partnerName=Primo&dataIdentifier=1&dataRequestUrl=http%3A%2F%2Ftest.host%2Fex_cite%2Fexport_citations%3Fresource_key%3D5b174a9f0bbae8e128c8fd3c5c74b22c5a772cfd%26to_format%3Dris"
         clear
         initialize_cite
       end

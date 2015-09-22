@@ -10,18 +10,18 @@ module ExCite
     # There must be a destination format, or else this whole thing doesnt make sense
     before_filter :valid_to_format?
     layout "ex_cite/application"
-    
+
     # Sends bad request if there is no destination format
     def valid_to_format?
       head :bad_request unless to_format
     end
-    
+
     # Checks to see if destination format is valid and stores it in a class variable
     def to_format
       @to_format ||= whitelist_formats :to, params[:to_format]
     end
     private :to_format
-    
+
     # Constructs an array containing all the citations
     def citations
      unless defined? @citations
@@ -30,27 +30,30 @@ module ExCite
         @citations << open_url_citation
       end
      end
-     @citations.compact 
+     @citations.compact
     end
-    
+
     def record_citation
       (params[:id].nil?) ? [] :
         params[:id].collect do |id|
-          record = ExCite.acts_as_citable_class.find_by_id id if ExCite.acts_as_citable_class.respond_to? :find_by_id 
+          record = ExCite.acts_as_citable_class.find_by_id id if ExCite.acts_as_citable_class.respond_to? :find_by_id
           (record.nil?) ? (raise(ArgumentError, "This ID cannot be found.")) : record
         end
     end
-    
+
     # Constructs new citation objects with only the citation key set, returns an array
     def resource_citation
-      (params[:resource_key].nil?) ? [] :
-        params[:resource_key].collect do |key|
-          citation = ExCite.acts_as_citable_class.new()
-          citation.resource_key = key
-          citation
-        end
+      resources = []
+      return resources if params[:resource_key].nil?
+      resources << Rails.cache.fetch(params[:resource_key])
+      resources.flatten!
+      resources.collect do |key|
+        citation = ExCite.acts_as_citable_class.new()
+        citation.resource_key = key
+        citation
+      end
     end
-    
+
     # Constructs new citation objects with data and source format set (the citation key is constructed automatically), returns an array
     def format_citation
       (params[:from_format].nil? || params[:data].nil?) ? [] :
@@ -58,12 +61,12 @@ module ExCite
           ExCite.acts_as_citable_class.new  ExCite.acts_as_citable_class.data_field.to_sym => params[:data].to_a[index],   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, format)
         end
     end
-    
+
     # Returns a single citation object with data and format set as the url and openurl respectively
     def open_url_citation
       ExCite.acts_as_citable_class.new   ExCite.acts_as_citable_class.data_field.to_sym => CGI::unescape(request.protocol+request.host_with_port+request.fullpath),   ExCite.acts_as_citable_class.format_field.to_sym => (whitelist_formats :from, 'openurl')
     end
-    
+
     # Maps the output and caches it, alternatively it fetches the already cached result. Seperates each output with two new lines.
     # Raises an argument error if any error is caught in mapping (usually the formats are messed up)
     def map
@@ -71,7 +74,7 @@ module ExCite
     rescue Exception => exc
       raise ArgumentError, "#{exc}\n Data or source format not provided and/or mismatched. [citations => #{citations}, to_format => #{@to_format}]  "
     end
-    
+
     # Maps then decides wether its a push request or a download, catches all bad argument errors
     def index
       map
@@ -79,7 +82,7 @@ module ExCite
     rescue ArgumentError => exc
       handle_invalid_arguments exc
     end
-    
+
     # Pushes to a web service if that is what was requested else it downloads
     def serve
       @push_to ? push : download
@@ -105,7 +108,7 @@ module ExCite
         return "#{direction.to_s}_#{@to_format}"
       end
     end
-    
+
     # For debugging purposes prints out the error. Also sends bad request header
     def handle_invalid_arguments exc
       logger.debug exc
@@ -135,9 +138,20 @@ module ExCite
     def callback
       # Starts with current url minus the querystring..
       callback = "#{export_citations_url.gsub(/https?/, @push_to.callback_protocol.to_s)}?"
-      citations.collect do |citation|
+      resource_keys = []
+      citations.each do |citation|
+        if !citation.respond_to? :new_record || citation.new_record?
+          resource_keys << citation.resource_key
+        end
+      end
+      unless resource_keys.empty?
+        resource_key = Digest::SHA1.hexdigest(resource_keys.sort.join)
+        Rails.cache.write(resource_key,resource_keys)
+        callback += "resource_key=#{resource_key}&"
+      end
+      citations.each do |citation|
         # then adds a resource key for each cached resource
-        callback += (!citation.respond_to? :new_record || citation.new_record?) ? "resource_key[]=#{citation.resource_key}&" : "id[]=#{citation.id}&"
+        callback += (!citation.respond_to? :new_record || citation.new_record?) ? "" : "id[]=#{citation.id}&"
       end
       # and finally the to format
       callback += "to_format=#{@to_format.formatize}"
@@ -162,7 +176,7 @@ module ExCite
     def render_push
       render :layout => false, :template => @push_to.template
     end
-    
+
     def delimiters
       case @to_format
       when "to_easybib", "to_csl"
