@@ -1,5 +1,6 @@
 require 'ex_cite/core_ext'
 require "acts_as_citable"
+require 'citero_renderers'
 
 module ExCite
   mattr_accessor :acts_as_citable_class
@@ -20,7 +21,7 @@ module ExCite
       formats = Hash[ExCite.easybib.name => ExCite.easybib, ExCite.endnote.name => ExCite.endnote, ExCite.refworks.name => ExCite.refworks]
       ExCite.push_formats = formats
     end
-    
+
     initializer "#{engine_name}.asset_pipeline" do |app|
       app.config.assets.precompile << 'ex_cite.js'
     end
