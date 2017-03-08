@@ -9,24 +9,24 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211192122) do
+ActiveRecord::Schema.define(version: 20130211192122) do
 
-  create_table "type_ones", :force => true do |t|
-    t.string   "formatting"
-    t.string   "title"
-    t.string   "raw"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+  create_table "type_ones", force: :cascade do |t|
+    t.string   "formatting", limit: 255
+    t.string   "title",      limit: 255
+    t.string   "raw",        limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
-  create_table "type_twos", :force => true do |t|
-    t.string   "from_format"
-    t.string   "item"
-    t.string   "data"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+  create_table "type_twos", force: :cascade do |t|
+    t.string   "from_format", limit: 255
+    t.string   "item",        limit: 255
+    t.string   "data",        limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
 end
