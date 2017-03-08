@@ -163,6 +163,7 @@ module ExCite
         Citero.from_formats.each do |from|
           Citero.citation_styles.each do |to|
             get :index, :data => $formats[from.to_sym], :from_format => from, :to_format => to,  :use_route => :export_citations
+            puts "TESTING: #{citable_class}; #{from}; #{to}"
             assert_response :success
             clear
             initialize_cite
