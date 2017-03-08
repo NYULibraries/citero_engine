@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files  = Dir["test/**/*"]
   s.homepage    = "https://github.com/NYULibraries/ex_cite"
 
-  s.add_dependency "rails", "~> 4.2"
+  s.add_dependency "rails", "~> 4.2.8"
   s.add_dependency "acts_as_citable", "~> 4.0.0"
   s.add_dependency 'citero_renderers', '~> 1.0.1'
   s.add_dependency "jquery-rails", "~> 3.1.0"
@@ -30,4 +30,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "test-unit"
   s.add_development_dependency "coveralls"
   s.add_development_dependency "pry"
+  s.add_development_dependency "rspec-rails", "~> 3.5"
 end
