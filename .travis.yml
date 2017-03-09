@@ -1,4 +1,2 @@
-script:
-  - bundle exec rspec
 rvm:
   - jruby-9.1.7.0

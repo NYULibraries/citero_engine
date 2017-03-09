@@ -39,5 +39,8 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = false
 end
 
-
-task :default => :test
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.ruby_opts = "--debug --dev"
+end
+task default: :spec
