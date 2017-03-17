@@ -18,6 +18,11 @@ RSpec.shared_examples "success for all to_format" do |from_format|
     it { is_expected.to be_success }
     its(:body) { is_expected.to eq "RT Book, whole\nER \n \n" }
   end
+  context "to refworks" do
+    let(:to_format){ "refworks" }
+    it { is_expected.to be_success }
+    it { is_expected.to render_template "ex_cite/cite/external_form" }
+  end
   context "to bibtex" do
     let(:to_format){ "bibtex" }
     it { is_expected.to be_success }
@@ -27,6 +32,11 @@ RSpec.shared_examples "success for all to_format" do |from_format|
     let(:to_format){ "easybib" }
     it { is_expected.to be_success }
     its(:body) { is_expected.to eq "[{\"source\":\"book\",\"book\":{\"title\":null},\"pubtype\":{\"main\":\"pubnonperiodical\"},\"pubnonperiodical\":{},\"contributors\":[]}]" }
+  end
+  context "to easybibpush" do
+    let(:to_format){ "easybibpush" }
+    it { is_expected.to be_success }
+    it { is_expected.to render_template "ex_cite/cite/external_form" }
   end
   context "to csl" do
     let(:to_format){ "csl" }
