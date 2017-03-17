@@ -20,42 +20,72 @@ describe ExCite::ExportCitationsController, type: :controller do
           context "from CSF" do
             let(:from_format){ "csf" }
             let(:data){ csf_data }
-            include_examples "success for all to_format"
+            include_examples "book success for all to_format"
           end
 
           context "from BibTeX" do
             let(:from_format){ "bibtex" }
             let(:data){ bibtex_data }
-            include_examples "success for all to_format"
+            include_examples "book success for all to_format"
           end
 
           context "from Refworks" do
             let(:from_format){ "refworks_tagged" }
             let(:data){ refworks_data }
-            include_examples "success for all to_format"
+            include_examples "book success for all to_format"
           end
 
           context "from RIS" do
             let(:from_format){ "ris" }
             let(:data){ ris_data }
-            include_examples "success for all to_format"
+            include_examples "book success for all to_format"
           end
 
           context "from openurl" do
             let(:from_format){ "openurl" }
             let(:data){ openurl_data }
-            include_examples "success for all to_format", "openurl"
+            include_examples "book success for all to_format", "openurl"
           end
 
           context "from PNX" do
             let(:from_format){ "pnx" }
             let(:data){ pnx_data }
-            include_examples "success for all to_format"
+            include_examples "book success for all to_format"
           end
         end
 
         context "invalid data" do
-          pending
+          let(:data){ "$%^$* some nonsense !@#$%^&*}" }
+
+          context "from CSF" do
+            let(:from_format){ "csf" }
+            include_examples "success for all to_format"
+          end
+
+          context "from BibTeX" do
+            let(:from_format){ "bibtex" }
+            include_examples "success for all to_format"
+          end
+
+          context "from Refworks" do
+            let(:from_format){ "refworks_tagged" }
+            include_examples "success for all to_format"
+          end
+
+          context "from RIS" do
+            let(:from_format){ "ris" }
+            include_examples "success for all to_format"
+          end
+
+          context "from openurl" do
+            let(:from_format){ "openurl" }
+            include_examples "success for all to_format", "openurl"
+          end
+
+          context "from PNX" do
+            let(:from_format){ "pnx" }
+            include_examples "success for all to_format"
+          end
         end
       end
 
@@ -67,37 +97,31 @@ describe ExCite::ExportCitationsController, type: :controller do
 
           context "from CSF" do
             let(:from_format){ "csf" }
-            let(:data){ csf_data }
             include_examples "bad_request for all to_format"
           end
 
           context "from BibTeX" do
             let(:from_format){ "bibtex" }
-            let(:data){ bibtex_data }
             include_examples "bad_request for all to_format"
           end
 
           context "from Refworks" do
             let(:from_format){ "refworks_tagged" }
-            let(:data){ refworks_data }
             include_examples "bad_request for all to_format"
           end
 
           context "from RIS" do
             let(:from_format){ "ris" }
-            let(:data){ ris_data }
             include_examples "bad_request for all to_format"
           end
 
           context "from openurl" do
             let(:from_format){ "openurl" }
-            let(:data){ openurl_data }
             include_examples "bad_request for all to_format"
           end
 
           context "from PNX" do
             let(:from_format){ "pnx" }
-            let(:data){ pnx_data }
             include_examples "bad_request for all to_format"
           end
         end
