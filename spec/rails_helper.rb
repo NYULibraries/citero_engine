@@ -7,6 +7,7 @@ require 'spec_helper'
 require 'rspec/rails'
 require 'rspec-html-matchers'
 require 'support/shared_examples/success_for_all_to_formats'
+require 'support/shared_examples/bad_request_for_all_to_formats'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

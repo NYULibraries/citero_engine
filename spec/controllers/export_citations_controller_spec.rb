@@ -16,51 +16,94 @@ describe ExCite::ExportCitationsController, type: :controller do
       context "with data" do
         before { get :index, to_format: to_format, from_format: from_format, data: data }
 
-        context "from CSF" do
-          let(:from_format){ "csf" }
-          let(:data){ csf_data }
-          include_examples "success for all to_format"
+        context "valid data" do
+          context "from CSF" do
+            let(:from_format){ "csf" }
+            let(:data){ csf_data }
+            include_examples "success for all to_format"
+          end
+
+          context "from BibTeX" do
+            let(:from_format){ "bibtex" }
+            let(:data){ bibtex_data }
+            include_examples "success for all to_format"
+          end
+
+          context "from Refworks" do
+            let(:from_format){ "refworks_tagged" }
+            let(:data){ refworks_data }
+            include_examples "success for all to_format"
+          end
+
+          context "from RIS" do
+            let(:from_format){ "ris" }
+            let(:data){ ris_data }
+            include_examples "success for all to_format"
+          end
+
+          context "from openurl" do
+            let(:from_format){ "openurl" }
+            let(:data){ openurl_data }
+            include_examples "success for all to_format", "openurl"
+          end
+
+          context "from PNX" do
+            let(:from_format){ "pnx" }
+            let(:data){ pnx_data }
+            include_examples "success for all to_format"
+          end
         end
 
-        context "from BibTeX" do
-          let(:from_format){ "bibtex" }
-          let(:data){ bibtex_data }
-          include_examples "success for all to_format"
-        end
-
-        context "from Refworks" do
-          let(:from_format){ "refworks_tagged" }
-          let(:data){ refworks_data }
-          include_examples "success for all to_format"
-        end
-
-        context "from RIS" do
-          let(:from_format){ "ris" }
-          let(:data){ ris_data }
-          include_examples "success for all to_format"
-        end
-
-        context "from openurl" do
-          let(:from_format){ "openurl" }
-          let(:data){ openurl_data }
-          include_examples "success for all to_format", "openurl"
-        end
-
-        context "from PNX" do
-          let(:from_format){ "pnx" }
-          let(:data){ pnx_data }
-          include_examples "success for all to_format"
+        context "invalid data" do
+          pending
         end
       end
 
       context "with id" do
         before { get :index, to_format: to_format, from_format: from_format, id: id }
 
-        context "invalid" do
+        context "invalid id" do
           let(:id) { "error" }
-          let(:to_format){ "pnx" }
-          let(:from_format){ "pnx" }
-          it { is_expected.to be_bad_request }
+
+          context "from CSF" do
+            let(:from_format){ "csf" }
+            let(:data){ csf_data }
+            include_examples "bad_request for all to_format"
+          end
+
+          context "from BibTeX" do
+            let(:from_format){ "bibtex" }
+            let(:data){ bibtex_data }
+            include_examples "bad_request for all to_format"
+          end
+
+          context "from Refworks" do
+            let(:from_format){ "refworks_tagged" }
+            let(:data){ refworks_data }
+            include_examples "bad_request for all to_format"
+          end
+
+          context "from RIS" do
+            let(:from_format){ "ris" }
+            let(:data){ ris_data }
+            include_examples "bad_request for all to_format"
+          end
+
+          context "from openurl" do
+            let(:from_format){ "openurl" }
+            let(:data){ openurl_data }
+            include_examples "bad_request for all to_format"
+          end
+
+          context "from PNX" do
+            let(:from_format){ "pnx" }
+            let(:data){ pnx_data }
+            include_examples "bad_request for all to_format"
+          end
+        end
+
+        context "valid id" do
+          pending
         end
       end
     end
