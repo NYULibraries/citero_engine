@@ -12,6 +12,6 @@ dependencies:
     - bundle config github.https true
 test:
   override:
-    - bundle exec rspec --format progress --format documentation --format RspecJunitFormatter:
+    - bundle exec rspec:
         parallel: true
         pwd: app
