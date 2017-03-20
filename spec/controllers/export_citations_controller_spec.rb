@@ -10,7 +10,7 @@ describe ExCite::ExportCitationsController, type: :controller do
     let(:openurl_data){ "https://getit.library.nyu.edu/resolve?rft_val_fmt=info:ofi/fmt:kev:mtx:book" }
     let(:bibtex_data){ "@book{????\n}" }
     let(:pnx_data){ "<display><type>book</type></display>" }
-    let(:refworks_data){ "RT Book, whole\nER \n \n" }
+    let(:refworks_tagged_data){ "RT Book, whole\nER \n \n" }
 
     context "with from_format" do
       context "with data" do
@@ -31,7 +31,7 @@ describe ExCite::ExportCitationsController, type: :controller do
 
           context "from Refworks" do
             let(:from_format){ "refworks_tagged" }
-            let(:data){ refworks_data }
+            let(:data){ refworks_tagged_data }
             include_examples "book success for all to_format"
           end
 
@@ -57,6 +57,7 @@ describe ExCite::ExportCitationsController, type: :controller do
         context "invalid data" do
           let(:data){ "$%^$* some nonsense !@#$%^&*}" }
 
+          pending
           # context "from CSF" do
           #   let(:from_format){ "csf" }
           #   include_examples "bad_request for all to_format"
@@ -87,7 +88,7 @@ describe ExCite::ExportCitationsController, type: :controller do
           #   include_examples "bad_request for all to_format"
           # end
         end
-      end
+      end # end with data
 
       context "with id" do
         before { get :index, to_format: to_format, from_format: from_format, id: id }
@@ -127,9 +128,47 @@ describe ExCite::ExportCitationsController, type: :controller do
         end
 
         context "valid id" do
-          pending
+          around do |example|
+            old_acts_as_citable_class = ExCite.acts_as_citable_class
+            ExCite.acts_as_citable_class = DummyPersistentCitation
+            example.run
+            ExCite.acts_as_citable_class = old_acts_as_citable_class
+          end
+          let(:citation){ DummyPersistentCitation.create(data: data, format: from_format) }
+          let(:data){ public_send(:"#{from_format}_data") }
+          let(:id){ citation.id }
+
+          context "from CSF" do
+            let(:from_format){ "csf" }
+            include_examples "book success for all to_format"
+          end
+
+          context "from BibTeX" do
+            let(:from_format){ "bibtex" }
+            include_examples "book success for all to_format"
+          end
+
+          context "from Refworks" do
+            let(:from_format){ "refworks_tagged" }
+            include_examples "book success for all to_format"
+          end
+
+          context "from RIS" do
+            let(:from_format){ "ris" }
+            include_examples "book success for all to_format"
+          end
+
+          context "from openurl" do
+            let(:from_format){ "openurl" }
+            include_examples "book success for all to_format", "openurl"
+          end
+
+          context "from PNX" do
+            let(:from_format){ "pnx" }
+            include_examples "book success for all to_format"
+          end
         end
-      end
+      end # end with id
     end
   end
 end

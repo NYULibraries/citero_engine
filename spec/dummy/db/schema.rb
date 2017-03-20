@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170313203334) do
+ActiveRecord::Schema.define(version: 20170317193700) do
+
+  create_table "dummy_persistent_citations", force: :cascade do |t|
+    t.string   "format"
+    t.string   "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "empty_models", force: :cascade do |t|
     t.datetime "created_at", null: false
