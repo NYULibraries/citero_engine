@@ -10,11 +10,8 @@ machine:
 dependencies:
   pre:
     - bundle config github.https true
-    - rvm install jruby-9.1.7.0
-    - rvm-exec jruby-9.1.7.0 bash -c "gem install bundler"
-    - rvm-exec jruby-9.1.7.0 bash -c "bundle install"
 test:
   override:
-    - rvm-exec jruby-9.1.7.0 bash -c "bundle exec rspec --format progress --format documentation --format RspecJunitFormatter":
+    - bundle exec rspec --format progress --format documentation --format RspecJunitFormatter:
         parallel: true
         pwd: app
