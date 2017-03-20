@@ -12,6 +12,6 @@ dependencies:
     - bundle config github.https true
 test:
   override:
-    - bundle exec rspec:
+    - bundle exec rake:
         parallel: true
         pwd: app
