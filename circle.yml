@@ -15,8 +15,9 @@ dependencies:
     - rvm-exec jruby-9.1.7.0 bash -c "bundle install"
 test:
   override:
-    - rvm-exec jruby-9.1.7.0 bash -c "bundle exec rspec --format progress --format documentation --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/app_jruby.xml":
+    - rvm-exec jruby-9.1.7.0 bash -c "bundle exec rspec --format progress --format documentation --format RspecJunitFormatter":
         parallel: true
         pwd: app
         files:
           - spec/**/*_spec.rb
+          - spec/**/**/*_spec.rb
