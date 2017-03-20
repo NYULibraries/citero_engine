@@ -47,6 +47,36 @@ describe ExCite::Engine do
     it { is_expected.to eq ExCite::Citation }
   end
 
+  describe "acts_as_citable_class=" do
+    subject{ ExCite.acts_as_citable_class = new_class }
+    let(:fake_class){ Class.new }
+    before { stub_const("DummyClass", fake_class) }
+
+    around do |example|
+      old_acts_as_citable_class = ExCite.acts_as_citable_class
+      example.run
+      ExCite.acts_as_citable_class = old_acts_as_citable_class
+    end
+
+    context "assigned as a string" do
+      let(:new_class){ "DummyClass" }
+
+      it "should assign correctly" do
+        subject
+        expect(ExCite.acts_as_citable_class).to eq DummyClass
+      end
+    end
+
+    context "assigned as a constant" do
+      let(:new_class){ DummyClass }
+
+      it "should assign correctly" do
+        subject
+        expect(ExCite.acts_as_citable_class).to eq DummyClass
+      end
+    end
+  end
+
   describe "engine_name" do
     subject{ described_class.engine_name }
     it { is_expected.to eq "ex_cite" }

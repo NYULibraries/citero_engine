@@ -8,7 +8,8 @@ module ExCite
   mattr_accessor :endnote, :easybib, :refworks
 
   def self.acts_as_citable_class
-    @@acts_as_citable_class.constantize
+    @@acts_as_citable_class = @@acts_as_citable_class.constantize if @@acts_as_citable_class.is_a? String
+    @@acts_as_citable_class
   end
 
   EASYBIB_URL = "http://www.easybib.com/cite/bulk"
