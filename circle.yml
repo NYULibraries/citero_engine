@@ -1,0 +1,22 @@
+machine:
+  ruby:
+    version:
+      2.3.1
+  java:
+    version:
+      openjdk7
+  environment:
+    JRUBY_OPTS: '--dev'
+dependencies:
+  pre:
+    - bundle config github.https true
+    - rvm install jruby-9.1.7.0
+    - rvm-exec jruby-9.1.7.0 bash -c "gem install bundler"
+    - rvm-exec jruby-9.1.7.0 bash -c "bundle install"
+test:
+  override:
+    - rvm-exec jruby-9.1.7.0 bash -c "bundle exec rspec --format progress --format documentation --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/app_jruby.xml":
+        parallel: true
+        pwd: app
+        files:
+          - spec/**/*_spec.rb
