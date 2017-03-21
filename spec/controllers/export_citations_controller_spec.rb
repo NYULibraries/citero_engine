@@ -12,8 +12,8 @@ describe ExCite::ExportCitationsController, type: :controller do
     let(:pnx_data){ "<display><type>book</type></display>" }
     let(:refworks_tagged_data){ "RT Book, whole\nER \n \n" }
 
-    context "with from_format" do
-      context "with data" do
+    context "using data" do
+      context "with from_format" do
         before { get :index, to_format: to_format, from_format: from_format, data: data }
 
         context "valid data" do
@@ -88,55 +88,64 @@ describe ExCite::ExportCitationsController, type: :controller do
           #   include_examples "bad_request for all to_format"
           # end
         end
-      end # end with data
+      end # end with from_format
 
-      context "with id" do
-        before { get :index, to_format: to_format, from_format: from_format, id: id }
+      context "without from_format" do
+        before { get :index, to_format: to_format, data: data }
 
-        context "invalid id" do
-          let(:id) { "error" }
+        pending
+      end
+    end # with using data
 
-          context "from CSF" do
-            let(:from_format){ "csf" }
-            include_examples "bad_request for all to_format"
-          end
+    context "using id" do
+      before { get :index, to_format: to_format, id: id }
 
-          context "from BibTeX" do
-            let(:from_format){ "bibtex" }
-            include_examples "bad_request for all to_format"
-          end
+      context "invalid id" do
+        let(:id) { "error" }
 
-          context "from Refworks" do
-            let(:from_format){ "refworks_tagged" }
-            include_examples "bad_request for all to_format"
-          end
-
-          context "from RIS" do
-            let(:from_format){ "ris" }
-            include_examples "bad_request for all to_format"
-          end
-
-          context "from openurl" do
-            let(:from_format){ "openurl" }
-            include_examples "bad_request for all to_format"
-          end
-
-          context "from PNX" do
-            let(:from_format){ "pnx" }
-            include_examples "bad_request for all to_format"
-          end
+        context "from CSF" do
+          let(:from_format){ "csf" }
+          include_examples "bad_request for all to_format"
         end
 
-        context "valid id" do
-          around do |example|
-            old_acts_as_citable_class = ExCite.acts_as_citable_class
-            ExCite.acts_as_citable_class = DummyPersistentCitation
-            example.run
-            ExCite.acts_as_citable_class = old_acts_as_citable_class
-          end
-          let(:citation){ DummyPersistentCitation.create(data: data, format: from_format) }
+        context "from BibTeX" do
+          let(:from_format){ "bibtex" }
+          include_examples "bad_request for all to_format"
+        end
+
+        context "from Refworks" do
+          let(:from_format){ "refworks_tagged" }
+          include_examples "bad_request for all to_format"
+        end
+
+        context "from RIS" do
+          let(:from_format){ "ris" }
+          include_examples "bad_request for all to_format"
+        end
+
+        context "from openurl" do
+          let(:from_format){ "openurl" }
+          include_examples "bad_request for all to_format"
+        end
+
+        context "from PNX" do
+          let(:from_format){ "pnx" }
+          include_examples "bad_request for all to_format"
+        end
+      end
+
+      context "valid id" do
+        around do |example|
+          old_acts_as_citable_class = ExCite.acts_as_citable_class
+          ExCite.acts_as_citable_class = DummyPersistentCitation
+          example.run
+          ExCite.acts_as_citable_class = old_acts_as_citable_class
+        end
+        let(:citation){ DummyPersistentCitation.create(data: data, format: from_format) }
+        let(:id){ citation.id }
+
+        context "with valid data" do
           let(:data){ public_send(:"#{from_format}_data") }
-          let(:id){ citation.id }
 
           context "from CSF" do
             let(:from_format){ "csf" }
@@ -168,7 +177,15 @@ describe ExCite::ExportCitationsController, type: :controller do
             include_examples "book success for all to_format"
           end
         end
-      end # end with id
+
+        context "with invalid data" do
+          pending
+        end
+      end # end valid id
+    end #end using id
+
+    context "using resource_key" do
+      pending
     end
   end
 end
