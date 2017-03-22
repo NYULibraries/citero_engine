@@ -230,72 +230,34 @@ describe ExCite::ExportCitationsController, type: :controller do
         context "for single resource" do
           let(:nested_resource_key){ "wxyz" }
 
-          context "with valid data" do
-
-            context "from CSF" do
-              let(:from_format){ "csf" }
-              include_examples "resource_key-stubbed success for all to_format"
-            end
-
-            context "from BibTeX" do
-              let(:from_format){ "bibtex" }
-              include_examples "resource_key-stubbed success for all to_format"
-            end
-
-            context "from Refworks" do
-              let(:from_format){ "refworks_tagged" }
-              include_examples "resource_key-stubbed success for all to_format"
-            end
-
-            context "from RIS" do
-              let(:from_format){ "ris" }
-              include_examples "resource_key-stubbed success for all to_format"
-            end
-
-            context "from openurl" do
-              let(:from_format){ "openurl" }
-              include_examples "resource_key-stubbed success for all to_format"
-            end
-
-            context "from PNX" do
-              let(:from_format){ "pnx" }
-              include_examples "resource_key-stubbed success for all to_format"
-            end
+          context "from CSF" do
+            let(:from_format){ "csf" }
+            include_examples "resource_key-stubbed success for all to_format"
           end
 
-          context "with invalid data" do
-            let(:data){ "#$%^VGJHKV}" }
+          context "from BibTeX" do
+            let(:from_format){ "bibtex" }
+            include_examples "resource_key-stubbed success for all to_format"
+          end
 
-            pending
-            # context "from CSF" do
-            #   let(:from_format){ "csf" }
-            #   include_examples "bad_request for all to_format"
-            # end
-            #
-            # context "from BibTeX" do
-            #   let(:from_format){ "bibtex" }
-            #   include_examples "bad_request for all to_format"
-            # end
-            #
-            # context "from Refworks" do
-            #   let(:from_format){ "refworks_tagged" }
-            #   include_examples "bad_request for all to_format"
-            # end
-            #
-            # context "from RIS" do
-            #   let(:from_format){ "ris" }
-            #   include_examples "bad_request for all to_format"
-            # end
-            #
-            # context "from openurl" do
-            #   let(:from_format){ "openurl" }
-            #   include_examples "bad_request for all to_format"
-            # end
-            #
-            # context "from PNX" do
-            #   let(:from_format){ "pnx" }
-            #   include_examples "bad_request for all to_format"
-            # end
+          context "from Refworks" do
+            let(:from_format){ "refworks_tagged" }
+            include_examples "resource_key-stubbed success for all to_format"
+          end
+
+          context "from RIS" do
+            let(:from_format){ "ris" }
+            include_examples "resource_key-stubbed success for all to_format"
+          end
+
+          context "from openurl" do
+            let(:from_format){ "openurl" }
+            include_examples "resource_key-stubbed success for all to_format"
+          end
+
+          context "from PNX" do
+            let(:from_format){ "pnx" }
+            include_examples "resource_key-stubbed success for all to_format"
           end
         end # end for single resource
 
