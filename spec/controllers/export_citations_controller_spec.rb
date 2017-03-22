@@ -262,7 +262,10 @@ describe ExCite::ExportCitationsController, type: :controller do
         end # end for single resource
 
         context "for collection of resources" do
-          let(:nested_resource_keys){ %w[1234 5678 wxyz] }
+          let(:nested_resource_keys){ [nested_resource_key1, nested_resource_key2, nested_resource_key3] }
+          let(:nested_resource_key1){ "1234" }
+          let(:nested_resource_key2){ "5678" }
+          let(:nested_resource_key3){ "wxyz" }
           let(:nested_resource_cache_key1){ "1234to_" + to_format }
           let(:nested_resource_cache_key2){ "5678to_" + to_format }
           let(:nested_resource_cache_key3){ "wxyzto_" + to_format }
@@ -274,35 +277,35 @@ describe ExCite::ExportCitationsController, type: :controller do
           end
           before { get :index, to_format: to_format, resource_key: resource_key }
 
-          # context "from CSF" do
-          #   let(:from_format){ "csf" }
-          #   include_examples "resource_key-stubbed success for all to_format"
-          # end
-          #
-          # context "from BibTeX" do
-          #   let(:from_format){ "bibtex" }
-          #   include_examples "resource_key-stubbed success for all to_format"
-          # end
-          #
-          # context "from Refworks" do
-          #   let(:from_format){ "refworks_tagged" }
-          #   include_examples "resource_key-stubbed success for all to_format"
-          # end
-          #
-          # context "from RIS" do
-          #   let(:from_format){ "ris" }
-          #   include_examples "resource_key-stubbed success for all to_format"
-          # end
-          #
-          # context "from openurl" do
-          #   let(:from_format){ "openurl" }
-          #   include_examples "resource_key-stubbed success for all to_format"
-          # end
-          #
-          # context "from PNX" do
-          #   let(:from_format){ "pnx" }
-          #   include_examples "resource_key-stubbed success for all to_format"
-          # end
+          context "from CSF" do
+            let(:from_format){ "csf" }
+            include_examples "resource_key-stubbed success for all to_format"
+          end
+
+          context "from BibTeX" do
+            let(:from_format){ "bibtex" }
+            include_examples "resource_key-stubbed success for all to_format"
+          end
+
+          context "from Refworks" do
+            let(:from_format){ "refworks_tagged" }
+            include_examples "resource_key-stubbed success for all to_format"
+          end
+
+          context "from RIS" do
+            let(:from_format){ "ris" }
+            include_examples "resource_key-stubbed success for all to_format"
+          end
+
+          context "from openurl" do
+            let(:from_format){ "openurl" }
+            include_examples "resource_key-stubbed success for all to_format"
+          end
+
+          context "from PNX" do
+            let(:from_format){ "pnx" }
+            include_examples "resource_key-stubbed success for all to_format"
+          end
         end
       end # end valid resource_key
 
