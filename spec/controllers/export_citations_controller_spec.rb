@@ -218,17 +218,17 @@ describe ExCite::ExportCitationsController, type: :controller do
     end # end using id
 
     context "using resource_key" do
-      before do
-        allow(Rails.cache).to receive(:fetch).once.with(resource_key).and_return(nested_resource_key)
-        allow(Rails.cache).to receive(:fetch).once.with(nested_resource_cache_key).and_return(cached_data_converted) if defined?(cached_data_converted)
-      end
-      before { get :index, to_format: to_format, resource_key: resource_key }
       let(:resource_key){ "abcd" }
-      let(:nested_resource_cache_key){ nested_resource_key + "to_" + to_format }
 
       context "valid resource_key" do
         context "for single resource" do
           let(:nested_resource_key){ "wxyz" }
+          let(:nested_resource_cache_key){ nested_resource_key + "to_" + to_format }
+          before do
+            allow(Rails.cache).to receive(:fetch).once.with(resource_key).and_return(nested_resource_key)
+            allow(Rails.cache).to receive(:fetch).once.with(nested_resource_cache_key).and_return(cached_data_converted) if defined?(cached_data_converted)
+          end
+          before { get :index, to_format: to_format, resource_key: resource_key }
 
           context "from CSF" do
             let(:from_format){ "csf" }
@@ -262,44 +262,53 @@ describe ExCite::ExportCitationsController, type: :controller do
         end # end for single resource
 
         context "for collection of resources" do
-          let(:cached_resource){ [ExCite::Citation.new(data: data, format: from_format), ExCite::Citation.new(data: data, format: from_format)] }
-          let(:data){ public_send(:"#{from_format}_data") }
+          let(:nested_resource_keys){ %w[1234 5678 wxyz] }
+          let(:nested_resource_cache_key1){ "1234to_" + to_format }
+          let(:nested_resource_cache_key2){ "5678to_" + to_format }
+          let(:nested_resource_cache_key3){ "wxyzto_" + to_format }
+          before do
+            allow(Rails.cache).to receive(:fetch).once.with(resource_key).and_return(nested_resource_keys)
+            allow(Rails.cache).to receive(:fetch).once.with(nested_resource_cache_key1).and_return(cached_data_converted) if defined?(cached_data_converted)
+            allow(Rails.cache).to receive(:fetch).once.with(nested_resource_cache_key2).and_return(cached_data_converted) if defined?(cached_data_converted)
+            allow(Rails.cache).to receive(:fetch).once.with(nested_resource_cache_key3).and_return(cached_data_converted) if defined?(cached_data_converted)
+          end
+          before { get :index, to_format: to_format, resource_key: resource_key }
 
-          pending
           # context "from CSF" do
           #   let(:from_format){ "csf" }
-          #   include_examples "book success for all to_format"
+          #   include_examples "resource_key-stubbed success for all to_format"
           # end
           #
           # context "from BibTeX" do
           #   let(:from_format){ "bibtex" }
-          #   include_examples "book success for all to_format"
+          #   include_examples "resource_key-stubbed success for all to_format"
           # end
           #
           # context "from Refworks" do
           #   let(:from_format){ "refworks_tagged" }
-          #   include_examples "book success for all to_format"
+          #   include_examples "resource_key-stubbed success for all to_format"
           # end
           #
           # context "from RIS" do
           #   let(:from_format){ "ris" }
-          #   include_examples "book success for all to_format"
+          #   include_examples "resource_key-stubbed success for all to_format"
           # end
           #
           # context "from openurl" do
           #   let(:from_format){ "openurl" }
-          #   include_examples "book success for all to_format", "openurl"
+          #   include_examples "resource_key-stubbed success for all to_format"
           # end
           #
           # context "from PNX" do
           #   let(:from_format){ "pnx" }
-          #   include_examples "book success for all to_format"
+          #   include_examples "resource_key-stubbed success for all to_format"
           # end
         end
       end # end valid resource_key
 
       context "invalid resource_key" do
-        let(:nested_resource_key){ nil }
+        before { allow(Rails.cache).to receive(:fetch).once.with(resource_key).and_return(nil) }
+        before { get :index, to_format: to_format, resource_key: resource_key }
 
         context "from CSF" do
           let(:from_format){ "csf" }
