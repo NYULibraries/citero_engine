@@ -218,61 +218,126 @@ describe ExCite::ExportCitationsController, type: :controller do
     end # end using id
 
     context "using resource_key" do
-      before { allow(Rails.cache).to receive(:fetch).with(resource_key).and_return cached_resource }
+      before do
+        allow(Rails.cache).to receive(:fetch).once.with(resource_key).and_return(nested_resource_key)
+        allow(Rails.cache).to receive(:fetch).once.with(nested_resource_cache_key).and_return(cached_data_converted) if defined?(cached_data_converted)
+      end
       before { get :index, to_format: to_format, resource_key: resource_key }
       let(:resource_key){ "abcd" }
+      let(:nested_resource_cache_key){ nested_resource_key + "to_" + to_format }
 
       context "valid resource_key" do
         context "for single resource" do
-          let(:cached_resource){ ExCite::Citation.new(data: data, format: from_format) }
+          let(:nested_resource_key){ "wxyz" }
 
           context "with valid data" do
-            let(:data){ public_send(:"#{from_format}_data") }
+
+            context "from CSF" do
+              let(:from_format){ "csf" }
+              include_examples "resource_key-stubbed success for all to_format"
+            end
+
+            context "from BibTeX" do
+              let(:from_format){ "bibtex" }
+              include_examples "resource_key-stubbed success for all to_format"
+            end
+
+            context "from Refworks" do
+              let(:from_format){ "refworks_tagged" }
+              include_examples "resource_key-stubbed success for all to_format"
+            end
+
+            context "from RIS" do
+              let(:from_format){ "ris" }
+              include_examples "resource_key-stubbed success for all to_format"
+            end
+
+            context "from openurl" do
+              let(:from_format){ "openurl" }
+              include_examples "resource_key-stubbed success for all to_format"
+            end
+
+            context "from PNX" do
+              let(:from_format){ "pnx" }
+              include_examples "resource_key-stubbed success for all to_format"
+            end
+          end
+
+          context "with invalid data" do
+            let(:data){ "#$%^VGJHKV}" }
 
             pending
             # context "from CSF" do
             #   let(:from_format){ "csf" }
-            #   include_examples "book success for all to_format"
+            #   include_examples "bad_request for all to_format"
             # end
             #
             # context "from BibTeX" do
             #   let(:from_format){ "bibtex" }
-            #   include_examples "book success for all to_format"
+            #   include_examples "bad_request for all to_format"
             # end
             #
             # context "from Refworks" do
             #   let(:from_format){ "refworks_tagged" }
-            #   include_examples "book success for all to_format"
+            #   include_examples "bad_request for all to_format"
             # end
             #
             # context "from RIS" do
             #   let(:from_format){ "ris" }
-            #   include_examples "book success for all to_format"
+            #   include_examples "bad_request for all to_format"
             # end
             #
             # context "from openurl" do
             #   let(:from_format){ "openurl" }
-            #   include_examples "book success for all to_format", "openurl"
+            #   include_examples "bad_request for all to_format"
             # end
             #
             # context "from PNX" do
             #   let(:from_format){ "pnx" }
-            #   include_examples "book success for all to_format"
+            #   include_examples "bad_request for all to_format"
             # end
-          end
-
-          context "with invalid data" do
-            pending
           end
         end # end for single resource
 
         context "for collection of resources" do
+          let(:cached_resource){ [ExCite::Citation.new(data: data, format: from_format), ExCite::Citation.new(data: data, format: from_format)] }
+          let(:data){ public_send(:"#{from_format}_data") }
 
+          pending
+          # context "from CSF" do
+          #   let(:from_format){ "csf" }
+          #   include_examples "book success for all to_format"
+          # end
+          #
+          # context "from BibTeX" do
+          #   let(:from_format){ "bibtex" }
+          #   include_examples "book success for all to_format"
+          # end
+          #
+          # context "from Refworks" do
+          #   let(:from_format){ "refworks_tagged" }
+          #   include_examples "book success for all to_format"
+          # end
+          #
+          # context "from RIS" do
+          #   let(:from_format){ "ris" }
+          #   include_examples "book success for all to_format"
+          # end
+          #
+          # context "from openurl" do
+          #   let(:from_format){ "openurl" }
+          #   include_examples "book success for all to_format", "openurl"
+          # end
+          #
+          # context "from PNX" do
+          #   let(:from_format){ "pnx" }
+          #   include_examples "book success for all to_format"
+          # end
         end
       end # end valid resource_key
 
       context "invalid resource_key" do
-        let(:cached_resource){ nil }
+        let(:nested_resource_key){ nil }
 
         context "from CSF" do
           let(:from_format){ "csf" }
