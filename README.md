@@ -2,6 +2,7 @@ ExCite Engine Gem
 ======================
 [![Build Status](http://jenkins.library.nyu.edu/buildStatus/icon?job=ex_cite Staging Test)](http://jenkins.library.nyu.edu/view/Citero/job/ex_cite%20Staging%20Test/)
 [![Build Status](https://travis-ci.org/NYULibraries/ex_cite.png?branch=master)](https://travis-ci.org/NYULibraries/ex_cite)
+[![CircleCI](https://circleci.com/gh/NYULibraries/ex_cite.svg?style=svg)](https://circleci.com/gh/NYULibraries/ex_cite)
 [![Coverage Status](https://coveralls.io/repos/NYULibraries/ex_cite/badge.png?branch=master)](https://coveralls.io/r/NYULibraries/ex_cite?branch=master)
 [![Dependency Status](https://gemnasium.com/NYULibraries/ex_cite.png)](https://gemnasium.com/NYULibraries/ex_cite)
 [![Gem Version](https://badge.fury.io/rb/ex_cite.png)](http://badge.fury.io/rb/ex_cite)
@@ -49,7 +50,7 @@ Services
 Some services, such as Endnote, RefWorks, and EasyBib are already included in ex_cite. These services are configurable right out of the box for your needs.
 
 There are two ways to use services, rendering and redirect. The render method will render a view with a 200 response, and the redirect will, as expected,
-redirect to another page with a 302 response. 
+redirect to another page with a 302 response.
 
 To configure a built-in service, such as Endnote, Refworks, or EasyBib, simply modify the following objects
 
