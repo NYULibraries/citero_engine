@@ -1,3 +1,35 @@
+RSpec.shared_examples "book success for all from_format and to_format" do
+  context "from CSF" do
+    let(:from_format){ "csf" }
+    include_examples "book success for all to_format"
+  end
+
+  context "from BibTeX" do
+    let(:from_format){ "bibtex" }
+    include_examples "book success for all to_format"
+  end
+
+  context "from Refworks" do
+    let(:from_format){ "refworks_tagged" }
+    include_examples "book success for all to_format"
+  end
+
+  context "from RIS" do
+    let(:from_format){ "ris" }
+    include_examples "book success for all to_format"
+  end
+
+  context "from openurl" do
+    let(:from_format){ "openurl" }
+    include_examples "book success for all to_format", "openurl"
+  end
+
+  context "from PNX" do
+    let(:from_format){ "pnx" }
+    include_examples "book success for all to_format"
+  end
+end
+
 RSpec.shared_examples "book success for all to_format" do |from_format|
   include_examples "success for all to_format"
   context "to openurl" do

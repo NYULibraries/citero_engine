@@ -19,70 +19,14 @@ describe ExCite::ExportCitationsController, type: :controller do
         context "valid data" do
           let(:data){ public_send(:"#{from_format}_data") }
 
-          context "from CSF" do
-            let(:from_format){ "csf" }
-            include_examples "book success for all to_format"
-          end
-
-          context "from BibTeX" do
-            let(:from_format){ "bibtex" }
-            include_examples "book success for all to_format"
-          end
-
-          context "from Refworks" do
-            let(:from_format){ "refworks_tagged" }
-            include_examples "book success for all to_format"
-          end
-
-          context "from RIS" do
-            let(:from_format){ "ris" }
-            include_examples "book success for all to_format"
-          end
-
-          context "from openurl" do
-            let(:from_format){ "openurl" }
-            include_examples "book success for all to_format", "openurl"
-          end
-
-          context "from PNX" do
-            let(:from_format){ "pnx" }
-            include_examples "book success for all to_format"
-          end
+          include_examples "book success for all from_format and to_format"
         end
 
         context "invalid data" do
           let(:data){ "$%^$* some nonsense !@#$%^&*}" }
 
           pending
-          # context "from CSF" do
-          #   let(:from_format){ "csf" }
-          #   include_examples "bad_request for all to_format"
-          # end
-          #
-          # context "from BibTeX" do
-          #   let(:from_format){ "bibtex" }
-          #   include_examples "bad_request for all to_format"
-          # end
-          #
-          # context "from Refworks" do
-          #   let(:from_format){ "refworks_tagged" }
-          #   include_examples "bad_request for all to_format"
-          # end
-          #
-          # context "from RIS" do
-          #   let(:from_format){ "ris" }
-          #   include_examples "bad_request for all to_format"
-          # end
-          #
-          # context "from openurl" do
-          #   let(:from_format){ "openurl" }
-          #   include_examples "bad_request for all to_format", "openurl"
-          # end
-          #
-          # context "from PNX" do
-          #   let(:from_format){ "pnx" }
-          #   include_examples "bad_request for all to_format"
-          # end
+          # include_examples "bad_request for all from_format and to_format"
         end
       end # end with from_format
 
@@ -93,35 +37,7 @@ describe ExCite::ExportCitationsController, type: :controller do
           let(:data){ public_send(:"#{from_format}_data") }
 
           pending
-          # context "from CSF" do
-          #   let(:from_format){ "csf" }
-          #   include_examples "book success for all to_format"
-          # end
-          #
-          # context "from BibTeX" do
-          #   let(:from_format){ "bibtex" }
-          #   include_examples "book success for all to_format"
-          # end
-          #
-          # context "from Refworks" do
-          #   let(:from_format){ "refworks_tagged" }
-          #   include_examples "book success for all to_format"
-          # end
-          #
-          # context "from RIS" do
-          #   let(:from_format){ "ris" }
-          #   include_examples "book success for all to_format"
-          # end
-          #
-          # context "from openurl" do
-          #   let(:from_format){ "openurl" }
-          #   include_examples "book success for all to_format", "openurl"
-          # end
-          #
-          # context "from PNX" do
-          #   let(:from_format){ "pnx" }
-          #   include_examples "book success for all to_format"
-          # end
+          # include_examples "book success for all from_format and to_format"
         end
 
         context "with invalid data" do
@@ -146,35 +62,7 @@ describe ExCite::ExportCitationsController, type: :controller do
         context "with valid data" do
           let(:data){ public_send(:"#{from_format}_data") }
 
-          context "from CSF" do
-            let(:from_format){ "csf" }
-            include_examples "book success for all to_format"
-          end
-
-          context "from BibTeX" do
-            let(:from_format){ "bibtex" }
-            include_examples "book success for all to_format"
-          end
-
-          context "from Refworks" do
-            let(:from_format){ "refworks_tagged" }
-            include_examples "book success for all to_format"
-          end
-
-          context "from RIS" do
-            let(:from_format){ "ris" }
-            include_examples "book success for all to_format"
-          end
-
-          context "from openurl" do
-            let(:from_format){ "openurl" }
-            include_examples "book success for all to_format", "openurl"
-          end
-
-          context "from PNX" do
-            let(:from_format){ "pnx" }
-            include_examples "book success for all to_format"
-          end
+          include_examples "book success for all from_format and to_format"
         end
 
         context "with invalid data" do
@@ -185,35 +73,7 @@ describe ExCite::ExportCitationsController, type: :controller do
       context "invalid id" do
         let(:id) { "error" }
 
-        context "from CSF" do
-          let(:from_format){ "csf" }
-          include_examples "bad_request for all to_format"
-        end
-
-        context "from BibTeX" do
-          let(:from_format){ "bibtex" }
-          include_examples "bad_request for all to_format"
-        end
-
-        context "from Refworks" do
-          let(:from_format){ "refworks_tagged" }
-          include_examples "bad_request for all to_format"
-        end
-
-        context "from RIS" do
-          let(:from_format){ "ris" }
-          include_examples "bad_request for all to_format"
-        end
-
-        context "from openurl" do
-          let(:from_format){ "openurl" }
-          include_examples "bad_request for all to_format"
-        end
-
-        context "from PNX" do
-          let(:from_format){ "pnx" }
-          include_examples "bad_request for all to_format"
-        end
+        include_examples "bad_request for all from_format and to_format"
       end # end invalid id
     end # end using id
 
@@ -230,35 +90,7 @@ describe ExCite::ExportCitationsController, type: :controller do
           end
           before { get :index, to_format: to_format, resource_key: resource_key }
 
-          context "from CSF" do
-            let(:from_format){ "csf" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
-
-          context "from BibTeX" do
-            let(:from_format){ "bibtex" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
-
-          context "from Refworks" do
-            let(:from_format){ "refworks_tagged" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
-
-          context "from RIS" do
-            let(:from_format){ "ris" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
-
-          context "from openurl" do
-            let(:from_format){ "openurl" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
-
-          context "from PNX" do
-            let(:from_format){ "pnx" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
+          include_examples "resource_key-stubbed success for all from_format and to_format"
         end # end for single resource
 
         context "for collection of resources" do
@@ -277,35 +109,7 @@ describe ExCite::ExportCitationsController, type: :controller do
           end
           before { get :index, to_format: to_format, resource_key: resource_key }
 
-          context "from CSF" do
-            let(:from_format){ "csf" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
-
-          context "from BibTeX" do
-            let(:from_format){ "bibtex" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
-
-          context "from Refworks" do
-            let(:from_format){ "refworks_tagged" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
-
-          context "from RIS" do
-            let(:from_format){ "ris" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
-
-          context "from openurl" do
-            let(:from_format){ "openurl" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
-
-          context "from PNX" do
-            let(:from_format){ "pnx" }
-            include_examples "resource_key-stubbed success for all to_format"
-          end
+          include_examples "resource_key-stubbed success for all from_format and to_format"
         end
       end # end valid resource_key
 
@@ -313,35 +117,7 @@ describe ExCite::ExportCitationsController, type: :controller do
         before { allow(Rails.cache).to receive(:fetch).once.with(resource_key).and_return(nil) }
         before { get :index, to_format: to_format, resource_key: resource_key }
 
-        context "from CSF" do
-          let(:from_format){ "csf" }
-          include_examples "bad_request for all to_format"
-        end
-
-        context "from BibTeX" do
-          let(:from_format){ "bibtex" }
-          include_examples "bad_request for all to_format"
-        end
-
-        context "from Refworks" do
-          let(:from_format){ "refworks_tagged" }
-          include_examples "bad_request for all to_format"
-        end
-
-        context "from RIS" do
-          let(:from_format){ "ris" }
-          include_examples "bad_request for all to_format"
-        end
-
-        context "from openurl" do
-          let(:from_format){ "openurl" }
-          include_examples "bad_request for all to_format"
-        end
-
-        context "from PNX" do
-          let(:from_format){ "pnx" }
-          include_examples "bad_request for all to_format"
-        end
+        include_examples "bad_request for all from_format and to_format"
       end # end invalid resource_key
     end
   end
