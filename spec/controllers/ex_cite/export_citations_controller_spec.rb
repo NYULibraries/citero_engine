@@ -29,23 +29,6 @@ describe ExCite::ExportCitationsController, type: :controller do
           # include_examples "bad_request for all from_format and to_format"
         end
       end # end with from_format
-
-      # context "without from_format" do
-      #   before { get :index, to_format: to_format, data: data }
-      #
-      #   context "with valid data" do
-      #     let(:data){ public_send(:"#{from_format}_data") }
-      #
-      #     pending
-      #   end
-      #
-      #   context "with invalid data" do
-      #     let(:data){ "%^&dfhgs^&" }
-      #
-      #     pending
-      #     # include_examples "bad_request for all from_format and to_format"
-      #   end
-      # end # end without from_format
     end # end using data
 
     context "using id" do
@@ -129,6 +112,13 @@ describe ExCite::ExportCitationsController, type: :controller do
 
         include_examples "bad_request for all from_format and to_format"
       end # end invalid resource_key
+    end
+
+    context "using openurl" do
+      before { get :index, to_format: to_format, rft_val_fmt: "info:ofi/fmt:kev:mtx:book" }
+      let(:data){ "http://test.host" + URI.decode(request.fullpath) }
+
+      include_examples "book success for all to_format", "openurl"
     end
   end
 end
