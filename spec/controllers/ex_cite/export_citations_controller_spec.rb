@@ -30,20 +30,22 @@ describe ExCite::ExportCitationsController, type: :controller do
         end
       end # end with from_format
 
-      context "without from_format" do
-        before { get :index, to_format: to_format, data: data }
-
-        context "with valid data" do
-          let(:data){ public_send(:"#{from_format}_data") }
-
-          pending
-          # include_examples "book success for all from_format and to_format"
-        end
-
-        context "with invalid data" do
-          pending
-        end
-      end # end without from_format
+      # context "without from_format" do
+      #   before { get :index, to_format: to_format, data: data }
+      #
+      #   context "with valid data" do
+      #     let(:data){ public_send(:"#{from_format}_data") }
+      #
+      #     pending
+      #   end
+      #
+      #   context "with invalid data" do
+      #     let(:data){ "%^&dfhgs^&" }
+      #
+      #     pending
+      #     # include_examples "bad_request for all from_format and to_format"
+      #   end
+      # end # end without from_format
     end # end using data
 
     context "using id" do
@@ -66,7 +68,10 @@ describe ExCite::ExportCitationsController, type: :controller do
         end
 
         context "with invalid data" do
+          let(:data){ "%^&%^&cbdsds" }
+
           pending
+          # include_examples "bad_request for all from_format and to_format"
         end
       end # end valid id
 
