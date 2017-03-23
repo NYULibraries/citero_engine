@@ -79,11 +79,16 @@ describe ExCite::ExportCitationsController, type: :controller do
 
     context "using resource_key" do
       let(:resource_key){ "abcd" }
+      let(:converted_to_format) do
+        return "refworks_tagged" if to_format == "refworks"
+        return "easybib" if to_format == "easybibpush"
+        to_format
+      end
 
       context "valid resource_key" do
         context "for single resource" do
           let(:nested_resource_key){ "wxyz" }
-          let(:nested_resource_cache_key){ nested_resource_key + "to_" + to_format }
+          let(:nested_resource_cache_key){ nested_resource_key + "to_" + converted_to_format }
           before do
             allow(Rails.cache).to receive(:fetch).once.with(resource_key).and_return(nested_resource_key)
             allow(Rails.cache).to receive(:fetch).once.with(nested_resource_cache_key).and_return(cached_data_converted) if defined?(cached_data_converted)
@@ -98,9 +103,9 @@ describe ExCite::ExportCitationsController, type: :controller do
           let(:nested_resource_key1){ "1234" }
           let(:nested_resource_key2){ "5678" }
           let(:nested_resource_key3){ "wxyz" }
-          let(:nested_resource_cache_key1){ "1234to_" + to_format }
-          let(:nested_resource_cache_key2){ "5678to_" + to_format }
-          let(:nested_resource_cache_key3){ "wxyzto_" + to_format }
+          let(:nested_resource_cache_key1){ nested_resource_key1 + "to_" + converted_to_format }
+          let(:nested_resource_cache_key2){ nested_resource_key2 + "to_" + converted_to_format }
+          let(:nested_resource_cache_key3){ nested_resource_key3 + "to_" + converted_to_format }
           before do
             allow(Rails.cache).to receive(:fetch).once.with(resource_key).and_return(nested_resource_keys)
             allow(Rails.cache).to receive(:fetch).once.with(nested_resource_cache_key1).and_return(cached_data_converted) if defined?(cached_data_converted)

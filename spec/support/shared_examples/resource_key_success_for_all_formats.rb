@@ -47,10 +47,6 @@ RSpec.shared_examples "resource_key-stubbed success for all to_format" do |from_
   end
   context "to refworks" do
     let(:to_format){ "refworks" }
-    let(:nested_resource_cache_key){ nested_resource_key + "to_refworks_tagged" }
-    let(:nested_resource_cache_key1){ nested_resource_key1 + "to_refworks_tagged" }
-    let(:nested_resource_cache_key2){ nested_resource_key2 + "to_refworks_tagged" }
-    let(:nested_resource_cache_key3){ nested_resource_key3 + "to_refworks_tagged" }
     let(:cached_data_converted){ refworks_tagged_data }
     its(:status) { is_expected.to eq 200 }
     it { is_expected.to render_template "ex_cite/cite/external_form" }
@@ -66,10 +62,6 @@ RSpec.shared_examples "resource_key-stubbed success for all to_format" do |from_
   end
   context "to easybibpush" do
     let(:to_format){ "easybibpush" }
-    let(:nested_resource_cache_key){ nested_resource_key + "to_easybib" }
-    let(:nested_resource_cache_key1){ nested_resource_key1 + "to_easybib" }
-    let(:nested_resource_cache_key2){ nested_resource_key2 + "to_easybib" }
-    let(:nested_resource_cache_key3){ nested_resource_key3 + "to_easybib" }
     let(:cached_data_converted){ "[{\"source\":\"book\",\"book\":{\"title\":null},\"pubtype\":{\"main\":\"pubnonperiodical\"},\"pubnonperiodical\":{},\"contributors\":[]}]" }
     its(:status) { is_expected.to eq 200 }
     it { is_expected.to render_template "ex_cite/cite/external_form" }
