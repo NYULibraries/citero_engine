@@ -1,6 +1,6 @@
 require 'ex_cite/core_ext'
 require "acts_as_citable"
-require 'citero_renderers'
+require 'citero-renderers'
 
 module ExCite
   mattr_accessor :acts_as_citable_class
