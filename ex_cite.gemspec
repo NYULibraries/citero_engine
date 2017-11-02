@@ -17,19 +17,18 @@ Gem::Specification.new do |s|
   s.test_files  = Dir["test/**/*"]
   s.homepage    = "https://github.com/NYULibraries/ex_cite"
 
-  s.add_dependency "rails", "~> 4.2.8"
-  s.add_dependency "acts_as_citable", "~> 4.0.0"
-  s.add_dependency 'citero_renderers', '~> 1.0.1'
-  s.add_dependency "jquery-rails", "~> 3.1.0"
+  s.add_dependency "rails", "~> 4.2.10"
+  s.add_dependency "acts_as_citable", "~> 5.0.0.alpha2"
+  s.add_dependency 'citero-renderers', '~> 1.0.4'
+  s.add_dependency "jquery-rails", "~> 4.3.1"
 
-  s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
+  s.add_development_dependency "sqlite3", "~> 1.3.13"
   s.add_development_dependency "rake", "~> 10.0"
-  s.add_development_dependency "brakeman", "~> 1.9.5"
-  s.add_development_dependency "simplecov-rcov"
-  s.add_development_dependency "test-unit"
-  s.add_development_dependency "coveralls"
-  s.add_development_dependency "pry"
+  s.add_development_dependency "simplecov-rcov", "~> 0.2.3"
+  s.add_development_dependency "test-unit", "~> 3.2.6"
+  s.add_development_dependency "coveralls", "~> 0.8.21"
+  s.add_development_dependency "pry", "~> 0.11.2"
   s.add_development_dependency "rspec-rails", "~> 3.5"
-  s.add_development_dependency "rspec-html-matchers"
-  s.add_development_dependency "rspec-its"
+  s.add_development_dependency "rspec-html-matchers", "~> 0.9.1"
+  s.add_development_dependency "rspec-its", "~> 1.2.0"
 end
