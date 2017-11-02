@@ -59,10 +59,6 @@ RSpec.shared_examples "bad_request for all to_format" do |from_format|
     let(:to_format){ "easybibpush" }
     its(:status) { is_expected.to eq 400 }
   end
-  context "to csl" do
-    let(:to_format){ "csl" }
-    its(:status) { is_expected.to eq 400 }
-  end
   context "to csf" do
     let(:to_format){ "csf" }
     its(:status) { is_expected.to eq 400 }

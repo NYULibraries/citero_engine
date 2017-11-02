@@ -56,10 +56,6 @@ RSpec.shared_examples "book success for all to_format" do |from_format|
     let(:to_format){ "easybib" }
     its(:body) { is_expected.to eq "[{\"source\":\"book\",\"book\":{\"title\":null},\"pubtype\":{\"main\":\"pubnonperiodical\"},\"pubnonperiodical\":{},\"contributors\":[]}]" }
   end
-  context "to csl" do
-    let(:to_format){ "csl" }
-    its(:body) { is_expected.to eq "[{\"ITEM-1\":{\"id\":\"ITEM-1\",\"type\":\"book\"}}]" }
-  end
   context "to csf" do
     let(:to_format){ "csf" }
     its(:body) { is_expected.to match /\AitemType:\s*book(\s+importedFrom:\s*\w+)?\s*\z/ }

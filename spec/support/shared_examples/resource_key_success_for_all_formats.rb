@@ -66,11 +66,6 @@ RSpec.shared_examples "resource_key-stubbed success for all to_format" do |from_
     its(:status) { is_expected.to eq 200 }
     it { is_expected.to render_template "ex_cite/cite/external_form" }
   end
-  context "to csl" do
-    let(:to_format){ "csl" }
-    let(:cached_data_converted){ csf_data }
-    its(:status) { is_expected.to eq 200 }
-  end
   context "to csf" do
     let(:to_format){ "csf" }
     its(:status) { is_expected.to eq 200 }

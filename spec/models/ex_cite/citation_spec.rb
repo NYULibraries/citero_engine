@@ -33,18 +33,6 @@ describe ExCite::Citation do
       it { is_expected.to be_present }
     end
 
-    # describe "to_apa" do
-    #   subject{ citation.to_apa }
-    #   it { is_expected.to eq "<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\"> (n.d.).</div>\n</div>" }
-    # end
-    describe "to_mla" do
-      subject{ citation.to_mla }
-      it { is_expected.to eq "<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\"> Print.</div>\n</div>" }
-    end
-    describe "to_chicago_author_date" do
-      subject{ citation.to_chicago_author_date }
-      it { is_expected.to eq "<div class=\"csl-bib-body\">\n\n[CSL STYLE ERROR: reference with no printed form.]\n</div>" }
-    end
 
     describe "respond_to?" do
       subject{ citation }
@@ -55,9 +43,6 @@ describe ExCite::Citation do
       it { is_expected.to respond_to :to_csf }
       it { is_expected.to respond_to :to_refworks_tagged }
       it { is_expected.to respond_to :csf }
-      it { is_expected.to respond_to :to_apa }
-      it { is_expected.to respond_to :to_mla }
-      it { is_expected.to respond_to :to_chicago_author_date }
       it { is_expected.to_not respond_to :to_random }
     end
     describe "method_missing" do
