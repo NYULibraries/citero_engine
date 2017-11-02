@@ -95,15 +95,16 @@ module ExCite
         return
       end
       # if the to format is found, it returns the method name for that to format
-      if (direction == :to && (Citero.to_formats.include?(format.downcase) || Citero.citation_styles.include?(format.downcase)))
-        return "#{:to.to_s}_#{format.downcase}"
+      format_sym = format.downcase.to_sym
+      if (direction == :to && (Citero.to_formats.include?(format_sym) || Citero.citation_styles.include?(format_sym)))
+        return "to_#{format_sym}"
       # if the from format is found, it returns just that because the object already knows what method to call
-      elsif (direction == :from && Citero.from_formats.include?(format.downcase))
+      elsif (direction == :from && Citero.from_formats.include?(format_sym))
         return format.downcase
       end
       # if the format is still not found, it might be a push request, check if that is the case
-      if ExCite.push_formats.include? format.to_sym
-        @push_to = ExCite.push_formats[format.to_sym]
+      if ExCite.push_formats.include? format_sym
+        @push_to = ExCite.push_formats[format_sym]
         @to_format = @push_to.to_format.downcase
         return "#{direction.to_s}_#{@to_format}"
       end
