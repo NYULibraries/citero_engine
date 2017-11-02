@@ -180,7 +180,7 @@ module ExCite
 
     def delimiters
       case @to_format
-      when "to_easybib", "to_csl"
+      when "to_easybib"
         return [",\n","[","]"]
       else
         return ["\n\n"]
