@@ -9,7 +9,7 @@ describe ExCite::ExportCitationsController, type: :controller do
     let(:ris_data){ "TY  -  BOOK\nER  -\n\n" }
     let(:openurl_data){ "https://getit.library.nyu.edu/resolve?rft_val_fmt=info:ofi/fmt:kev:mtx:book" }
     let(:bibtex_data){ "@book{????\n}" }
-    let(:pnx_data){ "<display><type>book</type></display>" }
+    let(:pnx_data){ "<record><display><type>book</type></display></record>" }
     let(:refworks_tagged_data){ "RT Book, whole\nER \n \n" }
 
     context "using data" do
