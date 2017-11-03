@@ -14,7 +14,7 @@ RSpec.shared_examples "success for all to_format" do |from_format|
   context "to refworks" do
     let(:to_format){ "refworks" }
     its(:status) { is_expected.to eq 200 }
-    it { is_expected.to render_template "ex_cite/cite/external_form" }
+    it { is_expected.to render_template "citero_engine/cite/external_form" }
   end
   context "to bibtex" do
     let(:to_format){ "bibtex" }
@@ -27,7 +27,7 @@ RSpec.shared_examples "success for all to_format" do |from_format|
   context "to easybibpush" do
     let(:to_format){ "easybibpush" }
     its(:status) { is_expected.to eq 200 }
-    it { is_expected.to render_template "ex_cite/cite/external_form" }
+    it { is_expected.to render_template "citero_engine/cite/external_form" }
   end
   context "to csf" do
     let(:to_format){ "csf" }

@@ -7,7 +7,7 @@ require "action_mailer/railtie"
 require "action_view/railtie"
 require "sprockets/railtie"
 # require "rails/test_unit/railtie"
-require "ex_cite"
+require "citero_engine"
 
 module Dummy
   class Application < Rails::Application

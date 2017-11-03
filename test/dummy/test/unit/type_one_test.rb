@@ -15,10 +15,10 @@ class TypeOneTest < ActiveSupport::TestCase
   end
 
   test "test typeones ability to act as citable" do
-    ExCite.acts_as_citable_class = "TypeOne"
-    t = ExCite.acts_as_citable_class.new(:formatting => "csf", :raw => "itemType: book")
+    CiteroEngine.acts_as_citable_class = "TypeOne"
+    t = CiteroEngine.acts_as_citable_class.new(:formatting => "csf", :raw => "itemType: book")
     t.id = 1
     assert_equal t.to_ris, "TY  - BOOK\nER  -\n\n"
-    ExCite.acts_as_citable_class = "ExCite::Citation"
+    CiteroEngine.acts_as_citable_class = "CiteroEngine::Citation"
   end
 end

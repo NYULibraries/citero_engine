@@ -49,7 +49,7 @@ RSpec.shared_examples "resource_key-stubbed success for all to_format" do |from_
     let(:to_format){ "refworks" }
     let(:cached_data_converted){ refworks_tagged_data }
     its(:status) { is_expected.to eq 200 }
-    it { is_expected.to render_template "ex_cite/cite/external_form" }
+    it { is_expected.to render_template "citero_engine/cite/external_form" }
   end
   context "to bibtex" do
     let(:to_format){ "bibtex" }
@@ -64,7 +64,7 @@ RSpec.shared_examples "resource_key-stubbed success for all to_format" do |from_
     let(:to_format){ "easybibpush" }
     let(:cached_data_converted){ "[{\"source\":\"book\",\"book\":{\"title\":null},\"pubtype\":{\"main\":\"pubnonperiodical\"},\"pubnonperiodical\":{},\"contributors\":[]}]" }
     its(:status) { is_expected.to eq 200 }
-    it { is_expected.to render_template "ex_cite/cite/external_form" }
+    it { is_expected.to render_template "citero_engine/cite/external_form" }
   end
   context "to csf" do
     let(:to_format){ "csf" }
