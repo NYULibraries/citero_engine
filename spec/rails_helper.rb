@@ -6,10 +6,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'rspec-html-matchers'
-require 'support/shared_examples/bad_request_for_all_formats'
-require 'support/shared_examples/book_success_for_all_formats'
-require 'support/shared_examples/resource_key_success_for_all_formats'
-require 'support/shared_examples/success_for_all_to_formats'
+Dir.glob(File.dirname(__FILE__) + '/support/shared_examples/*', &method(:require))
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
