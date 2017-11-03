@@ -33,4 +33,4 @@ $formats ||= Hash[
               :pnx => "<display><type>book</type></display>"
   ]
   
-$acts_as_citable_classes = ["ExCite::Citation", "TypeOne"]
+$acts_as_citable_classes = ["CiteroEngine::Citation", "TypeOne"]

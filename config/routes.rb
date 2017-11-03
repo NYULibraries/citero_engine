@@ -1,3 +1,3 @@
-ExCite::Engine.routes.draw do
-  match "export_citations(/:to_format)(/:id)" => 'export_citations#index', :via => [:get, :post], :as => "export_citations"
+CiteroEngine::Engine.routes.draw do
+  match "citero_engine(/:to_format)(/:id)" => 'citero_engine#index', :via => [:get, :post], :as => "citero_engine"
 end

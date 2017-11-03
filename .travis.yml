@@ -1,6 +1,0 @@
-rvm:
-    - jruby-19mode
-before_script:
-    - mkdir -p test/dummy/db
-    - touch test/dummy/db/test.sqlite3
-    - rake db:migrate

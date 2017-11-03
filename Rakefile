@@ -15,7 +15,7 @@ end
 
 RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'doc'
-  rdoc.title    = 'ExCite'
+  rdoc.title    = 'CiteroEngine'
   rdoc.options << '--line-numbers'
   rdoc.options << '--markup markdown'
   rdoc.rdoc_files.include('README.md')
@@ -39,5 +39,8 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = false
 end
 
-
-task :default => :test
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.ruby_opts = "--debug --dev"
+end
+task default: :spec

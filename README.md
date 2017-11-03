@@ -1,11 +1,12 @@
-ExCite Engine Gem
+CiteroEngine Engine Gem
 ======================
-[![Build Status](http://jenkins.library.nyu.edu/buildStatus/icon?job=ex_cite Staging Test)](http://jenkins.library.nyu.edu/view/Citero/job/ex_cite%20Staging%20Test/)
-[![Build Status](https://travis-ci.org/NYULibraries/ex_cite.png?branch=master)](https://travis-ci.org/NYULibraries/ex_cite)
-[![Coverage Status](https://coveralls.io/repos/NYULibraries/ex_cite/badge.png?branch=master)](https://coveralls.io/r/NYULibraries/ex_cite?branch=master)
-[![Dependency Status](https://gemnasium.com/NYULibraries/ex_cite.png)](https://gemnasium.com/NYULibraries/ex_cite)
-[![Gem Version](https://badge.fury.io/rb/ex_cite.png)](http://badge.fury.io/rb/ex_cite)
-[![Code Climate](https://codeclimate.com/github/NYULibraries/ex_cite.png)](https://codeclimate.com/github/NYULibraries/ex_cite)
+[![Build Status](http://jenkins.library.nyu.edu/buildStatus/icon?job=citero_engine Staging Test)](http://jenkins.library.nyu.edu/view/Citero/job/citero_engine%20Staging%20Test/)
+[![Build Status](https://travis-ci.org/NYULibraries/citero_engine.png?branch=master)](https://travis-ci.org/NYULibraries/citero_engine)
+[![CircleCI](https://circleci.com/gh/NYULibraries/citero_engine.svg?style=svg)](https://circleci.com/gh/NYULibraries/citero_engine)
+[![Coverage Status](https://coveralls.io/repos/NYULibraries/citero_engine/badge.png?branch=master)](https://coveralls.io/r/NYULibraries/citero_engine?branch=master)
+[![Dependency Status](https://gemnasium.com/NYULibraries/citero_engine.png)](https://gemnasium.com/NYULibraries/citero_engine)
+[![Gem Version](https://badge.fury.io/rb/citero_engine.png)](http://badge.fury.io/rb/citero_engine)
+[![Code Climate](https://codeclimate.com/github/NYULibraries/citero_engine.png)](https://codeclimate.com/github/NYULibraries/citero_engine)
 
 A JRuby wrapper for the citero tool, enables use of the citero tool in JRuby distributed as a Rails 3 Engine Gem.
 
@@ -15,7 +16,7 @@ Install
 Mount the engine gem to your rails project like so:
 
 ```ruby
-mount ExCite::Engine, :at => '/MOUNT_LOCATION'
+mount CiteroEngine::Engine, :at => '/MOUNT_LOCATION'
 ```
 
 You'll need to require the [jquery-rails](https://github.com/rails/jquery-rails) gem also.
@@ -46,17 +47,17 @@ Finally, you can send an OpenURL request, simply define the :to_format and pass 
 Services
 ========
 
-Some services, such as Endnote, RefWorks, and EasyBib are already included in ex_cite. These services are configurable right out of the box for your needs.
+Some services, such as Endnote, RefWorks, and EasyBib are already included in citero_engine. These services are configurable right out of the box for your needs.
 
 There are two ways to use services, rendering and redirect. The render method will render a view with a 200 response, and the redirect will, as expected,
-redirect to another page with a 302 response. 
+redirect to another page with a 302 response.
 
 To configure a built-in service, such as Endnote, Refworks, or EasyBib, simply modify the following objects
 
 ```ruby
-ExCite.easybib
-ExCite.refworks
-ExCite.endnote
+CiteroEngine.easybib
+CiteroEngine.refworks
+CiteroEngine.endnote
 ```
 
 The available options are as follow, with available defaults shown
@@ -65,7 +66,7 @@ The available options are as follow, with available defaults shown
 :name				=> 	'Service' # What you want to call this service, and how it will be accessed, i.e. 'easybibpush'
 :to_format			=>	# The format that the service is expecting
 :action				=>	'render' # Either :redirect or :render is supported
-:template			=>	'ex_cite/cite/external_form' # The template view to render. You are free to use your own, ex_cite provides one for free!
+:template			=>	'citero_engine/cite/external_form' # The template view to render. You are free to use your own, citero_engine provides one for free!
 :url				=>	# The url to redirect to or the url to send the form to
 :method				=>	'POST' # This is the form action
 :enctype			=>	'application/x-www-form-urlencoded' # This is the enctype for the form
@@ -77,8 +78,8 @@ alias :protocol :callback_protocol	# An alias, should you wish to use this outda
 To add a new service, simply
 
 ```ruby
-easybib = PushFormat.new( :name => :easybibpush, :to_format => :easybib, :action => :render, :template => "ex_cite/cite/external_form", :url => "http://www.easybib.com/cite/bulk")
-ExCite.push_formats['easybib'] = easybib
+easybib = PushFormat.new( :name => :easybibpush, :to_format => :easybib, :action => :render, :template => "citero_engine/cite/external_form", :url => "http://www.easybib.com/cite/bulk")
+CiteroEngine.push_formats['easybib'] = easybib
 ```
 Examples
 ========
