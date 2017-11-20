@@ -1,6 +1,5 @@
-CiteroEngine Engine Gem
-======================
-[![Build Status](http://jenkins.library.nyu.edu/buildStatus/icon?job=citero_engine Staging Test)](http://jenkins.library.nyu.edu/view/Citero/job/citero_engine%20Staging%20Test/)
+# CiteroEngine Engine Gem
+
 [![Build Status](https://travis-ci.org/NYULibraries/citero_engine.png?branch=master)](https://travis-ci.org/NYULibraries/citero_engine)
 [![CircleCI](https://circleci.com/gh/NYULibraries/citero_engine.svg?style=svg)](https://circleci.com/gh/NYULibraries/citero_engine)
 [![Coverage Status](https://coveralls.io/repos/NYULibraries/citero_engine/badge.png?branch=master)](https://coveralls.io/r/NYULibraries/citero_engine?branch=master)
@@ -10,8 +9,8 @@ CiteroEngine Engine Gem
 
 A JRuby wrapper for the citero tool, enables use of the citero tool in JRuby distributed as a Rails 3 Engine Gem.
 
-Install
-==========
+## Install
+
 
 Mount the engine gem to your rails project like so:
 
@@ -27,15 +26,14 @@ In your Gemfile
 gem "jquery-rails"
 ```
 
-Formats supported
-========
+## Formats supported
+
 Currently supporting PNX, RIS, CSF, BiBTeX, OpenURL, XERXES_XML, and EasyBib JSON.
 
 Currently supports the following services RefWorks, EasyBib, EndNote.
 
 
-How to use
-========
+## How to use
 
 There are two methods to use this engine. To use the ActiveRecord method, first you must have a record that implements acts\_as\_citable.  
 
@@ -44,8 +42,7 @@ The data[] array and the from\_format[] array must correspond to each other, tha
 
 Finally, you can send an OpenURL request, simply define the :to_format and pass in the query string.
 
-Services
-========
+## Services
 
 Some services, such as Endnote, RefWorks, and EasyBib are already included in citero_engine. These services are configurable right out of the box for your needs.
 
@@ -81,8 +78,8 @@ To add a new service, simply
 easybib = PushFormat.new( :name => :easybibpush, :to_format => :easybib, :action => :render, :template => "citero_engine/cite/external_form", :url => "http://www.easybib.com/cite/bulk")
 CiteroEngine.push_formats['easybib'] = easybib
 ```
-Examples
-========
+
+## Examples
 
 Mounted at root (/)
 
@@ -101,5 +98,5 @@ Mounted at root (/)
 
     OpenURL (Non ActiveRecord, will download RIS)
     http://localhost:3000/export_citations?to_format=ris&url_ver=Z39.88-2004&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&ctx_ver=Z39.88-2004&ctx_tim=2012-11-20T13%3A40%3A11-05%3A00&ctx_id=&ctx_enc=info%3Aofi%2Fenc%3AUTF-8&rft.genre=journal&rft.issn=0893-3456&rft.jtitle=Los+Alamos+monitor&rft.language=eng&rft.object_id=991042747005504&rft.object_type=JOURNAL&rft.page=1&rft.place=Los+Alamos%2C+N.M.&rft.pub=%5BH.+Markley+McMahon%5D&rft.stitle=ALAMOS+MONITOR+%28LOS+ALAMOS%2C+NM%29&rft.title=Los+Alamos+monitor&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&rft_id=L&req.ip=127.0.0.1
-    OpenURL (Non AciveRecord, will push to refworks)
+    OpenURL (Non ActiveRecord, will push to refworks)
     http://localhost:3000/export_citations?to_format=refworks&url_ver=Z39.88-2004&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&ctx_ver=Z39.88-2004&ctx_tim=2012-11-20T13%3A40%3A11-05%3A00&ctx_id=&ctx_enc=info%3Aofi%2Fenc%3AUTF-8&rft.genre=journal&rft.issn=0893-3456&rft.jtitle=Los+Alamos+monitor&rft.language=eng&rft.object_id=991042747005504&rft.object_type=JOURNAL&rft.page=1&rft.place=Los+Alamos%2C+N.M.&rft.pub=%5BH.+Markley+McMahon%5D&rft.stitle=ALAMOS+MONITOR+%28LOS+ALAMOS%2C+NM%29&rft.title=Los+Alamos+monitor&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&rft_id=L&req.ip=127.0.0.1
