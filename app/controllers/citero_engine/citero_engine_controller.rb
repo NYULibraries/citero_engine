@@ -160,6 +160,10 @@ module CiteroEngine
       ERB::Util.url_encode(callback)
     end
 
+    def export_citations_url
+      @export_citations_url ||= ENV['EXPORT_CITATIONS_URL'] || "http://web1.bobst.nyu.edu/export_citations/export_citations"
+    end
+
     # Creates the filename and extension. Few are application specific
     def filename
       name = "export"
